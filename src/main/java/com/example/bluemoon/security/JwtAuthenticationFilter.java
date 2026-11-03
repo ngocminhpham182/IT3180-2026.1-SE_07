@@ -33,7 +33,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        // Không có token -> endpoint public/protected sẽ do Spring Security xử lý
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -41,66 +40,76 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = authHeader.substring(7);
 
+        String username;
+        Instant tokenIssuedAt;
+
+        // 1. Chỉ bắt lỗi liên quan đến JWT
         try {
-            // 1. Kiểm tra JWT
             if (!jwtService.isTokenValid(token)) {
                 writeUnauthorized(response, "Token không hợp lệ hoặc đã hết hạn");
                 return;
             }
 
-            String username = jwtService.extractUsername(token);
-
-            // 2. Luôn đọc user từ DB
-            AppUser user = userRepository
-                    .findByUsernameIgnoreCase(username)
-                    .orElse(null);
-
-            // User bị xóa hoặc bị khóa -> token vô hiệu ngay
-            if (user == null || !user.isActive()) {
-                writeUnauthorized(
-                        response,
-                        "Tài khoản không tồn tại hoặc đã bị khóa"
-                );
-                return;
-            }
-
-            // 3. Kiểm tra token được cấp trước khi đổi/reset password
-            Instant tokenIssuedAt = jwtService.extractIssuedAt(token);
-
-            if (user.getPasswordChangedAt() != null
-                    && tokenIssuedAt.isBefore(user.getPasswordChangedAt())) {
-
-                writeUnauthorized(response, "Token không còn hợp lệ");
-                return;
-            }
-
-            // 4. Lấy role mới nhất từ DB
-            List<SimpleGrantedAuthority> authorities = user.getRoles()
-                    .stream()
-                    .map(role -> new SimpleGrantedAuthority(
-                            "ROLE_" + role.getCode()
-                    ))
-                    .toList();
-
-            // 5. Set authentication
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
-                            user.getUsername(),
-                            null,
-                            authorities
-                    );
-
-            SecurityContextHolder.getContext()
-                    .setAuthentication(authentication);
-
-            filterChain.doFilter(request, response);
+            username = jwtService.extractUsername(token);
+            tokenIssuedAt = jwtService.extractIssuedAt(token);
 
         } catch (Exception e) {
-            // Không để exception JWT/JPA biến thành 403 hoặc 500 khó hiểu
-            SecurityContextHolder.clearContext();
-
             writeUnauthorized(response, "Token không hợp lệ");
+            return;
         }
+
+        // 2. Truy vấn user từ DB
+        // Không đặt trong catch JWT
+        AppUser user = userRepository
+                .findByUsernameIgnoreCase(username)
+                .orElse(null);
+
+        if (user == null || !user.isActive()) {
+            writeUnauthorized(
+                    response,
+                    "Tài khoản không tồn tại hoặc đã bị khóa"
+            );
+            return;
+        }
+
+        // 3. Kiểm tra thời điểm đổi mật khẩu
+        if (user.getPasswordChangedAt() != null
+                && tokenIssuedAt.isBefore(user.getPasswordChangedAt())) {
+
+            writeUnauthorized(response, "Token không còn hợp lệ");
+            return;
+        }
+
+        // 4. Lấy role mới nhất từ DB
+        List<SimpleGrantedAuthority> authorities = user.getRoles()
+                .stream()
+                .map(role -> new SimpleGrantedAuthority(
+                        "ROLE_" + role.getCode()
+                ))
+                .toList();
+
+        // 5. Set authentication
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(
+                        user,
+                        null,
+                        authorities
+                );
+
+        System.out.println("JWT USER: " + user.getUsername());
+
+        System.out.println("JWT AUTHORITIES: " + authorities);
+
+        SecurityContextHolder.getContext()
+                .setAuthentication(authentication);
+
+        System.out.println(
+                "SECURITY CONTEXT: " +
+                        SecurityContextHolder.getContext().getAuthentication()
+        );
+        
+        // 6. Quan trọng: Đặt ngoài try-catch JWT
+        filterChain.doFilter(request, response);
     }
 
     private void writeUnauthorized(

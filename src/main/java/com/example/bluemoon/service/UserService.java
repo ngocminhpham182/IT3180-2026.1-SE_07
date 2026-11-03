@@ -172,7 +172,7 @@ public class UserService {
         if (user.getResidentId() != null) {
             householdId = residentRepository
                     .findById(user.getResidentId())
-                    .map(Resident::getHouseholdId)
+                    .map(resident -> resident.getHousehold().getId())
                     .orElse(null);
         }
 

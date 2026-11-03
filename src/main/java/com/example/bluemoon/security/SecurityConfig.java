@@ -3,6 +3,7 @@ package com.example.bluemoon.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,6 +30,20 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/users", "/users/**").hasRole("BQT")
                         .requestMatchers("/roles", "/roles/**").hasRole("BQT")
+                        // GET household: BQT và ACCOUNTANT
+                        .requestMatchers(HttpMethod.GET, "/households", "/households/**")
+                        .hasAnyRole("BQT", "ACCOUNTANT")
+
+                        // POST household: chỉ BQT
+                        .requestMatchers(HttpMethod.POST, "/households")
+                        .hasRole("BQT")
+
+                        .requestMatchers(HttpMethod.PUT, "/households/**")
+                        .hasRole("BQT")
+
+                        // Các method khác: chỉ BQT (nếu chưa có quy tắc riêng)
+                        .requestMatchers("/households", "/households/**")
+                        .hasRole("BQT")
                         .anyRequest().authenticated()
                 )
 

@@ -1,6 +1,7 @@
 package com.example.bluemoon.exception;
 
 
+import com.example.bluemoon.response.ApiErrorResponse;
 import com.example.bluemoon.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -57,6 +59,67 @@ public class GlobalExceptionHandler {
                         "success", false,
                         "code", "SELF_LOCKOUT",
                         "message", ex.getMessage()
+                ));
+    }
+
+
+
+    @ExceptionHandler(HouseholdDuplicateException.class)
+    public ResponseEntity<?> handleHouseholdDuplicate(
+            HouseholdDuplicateException ex
+    ) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                Map.of(
+                        "success", false,
+                        "code", "DUPLICATE",
+                        "message", "Dữ liệu đã tồn tại",
+                        "errors", ex.getErrors()
+                )
+        );
+    }
+
+    @ExceptionHandler(InvalidNewHeadException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidNewHead(
+            InvalidNewHeadException ex
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body(new ApiErrorResponse(
+                        false,
+                        "INVALID_NEW_HEAD",
+                        ex.getMessage(),
+                        Map.of("reason", ex.getReason())
+                ));
+    }
+
+    @ExceptionHandler(HouseholdInactiveException.class)
+    public ResponseEntity<ApiErrorResponse> handleHouseholdInactive(
+            HouseholdInactiveException ex
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body(new ApiErrorResponse(
+                        false,
+                        "HOUSEHOLD_INACTIVE",
+                        ex.getMessage(),
+                        null
+                ));
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResponseStatusException(
+            ResponseStatusException ex
+    ) {
+        String message = ex.getReason() != null
+                ? ex.getReason()
+                : "Request failed";
+
+        return ResponseEntity
+                .status(ex.getStatusCode())
+                .body(new ApiResponse<>(
+                        false,
+                        message,
+                        null
                 ));
     }
 
