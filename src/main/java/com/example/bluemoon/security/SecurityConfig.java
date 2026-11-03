@@ -41,9 +41,20 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/households/**")
                         .hasRole("BQT")
 
+                        .requestMatchers(HttpMethod.POST, "/households/*/residents")
+                        .hasRole("BQT")
+
                         // Các method khác: chỉ BQT (nếu chưa có quy tắc riêng)
                         .requestMatchers("/households", "/households/**")
                         .hasRole("BQT")
+
+                        .requestMatchers(HttpMethod.GET, "/residents", "/residents/**")
+                        .hasAnyRole("BQT", "ACCOUNTANT")
+
+                        .requestMatchers(HttpMethod.PUT, "/residents/**")
+                        .hasRole("BQT")
+
+                        .requestMatchers(HttpMethod.DELETE, "/residents/**").hasRole("BQT")
                         .anyRequest().authenticated()
                 )
 

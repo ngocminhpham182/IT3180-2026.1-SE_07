@@ -136,6 +136,20 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(ResidentDeleteException.class)
+    public ResponseEntity<ApiErrorResponse> handleResidentDeleteException(
+            ResidentDeleteException ex
+    ) {
+        return ResponseEntity.status(ex.getStatus()).body(
+                new ApiErrorResponse(
+                        false,
+                        ex.getCode(),
+                        ex.getMessage(),
+                        ex.getDetails()
+                )
+        );
+    }
+
     @ExceptionHandler(PasswordValidationException.class)
     public ResponseEntity<?> handlePasswordValidation(
             PasswordValidationException ex

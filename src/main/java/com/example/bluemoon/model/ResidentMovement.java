@@ -59,6 +59,10 @@ public class ResidentMovement {
     @Column(name = "recorded_at", nullable = false, updatable = false)
     private Instant recordedAt;
 
+    @Column(name = "is_initial", nullable = false)
+    @Builder.Default
+    private boolean isInitial = false;
+
     @PrePersist
     protected void onCreate() {
         if (recordedAt == null) {

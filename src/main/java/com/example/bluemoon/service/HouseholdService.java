@@ -138,6 +138,7 @@ public class HouseholdService {
                 .effectiveDate(today)
                 .recordedBy(currentUser)
                 .note("Ghi nhận chủ hộ khi tạo hộ gia đình")
+                .isInitial(true)
                 .build();
 
         movementRepository.save(movement);
