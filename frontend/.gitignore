@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.env.local
+*.log
+.DS_Store
+.codex-input/
+coverage/
+test-results/
+playwright-report/
+# Local Java artifacts can remain when switching from the backend branch.
+target/
+src/main/resources/application-local.properties
