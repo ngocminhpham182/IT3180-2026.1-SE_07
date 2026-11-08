@@ -101,4 +101,26 @@ public class ResidentController {
         residentService.deleteResident(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("residents/{id}/movements")
+    public ResponseEntity<ApiResponse<RecordMovementResponse>> recordMovement(
+            @PathVariable Long id,
+            @RequestBody CreateMovementRequest request,
+            @AuthenticationPrincipal AppUser currentUser
+    ) {
+        RecordMovementResponse response = residentService.recordMovement(id, request, currentUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                ApiResponse.success("Ghi nhận biến động thành công", response)
+        );
+    }
+
+    @GetMapping("residents/{id}/movements")
+    public ResponseEntity<ApiResponse<List<MovementResponse>>> getMovements(
+            @PathVariable Long id
+    ) {
+        List<MovementResponse> response = residentService.getMovements(id);
+        return ResponseEntity.ok(
+                ApiResponse.success("Lấy lịch sử biến động thành công", response)
+        );
+    }
 }

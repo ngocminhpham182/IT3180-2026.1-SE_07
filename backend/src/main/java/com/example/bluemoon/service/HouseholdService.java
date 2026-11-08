@@ -4,6 +4,7 @@ import com.example.bluemoon.dto.*;
 import com.example.bluemoon.exception.HouseholdDuplicateException;
 import com.example.bluemoon.exception.HouseholdInactiveException;
 import com.example.bluemoon.exception.InvalidNewHeadException;
+import com.example.bluemoon.exception.ResourceNotFoundException;
 import com.example.bluemoon.model.*;
 import com.example.bluemoon.model.enums.HouseholdStatus;
 import com.example.bluemoon.model.enums.MovementType;
@@ -17,10 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -215,10 +214,7 @@ public class HouseholdService {
     @Transactional(readOnly = true)
     public HouseholdDetailResponse getHouseholdById(Long id) {
         Household household = householdRepository.findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "HOUSEHOLD_NOT_FOUND"
-                ));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy hộ gia đình"));
 
         List<ResidentInHouseholdResponse> residents = household.getResidents()
                 .stream()
@@ -263,10 +259,7 @@ public class HouseholdService {
         // 1. Tìm hộ gia đình, không cho phép sửa hộ đã bị xóa mềm
         Household household = householdRepository
                 .findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "HOUSEHOLD_NOT_FOUND"
-                ));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy hộ gia đình"));
 
         // 2. Chuẩn hóa dữ liệu
         String householdCode = request.householdCode()
@@ -336,11 +329,18 @@ public class HouseholdService {
             );
         }
 
-        int residentCount = residents.size();
+        int residentCount = (int) residents.stream()
+                .filter(resident ->
+                        resident.getStatus() == ResidencyStatus.RESIDING
+                                || resident.getStatus() == ResidencyStatus.TEMPORARILY_ABSENT
+                                || resident.getStatus() == ResidencyStatus.TEMPORARY_RESIDENCE
+                )
+                .count();
 
         int presentCount = (int) residents.stream()
                 .filter(resident ->
                         resident.getStatus() == ResidencyStatus.RESIDING
+                                || resident.getStatus() == ResidencyStatus.TEMPORARY_RESIDENCE
                 )
                 .count();
 
@@ -367,10 +367,7 @@ public class HouseholdService {
         // 1. Tìm hộ gia đình
         Household household = householdRepository
                 .findByIdAndDeletedAtIsNull(householdId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "HOUSEHOLD_NOT_FOUND"
-                ));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy hộ gia đình"));
 
         // 2. Kiểm tra trạng thái hộ
         if (!"ACTIVE".equals(household.getStatus())) {
@@ -409,18 +406,17 @@ public class HouseholdService {
             );
         }
 
-        // 7. Tìm chủ hộ hiện tại
-        Resident currentHead = residentRepository
-                .findByHouseholdIdAndHeadTrueAndDeletedAtIsNull(householdId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Hộ gia đình không có chủ hộ hiện tại"
-                ));
+        // 7. Tìm chủ hộ hiện tại (nếu có thì bỏ head trước khi gán người mới)
+        Optional<Resident> currentHeadOpt = residentRepository
+                .findByHouseholdIdAndHeadTrueAndDeletedAtIsNull(householdId);
+
+        if (currentHeadOpt.isPresent()) {
+            Resident currentHead = currentHeadOpt.get();
+            currentHead.setHead(false);
+            residentRepository.saveAndFlush(currentHead);
+        }
 
         // 8. Chuyển chủ hộ
-        currentHead.setHead(false);
-        residentRepository.saveAndFlush(currentHead);
-
-        // Chỉ cập nhật chủ hộ mới sau khi chủ hộ cũ đã được bỏ trạng thái
         newHead.setHead(true);
         residentRepository.saveAndFlush(newHead);
 
@@ -436,10 +432,7 @@ public class HouseholdService {
         // 1. Tìm hộ gia đình
         Household household = householdRepository
                 .findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "HOUSEHOLD_NOT_FOUND"
-                ));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy hộ gia đình"));
 
         // 2. Cập nhật trạng thái
         household.setStatus(request.status().name());

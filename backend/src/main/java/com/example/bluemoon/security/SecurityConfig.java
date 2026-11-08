@@ -1,5 +1,6 @@
 package com.example.bluemoon.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,10 +27,46 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write("""
+                                    {
+                                      "success": false,
+                                      "code": "UNAUTHORIZED",
+                                      "message": "Chưa đăng nhập hoặc phiên làm việc đã hết hạn"
+                                    }
+                                    """);
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.setContentType("application/json");
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write("""
+                                    {
+                                      "success": false,
+                                      "code": "FORBIDDEN",
+                                      "message": "Bạn không có quyền thực hiện thao tác này"
+                                    }
+                                    """);
+                        })
+                )
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()
+
+                        // Movements (US-03)
+                        .requestMatchers(HttpMethod.POST, "/residents/*/movements").hasRole("BQT")
+                        .requestMatchers(HttpMethod.GET, "/residents/*/movements").hasAnyRole("BQT", "ACCOUNTANT")
+
+                        // Quick Search (US-04)
+                        .requestMatchers(HttpMethod.GET, "/search").hasAnyRole("BQT", "ACCOUNTANT")
+
                         .requestMatchers("/users", "/users/**").hasRole("BQT")
                         .requestMatchers("/roles", "/roles/**").hasRole("BQT")
+
                         // GET household: BQT và ACCOUNTANT
                         .requestMatchers(HttpMethod.GET, "/households", "/households/**")
                         .hasAnyRole("BQT", "ACCOUNTANT")
@@ -55,6 +92,16 @@ public class SecurityConfig {
                         .hasRole("BQT")
 
                         .requestMatchers(HttpMethod.DELETE, "/residents/**").hasRole("BQT")
+
+                        .requestMatchers(HttpMethod.POST, "/fee-categories")
+                        .hasAnyRole("ACCOUNTANT", "BQT")
+
+                        .requestMatchers(HttpMethod.GET, "/fee-categories", "/fee-categories/**")
+                        .hasAnyRole("ACCOUNTANT", "BQT")
+
+                        .requestMatchers(HttpMethod.PUT, "/fee-categories/**")
+                        .hasAnyRole("ACCOUNTANT", "BQT")
+
                         .anyRequest().authenticated()
                 )
 

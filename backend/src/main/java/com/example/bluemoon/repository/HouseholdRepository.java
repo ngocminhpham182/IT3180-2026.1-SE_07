@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface HouseholdRepository extends JpaRepository<Household, Long> {
@@ -29,6 +30,7 @@ public interface HouseholdRepository extends JpaRepository<Household, Long> {
 
     @EntityGraph(attributePaths = "residents")
     Optional<Household> findByIdAndDeletedAtIsNull(Long id);
+
     @Query(
             value = """
         SELECT
@@ -80,4 +82,47 @@ public interface HouseholdRepository extends JpaRepository<Household, Long> {
             @Param("status") String status,
             Pageable pageable
     );
+
+    @Query(
+            value = """
+        SELECT
+            h.id AS id,
+            h.household_code AS householdCode,
+            h.apartment_no AS apartmentNo,
+            h.floor AS floor,
+            h.status AS status,
+            r.full_name AS headName
+        FROM household h
+        LEFT JOIN resident r
+            ON r.household_id = h.id
+            AND r.is_head = true
+            AND r.deleted_at IS NULL
+        WHERE h.deleted_at IS NULL
+          AND (
+                LOWER(h.household_code) LIKE '%' || LOWER(CAST(:keyword AS TEXT)) || '%'
+                OR LOWER(h.apartment_no) LIKE '%' || LOWER(CAST(:keyword AS TEXT)) || '%'
+          )
+        ORDER BY h.household_code ASC
+        LIMIT :limit
+        """,
+            nativeQuery = true
+    )
+    List<HouseholdListItemResponse> quickSearchHouseholds(
+            @Param("keyword") String keyword,
+            @Param("limit") int limit
+    );
+
+    @Query(
+            value = """
+        SELECT COUNT(*)
+        FROM household h
+        WHERE h.deleted_at IS NULL
+          AND (
+                LOWER(h.household_code) LIKE '%' || LOWER(CAST(:keyword AS TEXT)) || '%'
+                OR LOWER(h.apartment_no) LIKE '%' || LOWER(CAST(:keyword AS TEXT)) || '%'
+          )
+        """,
+            nativeQuery = true
+    )
+    long countQuickSearchHouseholds(@Param("keyword") String keyword);
 }

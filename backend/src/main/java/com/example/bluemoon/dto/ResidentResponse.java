@@ -9,6 +9,8 @@ import java.time.LocalDate;
 public record ResidentResponse(
         Long id,
         Long householdId,
+        String householdCode,
+        String apartmentNo,
         String fullName,
         LocalDate dateOfBirth,
         Gender gender,
@@ -18,6 +20,7 @@ public record ResidentResponse(
         boolean isHead,
         ResidencyStatus residencyStatus,
         LocalDate statusUntil,
+        boolean statusExpired,
         LocalDate moveInDate,
         LocalDate moveOutDate,
         Instant createdAt,
