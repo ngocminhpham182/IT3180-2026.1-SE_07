@@ -7,16 +7,30 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "node scripts/check-contract.mjs && node --test tests/*.test.mjs"
+    "check": "node --test tests/*.test.mjs && vitest run",
+    "test": "vitest",
+    "test:browser": "playwright test",
+    "format": "prettier --write src tests *.js package.json README.md docs",
+    "format:check": "prettier --check src tests *.js package.json README.md docs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.28.0"
+    "react-router-dom": "^7.18.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.0.5"
+    "jsdom": "^26.1.0",
+    "prettier": "^3.6.2",
+    "vite": "^6.0.5",
+    "vitest": "^4.1.12"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }
