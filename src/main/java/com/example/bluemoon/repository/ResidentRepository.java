@@ -37,6 +37,12 @@ public interface ResidentRepository extends JpaRepository<Resident, Long> {
             Sort sort
     );
 
+    List<Resident> findByHousehold_IdAndDeletedAtIsNullAndStatusAndIdNot(
+            Long householdId,
+            ResidencyStatus status,
+            Long residentId
+    );
+
     @Query(
             value = """
         SELECT r.*

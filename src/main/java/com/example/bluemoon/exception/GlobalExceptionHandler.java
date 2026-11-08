@@ -123,6 +123,20 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(MovementException.class)
+    public ResponseEntity<ApiErrorResponse> handleMovementException(
+            MovementException ex
+    ) {
+        return ResponseEntity.status(ex.getStatus()).body(
+                new ApiErrorResponse(
+                        false,
+                        ex.getCode(),
+                        ex.getMessage(),
+                        ex.getDetails()
+                )
+        );
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleNotFound(
             ResourceNotFoundException ex
