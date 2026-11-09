@@ -341,4 +341,48 @@ public class GlobalExceptionHandler {
                         "errors", errors
                 ));
     }
+
+    @ExceptionHandler(MissingAreaException.class)
+    public ResponseEntity<ApiErrorResponse> handleMissingArea(
+            MissingAreaException ex
+    ) {
+        return ResponseEntity.unprocessableEntity().body(
+                new ApiErrorResponse(
+                        false,
+                        "MISSING_AREA",
+                        ex.getMessage(),
+                        Map.of("householdId", ex.getHouseholdId())
+                )
+        );
+    }
+
+    @ExceptionHandler(FeeInactiveException.class)
+    public ResponseEntity<ApiErrorResponse> handleFeeInactive(
+            FeeInactiveException ex
+    ) {
+        return ResponseEntity.unprocessableEntity().body(
+                new ApiErrorResponse(
+                        false,
+                        "FEE_INACTIVE",
+                        ex.getMessage(),
+                        null
+                )
+        );
+    }
+
+    @ExceptionHandler(FeeNotBillableException.class)
+    public ResponseEntity<ApiErrorResponse> handleFeeNotBillable(
+            FeeNotBillableException ex
+    ) {
+        return ResponseEntity.unprocessableEntity().body(
+                new ApiErrorResponse(
+                        false,
+                        "FEE_NOT_BILLABLE",
+                        ex.getMessage(),
+                        null
+                )
+        );
+    }
+
+
 }

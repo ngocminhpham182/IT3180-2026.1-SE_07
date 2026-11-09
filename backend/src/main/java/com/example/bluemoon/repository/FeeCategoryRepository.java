@@ -7,9 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FeeCategoryRepository
         extends JpaRepository<FeeCategory, Long> {
+
+    Optional<FeeCategory> findById(Long id);
 
     boolean existsByCode(String code);
 

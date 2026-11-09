@@ -105,6 +105,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/fee-categories/*/status")
                         .hasAnyRole("ACCOUNTANT", "BQT")
 
+                        .requestMatchers(HttpMethod.POST, "/fee-calculation/preview")
+                        .hasAnyRole("ACCOUNTANT", "BQT")
+
                         .anyRequest().authenticated()
                 )
 
