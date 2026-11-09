@@ -1,5 +1,6 @@
 package com.example.bluemoon.controller;
 
+import com.example.bluemoon.dto.UpdateFeeCategoryStatusRequest;
 import com.example.bluemoon.model.enums.FeeKind;
 import com.example.bluemoon.response.ApiResponse;
 import com.example.bluemoon.dto.CreateFeeCategoryRequest;
@@ -68,6 +69,19 @@ public class FeeCategoryController {
 
         return ResponseEntity.ok(
                 ApiResponse.success("Cập nhật khoản thu thành công", response)
+        );
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ApiResponse<FeeCategoryResponse>> updateStatus(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateFeeCategoryStatusRequest request
+    ) {
+        FeeCategoryResponse response =
+                feeCategoryService.updateStatus(id, request);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("Cập nhật trạng thái khoản thu thành công", response)
         );
     }
 }

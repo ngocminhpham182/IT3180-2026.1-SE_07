@@ -2,6 +2,7 @@ package com.example.bluemoon.service;
 
 import com.example.bluemoon.dto.CreateFeeCategoryRequest;
 import com.example.bluemoon.dto.FeeCategoryResponse;
+import com.example.bluemoon.dto.UpdateFeeCategoryStatusRequest;
 import com.example.bluemoon.exception.*;
 import com.example.bluemoon.model.FeeCategory;
 import com.example.bluemoon.model.enums.BillingCycle;
@@ -299,6 +300,23 @@ public class FeeCategoryService {
             category.setBillingCycle(BillingCycle.ONE_TIME);
             category.setDueDay(null);
         }
+
+        FeeCategory saved = feeCategoryRepository.save(category);
+
+        return toResponse(saved);
+    }
+
+    @Transactional
+    public FeeCategoryResponse updateStatus(
+            Long id,
+            UpdateFeeCategoryStatusRequest request
+    ) {
+        FeeCategory category = feeCategoryRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Không tìm thấy khoản thu")
+                );
+
+        category.setActive(request.active());
 
         FeeCategory saved = feeCategoryRepository.save(category);
 
