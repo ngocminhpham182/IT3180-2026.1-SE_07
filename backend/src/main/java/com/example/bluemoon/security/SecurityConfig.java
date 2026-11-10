@@ -124,6 +124,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/billing-periods/*")
                         .hasAnyRole("ACCOUNTANT", "BQT")
 
+                        .requestMatchers(HttpMethod.GET, "/billing-periods/*/receivables")
+                        .hasAnyRole("BQT", "ACCOUNTANT")
+
                         .requestMatchers(HttpMethod.PATCH, "/billing-periods/*/status")
                         .hasRole("BQT")
 
