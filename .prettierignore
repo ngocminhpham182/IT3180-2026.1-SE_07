@@ -1,0 +1,8 @@
+node_modules/
+dist/
+target/
+coverage/
+test-results/
+playwright-report/
+.codex-input/
+package-lock.json
