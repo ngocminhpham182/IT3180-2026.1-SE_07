@@ -66,7 +66,8 @@ export function SelectInput({ name, error, children, ...props }) {
   );
 }
 export function Alert({ children, tone = "danger", onClose }) {
-  if (!children) return null;
+  if (!React.Children.toArray(children).some((child) => child !== ""))
+    return null;
   return (
     <div className={`alert alert-${tone}`} role="alert">
       {tone === "success" ? <Check size={18} /> : <AlertCircle size={18} />}

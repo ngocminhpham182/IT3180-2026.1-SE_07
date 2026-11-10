@@ -6,6 +6,9 @@ import {
   CircleUserRound,
   ShieldCheck,
   UsersRound,
+  Search,
+  Receipt,
+  CalendarDays,
 } from "lucide-react";
 import { useAuth } from "../auth/AuthContext";
 import { PageHeader, Panel } from "../components/UI";
@@ -26,6 +29,24 @@ export default function HomePage() {
             title: "Nhân khẩu",
             desc: "Tra cứu trạng thái cư trú và thông tin thành viên.",
             icon: UsersRound,
+          },
+          {
+            to: "/tim-kiem",
+            title: "Tìm kiếm nhanh",
+            desc: "Tìm hộ và cư dân theo tên, mã hộ hoặc căn hộ.",
+            icon: Search,
+          },
+          {
+            to: "/khoan-thu",
+            title: "Danh mục khoản thu",
+            desc: "Thiết lập đơn giá và tính thử phí từng hộ.",
+            icon: Receipt,
+          },
+          {
+            to: "/ky-thu",
+            title: "Kỳ thu",
+            desc: "Lập và kiểm tra danh sách khoản phải thu đầu kỳ.",
+            icon: CalendarDays,
           },
         ]
       : []),

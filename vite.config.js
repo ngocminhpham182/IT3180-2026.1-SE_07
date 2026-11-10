@@ -8,9 +8,10 @@ export default defineConfig(({ mode }) => {
       host: "127.0.0.1",
       port: 5173,
       proxy: {
-        "/api": {
+        "/api/v1": {
           target: env.API_PROXY_TARGET || "http://localhost:8080",
           changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/v1(?=\/|\?|$)/, ""),
         },
       },
     },

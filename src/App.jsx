@@ -10,6 +10,10 @@ import ResidentsPage from "./pages/ResidentsPage";
 import ResidentDetailPage from "./pages/ResidentDetailPage";
 import UsersPage from "./pages/UsersPage";
 import ProfilePage from "./pages/ProfilePage";
+import SearchPage from "./pages/SearchPage";
+import FeesPage from "./pages/FeesPage";
+import PeriodsPage from "./pages/PeriodsPage";
+import PeriodDetailPage from "./pages/PeriodDetailPage";
 function Protected({ roles, children }) {
   const { token, user, loading } = useAuth();
   const location = useLocation();
@@ -50,6 +54,38 @@ export default function App() {
       >
         <Route index element={<HomePage />} />
         <Route path="ho-so" element={<ProfilePage />} />
+        <Route
+          path="tim-kiem"
+          element={
+            <Protected roles={["BQT", "ACCOUNTANT"]}>
+              <SearchPage />
+            </Protected>
+          }
+        />
+        <Route
+          path="khoan-thu"
+          element={
+            <Protected roles={["BQT", "ACCOUNTANT"]}>
+              <FeesPage />
+            </Protected>
+          }
+        />
+        <Route
+          path="ky-thu"
+          element={
+            <Protected roles={["BQT", "ACCOUNTANT"]}>
+              <PeriodsPage />
+            </Protected>
+          }
+        />
+        <Route
+          path="ky-thu/:id"
+          element={
+            <Protected roles={["BQT", "ACCOUNTANT"]}>
+              <PeriodDetailPage />
+            </Protected>
+          }
+        />
         <Route
           path="ho-gia-dinh"
           element={

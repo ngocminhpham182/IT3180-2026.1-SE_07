@@ -77,6 +77,7 @@ export function server(handler = () => undefined, user = account) {
     if (path === "/households/1/residents") return ok([resident]);
     if (path === "/residents") return ok(page([resident]));
     if (path === "/residents/2") return ok(resident);
+    if (path === "/residents/2/movements") return ok([]);
     if (path === "/users") return ok(page([user]));
     if (path === "/users/1") return ok(user);
     throw Error("Unhandled test request: " + options.method + " " + path);

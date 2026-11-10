@@ -11,6 +11,9 @@ import {
   UserRound,
   UsersRound,
   X,
+  Search,
+  Receipt,
+  CalendarDays,
 } from "lucide-react";
 import { useAuth } from "../auth/AuthContext";
 import { firstRoleName } from "../utils/format";
@@ -25,6 +28,9 @@ export default function Layout() {
       ? [
           { to: "/ho-gia-dinh", label: "Hộ gia đình", icon: Building2 },
           { to: "/nhan-khau", label: "Nhân khẩu", icon: UsersRound },
+          { to: "/tim-kiem", label: "Tìm kiếm nhanh", icon: Search },
+          { to: "/khoan-thu", label: "Danh mục khoản thu", icon: Receipt },
+          { to: "/ky-thu", label: "Kỳ thu", icon: CalendarDays },
         ]
       : []),
     ...(hasRole("BQT")

@@ -4,6 +4,7 @@ import { ArrowLeft, Edit3, Trash2 } from "lucide-react";
 import { residentApi } from "../api/services";
 import { useAuth } from "../auth/AuthContext";
 import ResidentForm from "../components/ResidentForm";
+import MovementPanel from "../components/MovementPanel";
 import {
   Alert,
   Confirm,
@@ -100,7 +101,7 @@ export default function ResidentDetailPage() {
         <Alert>
           {actionError.message}
           {actionError.code === "HAS_HISTORY" &&
-            " Vui lòng liên hệ người phụ trách biến động cư trú."}
+            " Hãy sử dụng chức năng ghi nhận biến động bên dưới."}
           {actionError.code === "HAS_ACCOUNT" &&
             " Cần xử lý tài khoản liên kết trước."}
           {actionError.code === "INVALID_NEW_HEAD" && " Cần đổi chủ hộ trước."}
@@ -148,8 +149,14 @@ export default function ResidentDetailPage() {
       </div>
       <p className="info-inline">
         Xóa chỉ dùng cho hồ sơ nhập nhầm. Khi cư dân chuyển đi hoặc thay đổi
-        trạng thái, hãy liên hệ người phụ trách biến động cư trú.
+        trạng thái, hãy sử dụng chức năng ghi nhận biến động bên dưới.
       </p>
+      <MovementPanel
+        key={r.id}
+        resident={r}
+        canEdit={editAllowed}
+        onResident={setR}
+      />
       {edit && (
         <ResidentForm
           value={r}

@@ -15,6 +15,20 @@ const messages = {
   HAS_HISTORY: "Nhân khẩu đã có lịch sử biến động nên không thể xóa.",
   HAS_ACCOUNT: "Nhân khẩu đang liên kết với tài khoản nên không thể xóa.",
   INVALID_NEW_HEAD: "Chủ hộ được chọn không hợp lệ.",
+  HEAD_REQUIRED: "Hãy chọn chủ hộ mới trước khi ghi nhận biến động.",
+  RESIDENT_NOT_RESIDING: "Nhân khẩu không còn cư trú.",
+  INVALID_TRANSITION: "Biến động không phù hợp với trạng thái cư trú hiện tại.",
+  ALREADY_GENERATED: "Kỳ này đã được lập danh sách.",
+  NO_ACTIVE_FEE:
+    "Chưa có khoản thu bắt buộc nào đang hiệu lực. Hãy tạo khoản thu trước.",
+  NOTHING_TO_GENERATE:
+    "Không có khoản phải thu nào được tạo. Hãy kiểm tra dữ liệu các hộ.",
+  PERIOD_CLOSED: "Kỳ đã đóng sổ.",
+  PERIOD_NOT_GENERATED: "Kỳ chưa lập danh sách nên chưa thể đóng sổ.",
+  PERIOD_OVERLAP: "Khoảng ngày chồng lấn với một kỳ thu khác.",
+  MISSING_AREA: "Hộ chưa có diện tích.",
+  FEE_INACTIVE: "Khoản thu đã ngừng sử dụng.",
+  FEE_NOT_BILLABLE: "Khoản tự nguyện không tính công nợ.",
   HOUSEHOLD_INACTIVE: "Hộ không còn hoạt động.",
   SELF_LOCKOUT: "Bạn không thể tự khóa hoặc tự gỡ quyền Ban quản trị.",
   RESIDENT_LINK_REQUIRED:
