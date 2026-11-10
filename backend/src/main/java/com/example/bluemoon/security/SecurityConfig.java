@@ -108,6 +108,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/fee-calculation/preview")
                         .hasAnyRole("ACCOUNTANT", "BQT")
 
+                        .requestMatchers(HttpMethod.POST, "/billing-periods")
+                        .hasAnyRole("ACCOUNTANT", "BQT")
+
+                        .requestMatchers(HttpMethod.GET, "/billing-periods", "/billing-periods/**")
+                        .hasAnyRole("ACCOUNTANT", "BQT")
+
                         .anyRequest().authenticated()
                 )
 

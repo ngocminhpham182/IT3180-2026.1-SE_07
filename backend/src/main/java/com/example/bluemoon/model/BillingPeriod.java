@@ -1,9 +1,10 @@
-
 package com.example.bluemoon.model;
 
 import com.example.bluemoon.model.enums.BillingPeriodStatus;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -13,8 +14,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class BillingPeriod {
 
     @Id
@@ -35,20 +34,25 @@ public class BillingPeriod {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    @Builder.Default
     private BillingPeriodStatus status = BillingPeriodStatus.OPEN;
 
     @Column(name = "generated_at")
     private Instant generatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "generated_by")
+    @JoinColumn(
+            name = "generated_by",
+            foreignKey = @ForeignKey(name = "billing_period_generated_by_fkey")
+    )
     private AppUser generatedBy;
 
     @Column(name = "closed_at")
     private Instant closedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "closed_by")
+    @JoinColumn(
+            name = "closed_by",
+            foreignKey = @ForeignKey(name = "billing_period_closed_by_fkey")
+    )
     private AppUser closedBy;
 }

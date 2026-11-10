@@ -384,5 +384,40 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(InvalidBillingPeriodDateRangeException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidBillingPeriodDateRange(
+            InvalidBillingPeriodDateRangeException ex
+    ) {
+        return ResponseEntity.badRequest().body(
+                new ApiErrorResponse(
+                        false,
+                        "VALIDATION_ERROR",
+                        "Dữ liệu không hợp lệ",
+                        Map.of(
+                                "endDate",
+                                "Ngày kết thúc không được sớm hơn ngày bắt đầu"
+                        )
+                )
+        );
+    }
 
+    @ExceptionHandler(BillingPeriodOverlapException.class)
+    public ResponseEntity<ApiErrorResponse> handleBillingPeriodOverlap(
+            BillingPeriodOverlapException ex
+    ) {
+        return ResponseEntity.unprocessableEntity().body(
+                new ApiErrorResponse(
+                        false,
+                        "PERIOD_OVERLAP",
+                        ex.getMessage(),
+                        Map.of(
+                                "overlapping",
+                                Map.of(
+                                        "id", ex.getOverlappingId(),
+                                        "code", ex.getOverlappingCode()
+                                )
+                        )
+                )
+        );
+    }
 }
