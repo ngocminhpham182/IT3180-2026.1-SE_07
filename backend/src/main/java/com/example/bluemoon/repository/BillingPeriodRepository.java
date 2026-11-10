@@ -1,10 +1,11 @@
 package com.example.bluemoon.repository;
 
 import com.example.bluemoon.model.BillingPeriod;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import jakarta.persistence.LockModeType;
+import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public interface BillingPeriodRepository
@@ -12,6 +13,7 @@ public interface BillingPeriodRepository
         JpaSpecificationExecutor<BillingPeriod> {
 
     boolean existsByCode(String code);
+    boolean existsByCodeAndIdNot(String code, Long id);
 
     // Giữ lại method kiểm tra overlap đã dùng ở API POST
     Optional<BillingPeriod>
@@ -22,4 +24,25 @@ public interface BillingPeriodRepository
 
     @EntityGraph(attributePaths = {"generatedBy", "closedBy"})
     Optional<BillingPeriod> findWithUsersById(Long id);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("""
+    SELECT bp
+    FROM BillingPeriod bp
+    WHERE bp.id = :id
+    """)
+    Optional<BillingPeriod> findByIdForUpdate(@Param("id") Long id);
+
+    @Query("""
+        SELECT bp
+        FROM BillingPeriod bp
+        WHERE bp.id <> :id
+          AND bp.startDate <= :endDate
+          AND bp.endDate >= :startDate
+        """)
+    Optional<BillingPeriod> findOverlappingPeriod(
+            @Param("id") Long id,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate
+    );
 }

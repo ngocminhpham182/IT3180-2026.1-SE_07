@@ -1,18 +1,18 @@
 package com.example.bluemoon.controller;
 
-import com.example.bluemoon.dto.BillingPeriodDetailResponse;
-import com.example.bluemoon.dto.PageResponse;
+import com.example.bluemoon.dto.*;
+import com.example.bluemoon.model.AppUser;
 import com.example.bluemoon.model.enums.BillingPeriodStatus;
 import com.example.bluemoon.response.ApiResponse;
-import com.example.bluemoon.dto.BillingPeriodRequest;
-import com.example.bluemoon.dto.BillingPeriodResponse;
 import com.example.bluemoon.service.BillingPeriodService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -69,6 +69,39 @@ public class BillingPeriodController {
 
         return ResponseEntity.ok(
                 ApiResponse.success("Lấy chi tiết kỳ thu thành công", response)
+        );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<BillingPeriodResponse>> update(
+            @PathVariable Long id,
+            @Valid @RequestBody BillingPeriodRequest request
+    ) {
+        BillingPeriodResponse response =
+                billingPeriodService.update(id, request);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("Cập nhật kỳ thu thành công", response)
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        billingPeriodService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ApiResponse<BillingPeriodResponse>> updateStatus(
+            @PathVariable @Positive Long id,
+            @Valid @RequestBody BillingPeriodStatusRequest request,
+            @AuthenticationPrincipal AppUser currentUser
+    ) {
+        BillingPeriodResponse response =
+                billingPeriodService.updateStatus(id, request, currentUser);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("Cập nhật trạng thái kỳ thu thành công", response)
         );
     }
 }

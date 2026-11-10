@@ -114,6 +114,19 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/billing-periods", "/billing-periods/**")
                         .hasAnyRole("ACCOUNTANT", "BQT")
 
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/billing-periods/*/generate"
+                        ).hasAnyRole("ACCOUNTANT", "BQT")
+
+                        .requestMatchers(HttpMethod.PUT, "/billing-periods/*")
+                        .hasAnyRole("ACCOUNTANT", "BQT")
+                        .requestMatchers(HttpMethod.DELETE, "/billing-periods/*")
+                        .hasAnyRole("ACCOUNTANT", "BQT")
+
+                        .requestMatchers(HttpMethod.PATCH, "/billing-periods/*/status")
+                        .hasRole("BQT")
+
                         .anyRequest().authenticated()
                 )
 

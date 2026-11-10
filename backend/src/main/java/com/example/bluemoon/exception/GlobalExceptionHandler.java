@@ -420,4 +420,56 @@ public class GlobalExceptionHandler {
                 )
         );
     }
+
+    @ExceptionHandler(BillingPeriodClosedException.class)
+    public ResponseEntity<ApiErrorResponse> handlePeriodClosed(
+            BillingPeriodClosedException ex) {
+        return ResponseEntity.unprocessableEntity().body(
+                new ApiErrorResponse(false, "PERIOD_CLOSED",
+                        ex.getMessage(), null)
+        );
+    }
+
+    @ExceptionHandler(BillingPeriodAlreadyGeneratedException.class)
+    public ResponseEntity<ApiErrorResponse> handleAlreadyGenerated(
+            BillingPeriodAlreadyGeneratedException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                new ApiErrorResponse(false, "ALREADY_GENERATED",
+                        ex.getMessage(),
+                        Map.of("generatedAt", ex.getGeneratedAt()))
+        );
+    }
+
+    @ExceptionHandler(NoActiveFeeException.class)
+    public ResponseEntity<ApiErrorResponse> handleNoActiveFee(
+            NoActiveFeeException ex) {
+        return ResponseEntity.unprocessableEntity().body(
+                new ApiErrorResponse(false, "NO_ACTIVE_FEE",
+                        ex.getMessage(), null)
+        );
+    }
+
+    @ExceptionHandler(NothingToGenerateException.class)
+    public ResponseEntity<ApiErrorResponse> handleNothingToGenerate(
+            NothingToGenerateException ex) {
+        return ResponseEntity.unprocessableEntity().body(
+                new ApiErrorResponse(false, "NOTHING_TO_GENERATE",
+                        ex.getMessage(),
+                        Map.of("skipped", ex.getSkipped()))
+        );
+    }
+
+    @ExceptionHandler(PeriodNotGeneratedException.class)
+    public ResponseEntity<ApiErrorResponse> handlePeriodNotGenerated(
+            PeriodNotGeneratedException ex
+    ) {
+        return ResponseEntity.unprocessableEntity().body(
+                new ApiErrorResponse(
+                        false,
+                        "PERIOD_NOT_GENERATED",
+                        ex.getMessage(),
+                        null
+                )
+        );
+    }
 }

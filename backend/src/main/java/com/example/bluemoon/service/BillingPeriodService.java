@@ -1,10 +1,8 @@
 package com.example.bluemoon.service;
 
 import com.example.bluemoon.dto.*;
-import com.example.bluemoon.exception.BillingPeriodOverlapException;
-import com.example.bluemoon.exception.DuplicateException;
-import com.example.bluemoon.exception.InvalidBillingPeriodDateRangeException;
-import com.example.bluemoon.exception.ResourceNotFoundException;
+import com.example.bluemoon.exception.*;
+import com.example.bluemoon.model.AppUser;
 import com.example.bluemoon.model.BillingPeriod;
 import com.example.bluemoon.model.enums.BillingPeriodStatus;
 import com.example.bluemoon.repository.BillingPeriodRepository;
@@ -17,6 +15,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -183,5 +182,110 @@ public class BillingPeriodService {
                         .orElse(BillingPeriodSummaryResponse.empty());
 
         return BillingPeriodDetailResponse.from(period, summary);
+    }
+
+    @Transactional
+    public BillingPeriodResponse update(Long id, BillingPeriodRequest request) {
+        BillingPeriod period = billingPeriodRepository.findByIdForUpdate(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Không tìm thấy kỳ thu"));
+
+        // Không cho sửa kỳ đã lập danh sách
+        if (period.getGeneratedAt() != null) {
+            throw new BillingPeriodAlreadyGeneratedException(
+                    period.getGeneratedAt()
+            );
+        }
+
+
+        validateDateRange(request.startDate(), request.endDate());
+
+        // Kiểm tra trùng mã, loại trừ chính kỳ đang sửa
+        if (billingPeriodRepository.existsByCodeAndIdNot(request.code(), id)) {
+            throw new DuplicateException(
+                    "code",
+                    "Mã kỳ thu đã tồn tại"
+            );
+        }
+
+        // Kiểm tra khoảng thời gian chồng lấn, loại trừ chính kỳ đang sửa
+        billingPeriodRepository.findOverlappingPeriod(
+                id,
+                request.startDate(),
+                request.endDate()
+        ).ifPresent(overlapping -> {
+            throw new BillingPeriodOverlapException(
+                    overlapping.getId(),
+                    overlapping.getCode()
+            );
+        });
+
+        period.setCode(request.code());
+        period.setName(request.name());
+        period.setStartDate(request.startDate());
+        period.setEndDate(request.endDate());
+
+        // Không thay đổi status, generatedAt, generatedBy, closedAt, closedBy.
+        // Entity đang managed nên không bắt buộc gọi save().
+        return BillingPeriodResponse.from(period);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        BillingPeriod period = billingPeriodRepository.findByIdForUpdate(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Không tìm thấy kỳ thu"));
+
+        if (period.getGeneratedAt() != null) {
+            throw new BillingPeriodAlreadyGeneratedException(
+                    period.getGeneratedAt()
+            );
+        }
+
+        billingPeriodRepository.delete(period);
+    }
+
+    private void validateDateRange(LocalDate startDate, LocalDate endDate) {
+        if (endDate.isBefore(startDate)) {
+            throw new InvalidBillingPeriodDateRangeException();
+        }
+    }
+
+    @Transactional
+    public BillingPeriodResponse updateStatus(
+            Long id,
+            BillingPeriodStatusRequest request,
+            AppUser currentUser
+    ) {
+        BillingPeriod period = billingPeriodRepository.findByIdForUpdate(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Không tìm thấy kỳ thu"));
+
+        BillingPeriodStatus newStatus = request.status();
+
+        // Đã đúng trạng thái hiện tại: không thay đổi gì
+        if (period.getStatus() == newStatus) {
+            return BillingPeriodResponse.from(period);
+        }
+
+        if (newStatus == BillingPeriodStatus.CLOSED) {
+
+            // Chỉ đóng kỳ đã lập danh sách
+            if (period.getGeneratedAt() == null) {
+                throw new PeriodNotGeneratedException();
+            }
+
+            period.setStatus(BillingPeriodStatus.CLOSED);
+            period.setClosedAt(Instant.now());
+            period.setClosedBy(currentUser);
+
+        } else if (newStatus == BillingPeriodStatus.OPEN) {
+
+            period.setStatus(BillingPeriodStatus.OPEN);
+            period.setClosedAt(null);
+            period.setClosedBy(null);
+        }
+
+        return BillingPeriodResponse.from(period);
     }
 }
