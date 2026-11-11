@@ -86,10 +86,6 @@ export default function Layout() {
         </nav>
         <div className="sidebar-spacer" />
         <div className="sidebar-bottom">
-          <div className="sidebar-note">
-            <KeyRound size={17} />
-            <span>Sử dụng tài khoản đúng quyền được cấp.</span>
-          </div>
           <button onClick={logout} className="nav-item signout">
             <DoorOpen size={19} /> Đăng xuất
           </button>

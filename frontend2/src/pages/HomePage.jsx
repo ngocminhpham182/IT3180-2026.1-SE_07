@@ -69,16 +69,7 @@ export default function HomePage() {
   ];
   return (
     <>
-      <PageHeader
-        eyebrow="TỔNG QUAN"
-        title={`Xin chào, ${user?.fullName || user?.username}!`}
-        description="Chọn chức năng phù hợp với vai trò của bạn để bắt đầu làm việc."
-      />
-      <div className="hero-strip">
-        <span>BLUE MOON · SPRINT 1</span>
-        <h2>Mọi thông tin cần thiết, trong một giao diện thống nhất.</h2>
-        <p>Tra cứu thông tin cư dân và cập nhật hồ sơ theo quyền được cấp.</p>
-      </div>
+      <PageHeader title={`Xin chào, ${user?.fullName || user?.username}!`} />
       <Panel title="Truy cập nhanh">
         <div className="quick-grid">
           {links.map(({ to, title, desc, icon: Icon }) => (
