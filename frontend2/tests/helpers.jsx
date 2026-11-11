@@ -71,6 +71,14 @@ export function server(handler = () => undefined, user = account) {
     const custom = await handler(path, options.method, body, new URL(url));
     if (custom) return custom;
     if (path === "/me") return ok(user);
+    if (path === "/me/household")
+      return ok({
+        household: house,
+        residents: [resident],
+        myResidentId: resident.id,
+        pendingRequests: [],
+      });
+    if (path === "/resident-requests") return ok(page([]));
     if (path === "/roles") return ok(roles);
     if (path === "/households") return ok(page([house]));
     if (path === "/households/1") return ok(house);

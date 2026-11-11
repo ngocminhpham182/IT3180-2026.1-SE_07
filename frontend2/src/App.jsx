@@ -14,6 +14,9 @@ import SearchPage from "./pages/SearchPage";
 import FeesPage from "./pages/FeesPage";
 import PeriodsPage from "./pages/PeriodsPage";
 import PeriodDetailPage from "./pages/PeriodDetailPage";
+import MyHouseholdPage from "./pages/MyHouseholdPage";
+import ResidentRequestsPage from "./pages/ResidentRequestsPage";
+import ResidentRequestDetailPage from "./pages/ResidentRequestDetailPage";
 function Protected({ roles, children }) {
   const { token, user, loading } = useAuth();
   const location = useLocation();
@@ -54,6 +57,46 @@ export default function App() {
       >
         <Route index element={<HomePage />} />
         <Route path="ho-so" element={<ProfilePage />} />
+        <Route
+          path="ho-cua-toi"
+          element={
+            <Protected roles={["RESIDENT"]}>
+              <MyHouseholdPage />
+            </Protected>
+          }
+        />
+        <Route
+          path="de-nghi"
+          element={
+            <Protected roles={["RESIDENT"]}>
+              <ResidentRequestsPage key="mine" />
+            </Protected>
+          }
+        />
+        <Route
+          path="de-nghi/:id"
+          element={
+            <Protected roles={["RESIDENT"]}>
+              <ResidentRequestDetailPage key="mine-detail" />
+            </Protected>
+          }
+        />
+        <Route
+          path="duyet-de-nghi"
+          element={
+            <Protected roles={["BQT"]}>
+              <ResidentRequestsPage key="management" management />
+            </Protected>
+          }
+        />
+        <Route
+          path="duyet-de-nghi/:id"
+          element={
+            <Protected roles={["BQT"]}>
+              <ResidentRequestDetailPage key="management-detail" management />
+            </Protected>
+          }
+        />
         <Route
           path="tim-kiem"
           element={

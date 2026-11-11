@@ -15,7 +15,11 @@ for (const role of ["BQT", "ACCOUNTANT", "RESIDENT", "AUTHORITY"])
     );
     assert.equal(
       homeForRoles([role]),
-      ["BQT", "ACCOUNTANT"].includes(role) ? "/ho-gia-dinh" : "/ho-so",
+      ["BQT", "ACCOUNTANT"].includes(role)
+        ? "/ho-gia-dinh"
+        : role === "RESIDENT"
+          ? "/ho-cua-toi"
+          : "/ho-so",
     );
   });
 test("self-lockout, invalid roles and missing resident link are rejected", () => {

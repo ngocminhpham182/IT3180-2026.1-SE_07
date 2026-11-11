@@ -16,6 +16,32 @@ export default function HomePage() {
   const { user, hasRole } = useAuth();
   const managed = hasRole("BQT") || hasRole("ACCOUNTANT");
   const links = [
+    ...(hasRole("RESIDENT")
+      ? [
+          {
+            to: "/ho-cua-toi",
+            title: "Hộ của tôi",
+            desc: "Xem thành viên, đề nghị sửa thông tin và khai báo cư trú.",
+            icon: Building2,
+          },
+          {
+            to: "/de-nghi",
+            title: "Đề nghị của tôi",
+            desc: "Theo dõi kết quả duyệt và rút lại đề nghị đang chờ.",
+            icon: Receipt,
+          },
+        ]
+      : []),
+    ...(hasRole("BQT")
+      ? [
+          {
+            to: "/duyet-de-nghi",
+            title: "Duyệt đề nghị",
+            desc: "Xét duyệt chỉnh sửa thông tin, tạm vắng và tạm trú.",
+            icon: ShieldCheck,
+          },
+        ]
+      : []),
     ...(managed
       ? [
           {

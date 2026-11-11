@@ -110,7 +110,7 @@ it("US09 AC3 resident cannot open BQT routes or fetch users", async () => {
   );
 });
 it.each(["RESIDENT", "AUTHORITY"])(
-  "US08 routes %s to own profile",
+  "US08 routes %s to the role-specific home",
   async (role) => {
     const user = { ...account, roles: [role] };
     server(
@@ -122,7 +122,9 @@ it.each(["RESIDENT", "AUTHORITY"])(
     );
     app("/dang-nhap", false);
     login();
-    await screen.findByRole("heading", { name: "Hồ sơ cá nhân" });
+    await screen.findByRole("heading", {
+      name: role === "RESIDENT" ? "Hộ của tôi" : "Hồ sơ cá nhân",
+    });
     expect(
       screen.queryByRole("link", { name: "Hộ gia đình" }),
     ).not.toBeInTheDocument();

@@ -1,5 +1,11 @@
-import React, { useState } from "react";
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import {
   Building2,
   DoorOpen,
@@ -17,13 +23,59 @@ import {
 } from "lucide-react";
 import { useAuth } from "../auth/AuthContext";
 import { firstRoleName } from "../utils/format";
+import { requestApi } from "../api/services";
 export default function Layout() {
   const { user, signOut, hasRole } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [pendingCount, setPendingCount] = useState(null);
+  const isManager = hasRole("BQT");
+  useEffect(() => {
+    if (!isManager) {
+      setPendingCount(null);
+      return;
+    }
+    let controller;
+    const refresh = () => {
+      controller?.abort();
+      const current = new AbortController();
+      controller = current;
+      requestApi
+        .list({ status: "PENDING", size: 1 }, { signal: current.signal })
+        .then((result) => {
+          if (!current.signal.aborted) setPendingCount(result.totalElements);
+        })
+        .catch(() => {
+          if (!current.signal.aborted) setPendingCount(null);
+        });
+    };
+    refresh();
+    window.addEventListener("bluemoon:requests-changed", refresh);
+    return () => {
+      controller?.abort();
+      window.removeEventListener("bluemoon:requests-changed", refresh);
+    };
+  }, [isManager, user?.id, location.pathname]);
   const managed = hasRole("BQT") || hasRole("ACCOUNTANT");
   const items = [
     { to: "/", label: "Trang chủ", icon: LayoutDashboard },
+    ...(hasRole("RESIDENT")
+      ? [
+          { to: "/ho-cua-toi", label: "Hộ của tôi", icon: House },
+          { to: "/de-nghi", label: "Đề nghị của tôi", icon: Receipt },
+        ]
+      : []),
+    ...(isManager
+      ? [
+          {
+            to: "/duyet-de-nghi",
+            label: "Duyệt đề nghị",
+            icon: ShieldCheck,
+            count: pendingCount,
+          },
+        ]
+      : []),
     ...(managed
       ? [
           { to: "/ho-gia-dinh", label: "Hộ gia đình", icon: Building2 },
@@ -69,7 +121,7 @@ export default function Layout() {
         </div>
         <div className="side-group-label">KHÔNG GIAN LÀM VIỆC</div>
         <nav aria-label="Điều hướng chính">
-          {items.map(({ to, label, icon: Icon }) => (
+          {items.map(({ to, label, icon: Icon, count }) => (
             <NavLink
               key={to}
               to={to}
@@ -81,6 +133,14 @@ export default function Layout() {
             >
               <Icon size={19} />
               <span>{label}</span>
+              {count != null && (
+                <span
+                  className="badge badge-amber"
+                  aria-label={`${count} đề nghị chờ duyệt`}
+                >
+                  {count}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>
