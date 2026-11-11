@@ -8,6 +8,7 @@ import lombok.Getter;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 @Getter
 @AllArgsConstructor
@@ -38,5 +39,14 @@ public class ResidentInHouseholdResponse {
 
     public ResidencyStatus getResidencyStatus() {
         return residencyStatus;
+    }
+
+    public boolean isStatusExpired() {
+        if ((residencyStatus == ResidencyStatus.TEMPORARILY_ABSENT
+                || residencyStatus == ResidencyStatus.TEMPORARY_RESIDENCE)
+                && statusUntil != null) {
+            return statusUntil.isBefore(LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh")));
+        }
+        return false;
     }
 }

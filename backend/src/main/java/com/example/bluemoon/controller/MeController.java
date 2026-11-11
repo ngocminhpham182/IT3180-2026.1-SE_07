@@ -1,14 +1,18 @@
 package com.example.bluemoon.controller;
 
 import com.example.bluemoon.dto.ChangePasswordRequest;
+import com.example.bluemoon.dto.MyHouseholdResponse;
 import com.example.bluemoon.dto.UpdateProfileRequest;
 import com.example.bluemoon.dto.UserResponse;
+import com.example.bluemoon.model.AppUser;
 import com.example.bluemoon.response.ApiResponse;
 import com.example.bluemoon.service.MeService;
+import com.example.bluemoon.service.ResidentRequestService;
 import com.example.bluemoon.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
@@ -18,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 public class MeController {
 
     private final UserService userService;
+    private final MeService meService;
+    private final ResidentRequestService residentRequestService;
 
     @GetMapping
     public ResponseEntity<ApiResponse<UserResponse>> getMe() {
@@ -29,7 +35,15 @@ public class MeController {
         );
     }
 
-    private final MeService meService;
+    @GetMapping("/household")
+    public ResponseEntity<ApiResponse<MyHouseholdResponse>> getMyHousehold(
+            @AuthenticationPrincipal AppUser currentUser
+    ) {
+        MyHouseholdResponse response = residentRequestService.getMyHousehold(currentUser);
+        return ResponseEntity.ok(
+                ApiResponse.success("OK", response)
+        );
+    }
 
     @PutMapping
     public ResponseEntity<ApiResponse<UserResponse>> updateProfile(

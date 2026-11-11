@@ -130,6 +130,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/billing-periods/*/status")
                         .hasRole("BQT")
 
+                        .requestMatchers(HttpMethod.POST, "/residents/**").hasRole("BQT")
+
+                        // US-05, US-06
+                        .requestMatchers(HttpMethod.GET, "/me/household").hasRole("RESIDENT")
+                        .requestMatchers("/me/resident-requests", "/me/resident-requests/**").hasRole("RESIDENT")
+                        .requestMatchers("/resident-requests", "/resident-requests/**").hasRole("BQT")
+
                         .anyRequest().authenticated()
                 )
 

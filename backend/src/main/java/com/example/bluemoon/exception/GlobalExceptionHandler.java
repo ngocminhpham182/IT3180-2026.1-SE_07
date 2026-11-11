@@ -472,4 +472,56 @@ public class GlobalExceptionHandler {
                 )
         );
     }
+
+    @ExceptionHandler(ResidentNotInHouseholdException.class)
+    public ResponseEntity<?> handleResidentNotInHousehold(ResidentNotInHouseholdException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
+                "success", false,
+                "code", "RESIDENT_NOT_IN_HOUSEHOLD",
+                "message", ex.getMessage() != null ? ex.getMessage() : "Nhân khẩu không thuộc hộ gia đình của bạn"
+        ));
+    }
+
+    @ExceptionHandler(PendingRequestExistsException.class)
+    public ResponseEntity<?> handlePendingRequestExists(PendingRequestExistsException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", false);
+        body.put("code", "PENDING_REQUEST_EXISTS");
+        body.put("message", ex.getMessage());
+        if (ex.getRequestId() != null) {
+            body.put("details", Map.of("requestId", ex.getRequestId()));
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
+    @ExceptionHandler(RequestNotPendingException.class)
+    public ResponseEntity<?> handleRequestNotPending(RequestNotPendingException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", false);
+        body.put("code", "REQUEST_NOT_PENDING");
+        body.put("message", ex.getMessage());
+        if (ex.getStatus() != null) {
+            body.put("details", Map.of("status", ex.getStatus().name()));
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
+    @ExceptionHandler(RequestOutdatedException.class)
+    public ResponseEntity<?> handleRequestOutdated(RequestOutdatedException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", false);
+        body.put("code", "REQUEST_OUTDATED");
+        body.put("message", ex.getMessage());
+        body.put("details", Map.of("fields", ex.getFields() != null ? ex.getFields() : java.util.List.of()));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
+    @ExceptionHandler(NoChangesException.class)
+    public ResponseEntity<?> handleNoChanges(NoChangesException ex) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(Map.of(
+                "success", false,
+                "code", "NO_CHANGES",
+                "message", ex.getMessage()
+        ));
+    }
 }

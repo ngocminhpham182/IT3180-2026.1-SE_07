@@ -11,7 +11,7 @@ public class BluemoonApplication {
 		SpringApplication.run(BluemoonApplication.class, args);
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-		System.out.println("password:" + encoder.encode("123456"));
+		System.out.println("password:" + encoder.encode("oldPassword"));
 	}
 
 }
