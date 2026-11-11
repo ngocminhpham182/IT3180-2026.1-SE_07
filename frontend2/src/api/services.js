@@ -1,4 +1,20 @@
 import { api } from "./http";
+export const meApi = {
+  household: (opts) => api.get("/me/household", undefined, opts),
+  requests: (params, opts) => api.get("/me/resident-requests", params, opts),
+  request: (id, opts) =>
+    api.get(`/me/resident-requests/${id}`, undefined, opts),
+  submit: (data) => api.post("/me/resident-requests", data),
+  cancel: (id) => api.post(`/me/resident-requests/${id}/cancel`),
+};
+export const requestApi = {
+  list: (params, opts) => api.get("/resident-requests", params, opts),
+  get: (id, opts) => api.get(`/resident-requests/${id}`, undefined, opts),
+  approve: (id, note) =>
+    api.post(`/resident-requests/${id}/approve`, note ? { note } : {}),
+  reject: (id, reason) =>
+    api.post(`/resident-requests/${id}/reject`, { reason }),
+};
 // Các API cũ và bổ sung US-03/04/12/13/14 theo API Contract Sprint 1 v5.
 export const authApi = {
   login: (data) => api.post("/auth/login", data, { skipAuth: true }),

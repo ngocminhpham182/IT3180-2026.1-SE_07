@@ -157,6 +157,7 @@ test("supplement: search, movement, fees and billing work at desktop/mobile size
         ]),
         summary: { totalDue: 420000 },
       };
+    else if (p === "/resident-requests") data = paged([]);
     else throw Error("Unhandled request " + p);
     await route.fulfill({ json: { success: true, data } });
   });

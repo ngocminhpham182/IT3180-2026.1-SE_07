@@ -1485,3 +1485,22 @@ td > a:not(.table-link):hover {
     transition: none !important;
   }
 }
+/* Resident requests: reuse the existing panels, tables and responsive forms. */
+.request-fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.request-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.request-changed {
+  background: #fffbeb;
+}
+.request-changed td {
+  font-weight: 600;
+}

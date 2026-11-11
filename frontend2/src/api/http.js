@@ -3,6 +3,12 @@ const BASE_URL = (import.meta.env?.VITE_API_BASE_URL || "/api/v1").replace(
   "",
 );
 const messages = {
+  PENDING_REQUEST_EXISTS: "Đã có đề nghị đang chờ duyệt.",
+  REQUEST_NOT_PENDING:
+    "Đề nghị này đã được xử lý. Vui lòng xem trạng thái mới nhất.",
+  REQUEST_OUTDATED: "Thông tin đã thay đổi kể từ khi cư dân gửi.",
+  NO_CHANGES: "Chưa có thay đổi nào so với thông tin hiện tại.",
+  RESIDENT_NOT_IN_HOUSEHOLD: "Nhân khẩu không thuộc hộ của bạn.",
   INVALID_CREDENTIALS: "Sai tài khoản hoặc mật khẩu",
   ACCOUNT_LOCKED: "Tài khoản đang bị khóa tạm thời. Vui lòng thử lại sau.",
   TOKEN_EXPIRED: "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
