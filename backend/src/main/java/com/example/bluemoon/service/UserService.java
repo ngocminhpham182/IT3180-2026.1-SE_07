@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.bluemoon.dto.UpdateUserRolesRequest;
 import com.example.bluemoon.exception.SelfLockoutException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.example.bluemoon.dto.UpdateUserStatusRequest;
 import com.example.bluemoon.dto.PasswordResetResponse;
@@ -437,10 +438,20 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponse getMe() {
 
-        String username = SecurityContextHolder
+        Authentication authentication = SecurityContextHolder
                 .getContext()
-                .getAuthentication()
-                .getName();
+                .getAuthentication();
+
+        if (authentication == null) {
+            throw new ResourceNotFoundException(
+                    "Không tìm thấy tài khoản"
+            );
+        }
+
+        Object principal = authentication.getPrincipal();
+        String username = (principal instanceof AppUser appUser)
+                ? appUser.getUsername()
+                : authentication.getName();
 
         AppUser user = userRepository
                 .findByUsernameIgnoreCase(username)

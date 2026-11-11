@@ -8,10 +8,10 @@ import com.example.bluemoon.exception.PasswordValidationException;
 import com.example.bluemoon.exception.ResourceNotFoundException;
 import com.example.bluemoon.model.AppRole;
 import com.example.bluemoon.model.AppUser;
-import com.example.bluemoon.model.Resident;
 import com.example.bluemoon.repository.AppUserRepository;
 import com.example.bluemoon.repository.ResidentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,18 +31,7 @@ public class MeService {
     @Transactional
     public UserResponse updateProfile(UpdateProfileRequest request) {
 
-        String username = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
-
-        AppUser user = userRepository
-                .findByUsernameIgnoreCase(username)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Không tìm thấy tài khoản"
-                        )
-                );
+        AppUser user = getCurrentUser();
 
         // Chuẩn hóa email: null hoặc "" -> null
         String email = normalize(request.email());
@@ -112,18 +101,7 @@ public class MeService {
     @Transactional
     public void changePassword(ChangePasswordRequest request) {
 
-        String username = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
-
-        AppUser user = userRepository
-                .findByUsernameIgnoreCase(username)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Không tìm thấy tài khoản"
-                        )
-                );
+        AppUser user = getCurrentUser();
 
         // 1. Kiểm tra mật khẩu cũ
         if (!passwordEncoder.matches(
@@ -178,5 +156,30 @@ public class MeService {
         user.setPasswordChangedAt(Instant.now());
 
         userRepository.save(user);
+    }
+
+    private AppUser getCurrentUser() {
+        Authentication authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        if (authentication == null) {
+            throw new ResourceNotFoundException(
+                    "Không tìm thấy tài khoản"
+            );
+        }
+
+        Object principal = authentication.getPrincipal();
+        String username = (principal instanceof AppUser appUser)
+                ? appUser.getUsername()
+                : authentication.getName();
+
+        return userRepository
+                .findByUsernameIgnoreCase(username)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Không tìm thấy tài khoản"
+                        )
+                );
     }
 }
