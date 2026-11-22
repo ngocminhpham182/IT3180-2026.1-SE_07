@@ -73,7 +73,7 @@ public class ResidentService {
 
         LocalDate entryDate = request.entryDate() != null
                 ? request.entryDate()
-                : LocalDate.now();
+                : LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
 
         // 6. Tạo nhân khẩu
         Resident resident = new Resident();

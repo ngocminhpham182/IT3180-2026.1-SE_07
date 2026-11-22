@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -112,7 +113,7 @@ public class HouseholdService {
         householdRepository.saveAndFlush(household);
 
         // 5. Tạo chủ hộ
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
 
         Resident head = Resident.builder()
                 .household(household)

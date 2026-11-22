@@ -11,11 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @CrossOrigin
+@Validated
 @RestController
 @RequestMapping("/households")
 @RequiredArgsConstructor
@@ -24,7 +24,7 @@ public class HouseholdController {
     private final HouseholdService householdService;
 
     @PostMapping
-    public ResponseEntity<?> createHousehold(
+    public ResponseEntity<ApiResponse<HouseholdResponse>> createHousehold(
             @Valid @RequestBody CreateHouseholdRequest request,
             @AuthenticationPrincipal AppUser currentUser
     ) {
@@ -32,16 +32,12 @@ public class HouseholdController {
                 householdService.createHousehold(request, currentUser);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                Map.of(
-                        "success", true,
-                        "message", "Tạo hộ gia đình thành công",
-                        "data", response
-                )
+                ApiResponse.success("Tạo hộ gia đình thành công", response)
         );
     }
 
     @GetMapping
-    public ResponseEntity<?> getHouseholds(
+    public ResponseEntity<ApiResponse<PageResponse>> getHouseholds(
             @RequestParam(required = false) String keyword,
 
             @RequestParam(defaultValue = "ALL")
@@ -57,27 +53,19 @@ public class HouseholdController {
                 householdService.getHouseholds(keyword, status, page, size);
 
         return ResponseEntity.ok(
-                Map.of(
-                        "success", true,
-                        "message", "Lấy danh sách hộ gia đình thành công",
-                        "data", response
-                )
+                ApiResponse.success("Lấy danh sách hộ gia đình thành công", response)
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getHouseholdById(
+    public ResponseEntity<ApiResponse<HouseholdDetailResponse>> getHouseholdById(
             @PathVariable Long id
     ) {
         HouseholdDetailResponse response =
                 householdService.getHouseholdById(id);
 
         return ResponseEntity.ok(
-                Map.of(
-                        "success", true,
-                        "message", "Lấy thông tin hộ gia đình thành công",
-                        "data", response
-                )
+                ApiResponse.success("Lấy thông tin hộ gia đình thành công", response)
         );
     }
 

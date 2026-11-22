@@ -74,7 +74,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 3. Kiểm tra thời điểm đổi mật khẩu
         if (user.getPasswordChangedAt() != null
-                && tokenIssuedAt.isBefore(user.getPasswordChangedAt())) {
+                && tokenIssuedAt.getEpochSecond() < user.getPasswordChangedAt().getEpochSecond()) {
 
             writeUnauthorized(response, "Token không còn hợp lệ");
             return;

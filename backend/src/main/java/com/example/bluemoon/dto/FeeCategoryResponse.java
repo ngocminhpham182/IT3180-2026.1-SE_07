@@ -18,6 +18,7 @@ public record FeeCategoryResponse(
         BillingCycle billingCycle,
         Integer dueDay,
         boolean active,
+        boolean inUse,
         Instant createdAt,
         Instant updatedAt
 ) {}

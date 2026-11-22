@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record UpdateResidentRequest(
@@ -41,6 +42,6 @@ public record UpdateResidentRequest(
     public boolean isDateOfBirthInRange() {
         return dateOfBirth == null ||
                 (!dateOfBirth.isBefore(LocalDate.of(1900, 1, 1))
-                        && !dateOfBirth.isAfter(LocalDate.now()));
+                        && !dateOfBirth.isAfter(LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"))));
     }
 }

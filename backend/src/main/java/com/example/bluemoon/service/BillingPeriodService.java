@@ -200,8 +200,11 @@ public class BillingPeriodService {
 
         validateDateRange(request.startDate(), request.endDate());
 
+        String code = request.code().trim();
+        String name = request.name().trim();
+
         // Kiểm tra trùng mã, loại trừ chính kỳ đang sửa
-        if (billingPeriodRepository.existsByCodeAndIdNot(request.code(), id)) {
+        if (billingPeriodRepository.existsByCodeAndIdNot(code, id)) {
             throw new DuplicateException(
                     "code",
                     "Mã kỳ thu đã tồn tại"
@@ -220,8 +223,8 @@ public class BillingPeriodService {
             );
         });
 
-        period.setCode(request.code());
-        period.setName(request.name());
+        period.setCode(code);
+        period.setName(name);
         period.setStartDate(request.startDate());
         period.setEndDate(request.endDate());
 

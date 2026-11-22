@@ -16,6 +16,9 @@ public interface ReceivableRepository extends JpaRepository<Receivable, Long> {
 
     boolean existsByFeeCategory_Id(Long feeCategoryId);
 
+    @Query("SELECT DISTINCT r.feeCategory.id FROM Receivable r")
+    List<Long> findDistinctFeeCategoryIds();
+
     @Query("""
             SELECT new com.example.bluemoon.dto.BillingPeriodSummaryResponse(
                 COUNT(r.id),

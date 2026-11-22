@@ -42,12 +42,6 @@ public class AppUser {
     @Column(name = "is_active", nullable = false)
     private boolean active = true;
 
-    @Column(name = "failed_login_count", nullable = false)
-    private int failedLoginCount = 0;
-
-    @Column(name = "locked_until")
-    private Instant lockedUntil;
-
     @Column(name = "last_login_at")
     private Instant lastLoginAt;
 

@@ -16,10 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -164,7 +166,7 @@ public class FeeCategoryService {
 
         try {
             FeeCategory saved = feeCategoryRepository.save(feeCategory);
-            return toResponse(saved);
+            return toResponse(saved, false);
         } catch (DataIntegrityViolationException ex) {
             // Chống trường hợp hai request đồng thời tạo cùng một code
             throw new FeeCategoryDuplicateException(
@@ -173,7 +175,7 @@ public class FeeCategoryService {
         }
     }
 
-    private FeeCategoryResponse toResponse(FeeCategory feeCategory) {
+    private FeeCategoryResponse toResponse(FeeCategory feeCategory, boolean inUse) {
         return new FeeCategoryResponse(
                 feeCategory.getId(),
                 feeCategory.getCode(),
@@ -185,6 +187,7 @@ public class FeeCategoryService {
                 feeCategory.getBillingCycle(),
                 feeCategory.getDueDay(),
                 feeCategory.isActive(),
+                inUse,
                 feeCategory.getCreatedAt(),
                 feeCategory.getUpdatedAt()
         );
@@ -199,10 +202,12 @@ public class FeeCategoryService {
         String normalizedKeyword =
                 keyword == null ? "" : keyword.trim();
 
+        Set<Long> inUseIds = new HashSet<>(receivableRepository.findDistinctFeeCategoryIds());
+
         return feeCategoryRepository
                 .search(kind, active, normalizedKeyword)
                 .stream()
-                .map(this::toResponse)
+                .map(f -> toResponse(f, inUseIds.contains(f.getId())))
                 .toList();
     }
 
@@ -213,7 +218,8 @@ public class FeeCategoryService {
                         new ResourceNotFoundException("Không tìm thấy khoản thu")
                 );
 
-        return toResponse(feeCategory);
+        boolean inUse = receivableRepository.existsByFeeCategory_Id(id);
+        return toResponse(feeCategory, inUse);
     }
 
     @Transactional
@@ -226,84 +232,156 @@ public class FeeCategoryService {
                         new ResourceNotFoundException("Không tìm thấy khoản thu")
                 );
 
-        // Chuẩn hóa code giống POST
-        String normalizedCode = request.code() == null
-                ? null
-                : request.code().trim().toUpperCase();
+        Map<String, String> errors = new LinkedHashMap<>();
 
-        // Kiểm tra code trùng, kể cả khoản thu inactive.
-        if (normalizedCode != null
-                && feeCategoryRepository.existsByCodeIgnoreCaseAndIdNot(
-                normalizedCode, id
-        )) {
-            throw new DuplicateException("code", "Mã khoản thu đã tồn tại");
+        // Chuẩn hóa dữ liệu đầu vào
+        String code = request.code() == null ? "" : request.code().trim().toUpperCase();
+        String name = request.name() == null ? "" : request.name().trim();
+
+        if (name.isEmpty()) {
+            errors.put("name", "Tên khoản thu không được để trống");
+        }
+
+        if (request.description() != null
+                && request.description().length() > 1000) {
+            errors.put("description", "Mô tả tối đa 1000 ký tự");
+        }
+
+        if (!code.matches("[A-Z0-9_]{2,30}")) {
+            errors.put(
+                    "code",
+                    "Mã khoản thu chỉ được chứa chữ in hoa, chữ số và dấu gạch dưới"
+            );
+        }
+
+        FeeKind feeKind = request.feeKind();
+        CalculationMethod method = request.calculationMethod();
+
+        if (feeKind == null) {
+            errors.put("feeKind", "Loại khoản thu không được để trống");
+        }
+
+        if (method == null) {
+            errors.put("calculationMethod", "Phương thức tính không được để trống");
+        }
+
+        BigDecimal unitPrice = BigDecimal.ZERO;
+        BillingCycle billingCycle = BillingCycle.ONE_TIME;
+        Integer dueDay = null;
+
+        if (feeKind == FeeKind.MANDATORY) {
+            if (method != CalculationMethod.PER_AREA
+                    && method != CalculationMethod.FIXED) {
+                errors.put(
+                        "calculationMethod",
+                        "Khoản bắt buộc chỉ hỗ trợ PER_AREA hoặc FIXED"
+                );
+            }
+
+            if (request.unitPrice() == null
+                    || request.unitPrice().compareTo(BigDecimal.ZERO) <= 0) {
+                errors.put("unitPrice", "Đơn giá phải lớn hơn 0");
+            } else {
+                unitPrice = request.unitPrice();
+                if (unitPrice.compareTo(MAX_UNIT_PRICE) > 0) {
+                    errors.put("unitPrice", "Đơn giá tối đa là 1.000.000.000");
+                }
+                if (unitPrice.scale() > 2) {
+                    errors.put("unitPrice", "Đơn giá tối đa 2 chữ số thập phân");
+                }
+            }
+
+            if (request.billingCycle() == null) {
+                errors.put("billingCycle", "Chu kỳ thu không được để trống");
+            } else {
+                billingCycle = request.billingCycle();
+            }
+
+            if (request.dueDay() == null) {
+                errors.put("dueDay", "Hạn nộp không được để trống");
+            } else if (request.dueDay() < 1 || request.dueDay() > 28) {
+                errors.put("dueDay", "Hạn nộp phải từ 1 đến 28");
+            } else {
+                dueDay = request.dueDay();
+            }
+        } else if (feeKind == FeeKind.VOLUNTARY) {
+            if (method != CalculationMethod.MANUAL) {
+                errors.put(
+                        "calculationMethod",
+                        "Khoản tự nguyện phải sử dụng MANUAL"
+                );
+            }
+            unitPrice = BigDecimal.ZERO;
+            billingCycle = BillingCycle.ONE_TIME;
+            dueDay = null;
+        }
+
+        if (!errors.isEmpty()) {
+            throw new FeeCategoryValidationException(errors);
+        }
+
+        // Kiểm tra code trùng (khác id hiện tại)
+        if (feeCategoryRepository.existsByCodeIgnoreCaseAndIdNot(code, id)) {
+            throw new FeeCategoryDuplicateException("Mã khoản thu đã tồn tại");
         }
 
         // Kiểm tra khoản thu đã có công nợ hay chưa.
         boolean inUse = receivableRepository.existsByFeeCategory_Id(id);
 
         if (inUse) {
-            Map<String, String> errors = new LinkedHashMap<>();
+            Map<String, String> inUseErrors = new LinkedHashMap<>();
 
-            if (!Objects.equals(category.getCode(), normalizedCode)) {
-                errors.put(
+            if (!Objects.equals(category.getCode(), code)) {
+                inUseErrors.put(
                         "code",
                         "Không thể thay đổi mã khoản thu đã phát sinh công nợ"
                 );
             }
 
-            if (category.getFeeKind() != request.feeKind()) {
-                errors.put(
+            if (category.getFeeKind() != feeKind) {
+                inUseErrors.put(
                         "feeKind",
                         "Không thể thay đổi loại khoản thu đã phát sinh công nợ"
                 );
             }
 
-            if (category.getCalculationMethod() != request.calculationMethod()) {
-                errors.put(
+            if (category.getCalculationMethod() != method) {
+                inUseErrors.put(
                         "calculationMethod",
                         "Không thể thay đổi phương thức tính đã phát sinh công nợ"
                 );
             }
 
-            // VOLUNTARY luôn được backend chuẩn hóa thành ONE_TIME.
-            BillingCycle newBillingCycle =
-                    request.feeKind() == FeeKind.VOLUNTARY
-                            ? BillingCycle.ONE_TIME
-                            : request.billingCycle();
-
-            if (category.getBillingCycle() != newBillingCycle) {
-                errors.put(
+            if (category.getBillingCycle() != billingCycle) {
+                inUseErrors.put(
                         "billingCycle",
                         "Không thể thay đổi chu kỳ thu đã phát sinh công nợ"
                 );
             }
 
-            if (!errors.isEmpty()) {
-                throw new HasTransactionsException(errors);
+            if (!inUseErrors.isEmpty()) {
+                throw new HasTransactionsException(inUseErrors);
             }
         }
 
-        // Cập nhật các trường được phép.
-        category.setCode(normalizedCode);
-        category.setName(request.name().trim());
-        category.setDescription(request.description());
-        category.setFeeKind(request.feeKind());
-        category.setCalculationMethod(request.calculationMethod());
+        // Cập nhật các trường
+        category.setCode(code);
+        category.setName(name);
+        category.setDescription(
+                request.description() == null ? null : request.description().trim()
+        );
+        category.setFeeKind(feeKind);
+        category.setCalculationMethod(method);
+        category.setUnitPrice(unitPrice);
+        category.setBillingCycle(billingCycle);
+        category.setDueDay(dueDay);
 
-        if (request.feeKind() == FeeKind.MANDATORY) {
-            category.setUnitPrice(request.unitPrice());
-            category.setBillingCycle(request.billingCycle());
-            category.setDueDay(request.dueDay());
-        } else {
-            category.setUnitPrice(BigDecimal.ZERO);
-            category.setBillingCycle(BillingCycle.ONE_TIME);
-            category.setDueDay(null);
+        try {
+            FeeCategory saved = feeCategoryRepository.save(category);
+            return toResponse(saved, inUse);
+        } catch (DataIntegrityViolationException ex) {
+            throw new FeeCategoryDuplicateException("Mã khoản thu đã tồn tại");
         }
-
-        FeeCategory saved = feeCategoryRepository.save(category);
-
-        return toResponse(saved);
     }
 
     @Transactional
@@ -319,7 +397,8 @@ public class FeeCategoryService {
         category.setActive(request.active());
 
         FeeCategory saved = feeCategoryRepository.save(category);
+        boolean inUse = receivableRepository.existsByFeeCategory_Id(id);
 
-        return toResponse(saved);
+        return toResponse(saved, inUse);
     }
 }

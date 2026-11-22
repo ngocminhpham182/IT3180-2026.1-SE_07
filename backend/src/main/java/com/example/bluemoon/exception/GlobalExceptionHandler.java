@@ -1,7 +1,8 @@
 package com.example.bluemoon.exception;
 
 import com.example.bluemoon.response.ApiErrorResponse;
-import com.example.bluemoon.response.ApiResponse;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -10,80 +11,190 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<?> handleInvalidRequest(
+    public ResponseEntity<ApiErrorResponse> handleInvalidRequest(
             HttpMessageNotReadableException ex
     ) {
         return ResponseEntity.badRequest().body(
-                Map.of(
-                        "success", false,
-                        "code", "VALIDATION_ERROR",
-                        "message", "Dữ liệu gửi lên không hợp lệ"
+                new ApiErrorResponse(
+                        false,
+                        "VALIDATION_ERROR",
+                        "Dữ liệu gửi lên không hợp lệ"
                 )
         );
     }
 
     @ExceptionHandler(AppValidationException.class)
-    public ResponseEntity<?> handleAppValidation(AppValidationException ex) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("success", false);
-        body.put("code", "VALIDATION_ERROR");
-        body.put("message", ex.getMessage());
-        if (ex.getErrors() != null && !ex.getErrors().isEmpty()) {
-            body.put("errors", ex.getErrors());
-        }
-        return ResponseEntity.badRequest().body(body);
+    public ResponseEntity<ApiErrorResponse> handleAppValidation(AppValidationException ex) {
+        return ResponseEntity.badRequest().body(
+                new ApiErrorResponse(
+                        false,
+                        "VALIDATION_ERROR",
+                        ex.getMessage(),
+                        ex.getErrors(),
+                        null
+                )
+        );
     }
 
     @ExceptionHandler(DuplicateException.class)
-    public ResponseEntity<?> handleDuplicate(
+    public ResponseEntity<ApiErrorResponse> handleDuplicate(
             DuplicateException ex
     ) {
+        Map<String, String> errors = ex.getField() != null
+                ? Map.of(ex.getField(), ex.getMessage())
+                : Collections.emptyMap();
+
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(Map.of(
-                        "success", false,
-                        "code", "DUPLICATE",
-                        "message", "Dữ liệu đã tồn tại",
-                        "errors", Map.of(
-                                ex.getField(),
-                                ex.getMessage()
-                        )
-                ));
-    }
-
-    @ExceptionHandler(SelfLockoutException.class)
-    public ResponseEntity<?> handleSelfLockout(
-            SelfLockoutException ex
-    ) {
-        return ResponseEntity
-                .unprocessableEntity()
-                .body(Map.of(
-                        "success", false,
-                        "code", "SELF_LOCKOUT",
-                        "message", ex.getMessage()
+                .body(new ApiErrorResponse(
+                        false,
+                        "DUPLICATE",
+                        "Dữ liệu đã tồn tại",
+                        errors,
+                        null
                 ));
     }
 
     @ExceptionHandler(HouseholdDuplicateException.class)
-    public ResponseEntity<?> handleHouseholdDuplicate(
+    public ResponseEntity<ApiErrorResponse> handleHouseholdDuplicate(
             HouseholdDuplicateException ex
     ) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                Map.of(
-                        "success", false,
-                        "code", "DUPLICATE",
-                        "message", "Dữ liệu đã tồn tại",
-                        "errors", ex.getErrors()
+                new ApiErrorResponse(
+                        false,
+                        "DUPLICATE",
+                        "Dữ liệu đã tồn tại",
+                        ex.getErrors(),
+                        null
                 )
         );
+    }
+
+    @ExceptionHandler(FeeCategoryDuplicateException.class)
+    public ResponseEntity<ApiErrorResponse> handleFeeCategoryDuplicate(
+            FeeCategoryDuplicateException ex
+    ) {
+        Map<String, String> errors = Map.of("code", "Mã khoản thu đã tồn tại");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                new ApiErrorResponse(
+                        false,
+                        "DUPLICATE",
+                        ex.getMessage(),
+                        errors,
+                        Map.of("errors", errors)
+                )
+        );
+    }
+
+    @ExceptionHandler(FeeCategoryValidationException.class)
+    public ResponseEntity<ApiErrorResponse> handleFeeCategoryValidation(
+            FeeCategoryValidationException ex
+    ) {
+        return ResponseEntity.badRequest().body(
+                new ApiErrorResponse(
+                        false,
+                        "VALIDATION_ERROR",
+                        "Dữ liệu khoản thu không hợp lệ",
+                        ex.getErrors(),
+                        Map.of("errors", ex.getErrors())
+                )
+        );
+    }
+
+    @ExceptionHandler(PasswordValidationException.class)
+    public ResponseEntity<ApiErrorResponse> handlePasswordValidation(
+            PasswordValidationException ex
+    ) {
+        Map<String, String> errors = ex.getField() != null
+                ? Map.of(ex.getField(), ex.getMessage())
+                : Collections.emptyMap();
+
+        return ResponseEntity
+                .badRequest()
+                .body(new ApiErrorResponse(
+                        false,
+                        "VALIDATION_ERROR",
+                        "Dữ liệu không hợp lệ",
+                        errors,
+                        null
+                ));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiErrorResponse> handleValidationException(
+            MethodArgumentNotValidException ex
+    ) {
+        Map<String, String> errors = new LinkedHashMap<>();
+
+        ex.getBindingResult()
+                .getFieldErrors()
+                .forEach(error -> {
+                    String field = error.getField();
+                    // Ánh xạ tên method @AssertTrue sang field tương ứng để UI bắt đúng input
+                    switch (field) {
+                        case "dateOfBirthValid", "dateOfBirthInRange" -> field = "dateOfBirth";
+                        case "startDateValid", "temporaryDatesValid" -> field = "startDate";
+                        case "endDateValid" -> field = "endDate";
+                    }
+                    errors.putIfAbsent(field, error.getDefaultMessage());
+                });
+
+        return ResponseEntity
+                .badRequest()
+                .body(new ApiErrorResponse(
+                        false,
+                        "VALIDATION_ERROR",
+                        "Dữ liệu không hợp lệ",
+                        errors,
+                        null
+                ));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiErrorResponse> handleConstraintViolation(
+            ConstraintViolationException ex
+    ) {
+        Map<String, String> errors = new LinkedHashMap<>();
+        for (ConstraintViolation<?> cv : ex.getConstraintViolations()) {
+            String property = cv.getPropertyPath().toString();
+            int lastDot = property.lastIndexOf('.');
+            if (lastDot >= 0) {
+                property = property.substring(lastDot + 1);
+            }
+            errors.putIfAbsent(property, cv.getMessage());
+        }
+
+        return ResponseEntity
+                .badRequest()
+                .body(new ApiErrorResponse(
+                        false,
+                        "VALIDATION_ERROR",
+                        "Dữ liệu không hợp lệ",
+                        errors,
+                        null
+                ));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiErrorResponse> handleIllegalArgument(
+            IllegalArgumentException ex
+    ) {
+        return ResponseEntity
+                .badRequest()
+                .body(new ApiErrorResponse(
+                        false,
+                        "VALIDATION_ERROR",
+                        ex.getMessage() != null ? ex.getMessage() : "Dữ liệu không hợp lệ"
+                ));
     }
 
     @ExceptionHandler(InvalidNewHeadException.class)
@@ -96,6 +207,7 @@ public class GlobalExceptionHandler {
                         false,
                         "INVALID_NEW_HEAD",
                         ex.getMessage(),
+                        null,
                         Map.of("reason", ex.getReason())
                 ));
     }
@@ -110,6 +222,7 @@ public class GlobalExceptionHandler {
                         false,
                         "HEAD_REQUIRED",
                         ex.getMessage(),
+                        null,
                         Map.of("candidates", ex.getCandidates())
                 ));
     }
@@ -124,39 +237,9 @@ public class GlobalExceptionHandler {
                         false,
                         "RESIDENT_NOT_RESIDING",
                         ex.getMessage(),
+                        null,
                         Map.of("residencyStatus", ex.getResidencyStatus())
                 ));
-    }
-
-    @ExceptionHandler(FeeCategoryValidationException.class)
-    public ResponseEntity<ApiErrorResponse> handleFeeCategoryValidation(
-            FeeCategoryValidationException ex
-    ) {
-        return ResponseEntity.badRequest().body(
-                new ApiErrorResponse(
-                        false,
-                        "VALIDATION_ERROR",
-                        "Dữ liệu khoản thu không hợp lệ",
-                        Map.of("errors", ex.getErrors())
-                )
-        );
-    }
-
-    @ExceptionHandler(FeeCategoryDuplicateException.class)
-    public ResponseEntity<ApiErrorResponse> handleFeeCategoryDuplicate(
-            FeeCategoryDuplicateException ex
-    ) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                new ApiErrorResponse(
-                        false,
-                        "DUPLICATE",
-                        ex.getMessage(),
-                        Map.of(
-                                "errors",
-                                Map.of("code", "Mã khoản thu đã tồn tại")
-                        )
-                )
-        );
     }
 
     @ExceptionHandler(InvalidTransitionException.class)
@@ -169,6 +252,7 @@ public class GlobalExceptionHandler {
                         false,
                         "INVALID_TRANSITION",
                         ex.getMessage(),
+                        null,
                         Map.of(
                                 "currentStatus", ex.getCurrentStatus(),
                                 "allowedFrom", ex.getAllowedFrom()
@@ -185,6 +269,7 @@ public class GlobalExceptionHandler {
                         false,
                         "HAS_TRANSACTIONS",
                         ex.getMessage(),
+                        ex.getErrors(),
                         Map.of(
                                 "errors", ex.getErrors(),
                                 "suggestedAction", "CREATE_NEW"
@@ -202,48 +287,41 @@ public class GlobalExceptionHandler {
                 .body(new ApiErrorResponse(
                         false,
                         "HOUSEHOLD_INACTIVE",
-                        ex.getMessage(),
-                        null
+                        ex.getMessage()
                 ));
     }
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<?> handleResponseStatusException(
+    public ResponseEntity<ApiErrorResponse> handleResponseStatusException(
             ResponseStatusException ex
     ) {
         String message = ex.getReason() != null
                 ? ex.getReason()
                 : "Yêu cầu không hợp lệ";
 
-        if (ex.getStatusCode() == HttpStatus.NOT_FOUND) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(Map.of(
-                            "success", false,
-                            "code", "NOT_FOUND",
-                            "message", message
-                    ));
-        }
+        String code = ex.getStatusCode() == HttpStatus.NOT_FOUND
+                ? "NOT_FOUND"
+                : "VALIDATION_ERROR";
 
         return ResponseEntity
                 .status(ex.getStatusCode())
-                .body(new ApiResponse<>(
+                .body(new ApiErrorResponse(
                         false,
-                        message,
-                        null
+                        code,
+                        message
                 ));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> handleNotFound(
+    public ResponseEntity<ApiErrorResponse> handleNotFound(
             ResourceNotFoundException ex
     ) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(
-                        "success", false,
-                        "code", "NOT_FOUND",
-                        "message", ex.getMessage()
+                .body(new ApiErrorResponse(
+                        false,
+                        "NOT_FOUND",
+                        ex.getMessage()
                 ));
     }
 
@@ -256,89 +334,61 @@ public class GlobalExceptionHandler {
                         false,
                         ex.getCode(),
                         ex.getMessage(),
+                        null,
                         ex.getDetails()
                 )
         );
     }
 
-    @ExceptionHandler(PasswordValidationException.class)
-    public ResponseEntity<?> handlePasswordValidation(
-            PasswordValidationException ex
-    ) {
-        return ResponseEntity
-                .badRequest()
-                .body(Map.of(
-                        "success", false,
-                        "code", "VALIDATION_ERROR",
-                        "message", "Dữ liệu không hợp lệ",
-                        "errors", Map.of(
-                                ex.getField(),
-                                ex.getMessage()
-                        )
-                ));
-    }
-
     @ExceptionHandler(SelfResetNotAllowedException.class)
-    public ResponseEntity<?> handleSelfResetNotAllowed(
+    public ResponseEntity<ApiErrorResponse> handleSelfResetNotAllowed(
             SelfResetNotAllowedException ex
     ) {
         return ResponseEntity
                 .unprocessableEntity()
-                .body(Map.of(
-                        "success", false,
-                        "code", "SELF_RESET_NOT_ALLOWED",
-                        "message", ex.getMessage()
+                .body(new ApiErrorResponse(
+                        false,
+                        "SELF_RESET_NOT_ALLOWED",
+                        ex.getMessage()
+                ));
+    }
+
+    @ExceptionHandler(SelfLockoutException.class)
+    public ResponseEntity<ApiErrorResponse> handleSelfLockout(
+            SelfLockoutException ex
+    ) {
+        return ResponseEntity
+                .unprocessableEntity()
+                .body(new ApiErrorResponse(
+                        false,
+                        "SELF_LOCKOUT",
+                        ex.getMessage()
                 ));
     }
 
     @ExceptionHandler(ResidentLinkRequiredException.class)
-    public ResponseEntity<?> handleResidentLinkRequired(
+    public ResponseEntity<ApiErrorResponse> handleResidentLinkRequired(
             ResidentLinkRequiredException ex
     ) {
         return ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_ENTITY)
-                .body(Map.of(
-                        "success", false,
-                        "code", "RESIDENT_LINK_REQUIRED",
-                        "message", ex.getMessage()
+                .body(new ApiErrorResponse(
+                        false,
+                        "RESIDENT_LINK_REQUIRED",
+                        ex.getMessage()
                 ));
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<?> handleInvalidCredentials(
+    public ResponseEntity<ApiErrorResponse> handleInvalidCredentials(
             InvalidCredentialsException ex
     ) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of(
-                        "success", false,
-                        "code", "INVALID_CREDENTIALS",
-                        "message", ex.getMessage()
-                ));
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidationException(
-            MethodArgumentNotValidException ex
-    ) {
-        Map<String, String> errors = new HashMap<>();
-
-        ex.getBindingResult()
-                .getFieldErrors()
-                .forEach(error ->
-                        errors.put(
-                                error.getField(),
-                                error.getDefaultMessage()
-                        )
-                );
-
-        return ResponseEntity
-                .badRequest()
-                .body(Map.of(
-                        "success", false,
-                        "code", "VALIDATION_ERROR",
-                        "message", "Dữ liệu không hợp lệ",
-                        "errors", errors
+                .body(new ApiErrorResponse(
+                        false,
+                        "INVALID_CREDENTIALS",
+                        ex.getMessage()
                 ));
     }
 
@@ -351,6 +401,7 @@ public class GlobalExceptionHandler {
                         false,
                         "MISSING_AREA",
                         ex.getMessage(),
+                        null,
                         Map.of("householdId", ex.getHouseholdId())
                 )
         );
@@ -364,8 +415,7 @@ public class GlobalExceptionHandler {
                 new ApiErrorResponse(
                         false,
                         "FEE_INACTIVE",
-                        ex.getMessage(),
-                        null
+                        ex.getMessage()
                 )
         );
     }
@@ -378,8 +428,7 @@ public class GlobalExceptionHandler {
                 new ApiErrorResponse(
                         false,
                         "FEE_NOT_BILLABLE",
-                        ex.getMessage(),
-                        null
+                        ex.getMessage()
                 )
         );
     }
@@ -388,15 +437,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleInvalidBillingPeriodDateRange(
             InvalidBillingPeriodDateRangeException ex
     ) {
+        Map<String, String> errors = Map.of(
+                "endDate",
+                "Ngày kết thúc không được sớm hơn ngày bắt đầu"
+        );
         return ResponseEntity.badRequest().body(
                 new ApiErrorResponse(
                         false,
                         "VALIDATION_ERROR",
                         "Dữ liệu không hợp lệ",
-                        Map.of(
-                                "endDate",
-                                "Ngày kết thúc không được sớm hơn ngày bắt đầu"
-                        )
+                        errors,
+                        Map.of("endDate", "Ngày kết thúc không được sớm hơn ngày bắt đầu")
                 )
         );
     }
@@ -410,6 +461,7 @@ public class GlobalExceptionHandler {
                         false,
                         "PERIOD_OVERLAP",
                         ex.getMessage(),
+                        null,
                         Map.of(
                                 "overlapping",
                                 Map.of(
@@ -426,7 +478,7 @@ public class GlobalExceptionHandler {
             BillingPeriodClosedException ex) {
         return ResponseEntity.unprocessableEntity().body(
                 new ApiErrorResponse(false, "PERIOD_CLOSED",
-                        ex.getMessage(), null)
+                        ex.getMessage())
         );
     }
 
@@ -436,6 +488,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(
                 new ApiErrorResponse(false, "ALREADY_GENERATED",
                         ex.getMessage(),
+                        null,
                         Map.of("generatedAt", ex.getGeneratedAt()))
         );
     }
@@ -445,7 +498,7 @@ public class GlobalExceptionHandler {
             NoActiveFeeException ex) {
         return ResponseEntity.unprocessableEntity().body(
                 new ApiErrorResponse(false, "NO_ACTIVE_FEE",
-                        ex.getMessage(), null)
+                        ex.getMessage())
         );
     }
 
@@ -455,6 +508,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.unprocessableEntity().body(
                 new ApiErrorResponse(false, "NOTHING_TO_GENERATE",
                         ex.getMessage(),
+                        null,
                         Map.of("skipped", ex.getSkipped()))
         );
     }
@@ -467,61 +521,69 @@ public class GlobalExceptionHandler {
                 new ApiErrorResponse(
                         false,
                         "PERIOD_NOT_GENERATED",
-                        ex.getMessage(),
-                        null
+                        ex.getMessage()
                 )
         );
     }
 
     @ExceptionHandler(ResidentNotInHouseholdException.class)
-    public ResponseEntity<?> handleResidentNotInHousehold(ResidentNotInHouseholdException ex) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
-                "success", false,
-                "code", "RESIDENT_NOT_IN_HOUSEHOLD",
-                "message", ex.getMessage() != null ? ex.getMessage() : "Nhân khẩu không thuộc hộ gia đình của bạn"
-        ));
+    public ResponseEntity<ApiErrorResponse> handleResidentNotInHousehold(ResidentNotInHouseholdException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                new ApiErrorResponse(
+                        false,
+                        "RESIDENT_NOT_IN_HOUSEHOLD",
+                        ex.getMessage() != null ? ex.getMessage() : "Nhân khẩu không thuộc hộ gia đình của bạn"
+                )
+        );
     }
 
     @ExceptionHandler(PendingRequestExistsException.class)
-    public ResponseEntity<?> handlePendingRequestExists(PendingRequestExistsException ex) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("success", false);
-        body.put("code", "PENDING_REQUEST_EXISTS");
-        body.put("message", ex.getMessage());
-        if (ex.getRequestId() != null) {
-            body.put("details", Map.of("requestId", ex.getRequestId()));
-        }
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    public ResponseEntity<ApiErrorResponse> handlePendingRequestExists(PendingRequestExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                new ApiErrorResponse(
+                        false,
+                        "PENDING_REQUEST_EXISTS",
+                        ex.getMessage(),
+                        null,
+                        ex.getRequestId() != null ? Map.of("requestId", ex.getRequestId()) : null
+                )
+        );
     }
 
     @ExceptionHandler(RequestNotPendingException.class)
-    public ResponseEntity<?> handleRequestNotPending(RequestNotPendingException ex) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("success", false);
-        body.put("code", "REQUEST_NOT_PENDING");
-        body.put("message", ex.getMessage());
-        if (ex.getStatus() != null) {
-            body.put("details", Map.of("status", ex.getStatus().name()));
-        }
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    public ResponseEntity<ApiErrorResponse> handleRequestNotPending(RequestNotPendingException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                new ApiErrorResponse(
+                        false,
+                        "REQUEST_NOT_PENDING",
+                        ex.getMessage(),
+                        null,
+                        ex.getStatus() != null ? Map.of("status", ex.getStatus().name()) : null
+                )
+        );
     }
 
     @ExceptionHandler(RequestOutdatedException.class)
-    public ResponseEntity<?> handleRequestOutdated(RequestOutdatedException ex) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("success", false);
-        body.put("code", "REQUEST_OUTDATED");
-        body.put("message", ex.getMessage());
-        body.put("details", Map.of("fields", ex.getFields() != null ? ex.getFields() : java.util.List.of()));
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    public ResponseEntity<ApiErrorResponse> handleRequestOutdated(RequestOutdatedException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                new ApiErrorResponse(
+                        false,
+                        "REQUEST_OUTDATED",
+                        ex.getMessage(),
+                        null,
+                        Map.of("fields", ex.getFields() != null ? ex.getFields() : List.of())
+                )
+        );
     }
 
     @ExceptionHandler(NoChangesException.class)
-    public ResponseEntity<?> handleNoChanges(NoChangesException ex) {
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(Map.of(
-                "success", false,
-                "code", "NO_CHANGES",
-                "message", ex.getMessage()
-        ));
+    public ResponseEntity<ApiErrorResponse> handleNoChanges(NoChangesException ex) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                new ApiErrorResponse(
+                        false,
+                        "NO_CHANGES",
+                        ex.getMessage()
+                )
+        );
     }
 }

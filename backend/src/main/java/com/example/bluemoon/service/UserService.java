@@ -36,10 +36,11 @@ import com.example.bluemoon.exception.SelfResetNotAllowedException;
 
 import java.security.SecureRandom;
 import java.time.Instant;
-
-
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -161,21 +162,12 @@ public class UserService {
                 .toList();
     }
 
-    private UserResponse toUserResponse(AppUser user) {
-
+    private UserResponse toUserResponse(AppUser user, Long householdId) {
         List<String> roles = user.getRoles()
                 .stream()
                 .map(AppRole::getCode)
                 .sorted()
                 .toList();
-        Long householdId = null;
-
-        if (user.getResidentId() != null) {
-            householdId = residentRepository
-                    .findById(user.getResidentId())
-                    .map(resident -> resident.getHousehold().getId())
-                    .orElse(null);
-        }
 
         return new UserResponse(
                 user.getId(),
@@ -189,6 +181,19 @@ public class UserService {
                 roles,
                 user.isMustChangePassword()
         );
+    }
+
+    private UserResponse toUserResponse(AppUser user) {
+        Long householdId = null;
+
+        if (user.getResidentId() != null) {
+            householdId = residentRepository
+                    .findById(user.getResidentId())
+                    .map(resident -> resident.getHousehold() != null ? resident.getHousehold().getId() : null)
+                    .orElse(null);
+        }
+
+        return toUserResponse(user, householdId);
     }
 
     @Transactional(readOnly = true)
@@ -215,10 +220,24 @@ public class UserService {
         Page<AppUser> userPage =
                 userRepository.findAll(specification, pageable);
 
-        List<UserResponse> users = userPage
-                .getContent()
+        List<AppUser> content = userPage.getContent();
+        List<Long> residentIds = content.stream()
+                .map(AppUser::getResidentId)
+                .filter(Objects::nonNull)
+                .toList();
+
+        Map<Long, Long> residentHouseholdMap = new HashMap<>();
+        if (!residentIds.isEmpty()) {
+            residentRepository.findAllById(residentIds).forEach(resident -> {
+                if (resident.getHousehold() != null) {
+                    residentHouseholdMap.put(resident.getId(), resident.getHousehold().getId());
+                }
+            });
+        }
+
+        List<UserResponse> users = content
                 .stream()
-                .map(this::toUserResponse)
+                .map(u -> toUserResponse(u, u.getResidentId() != null ? residentHouseholdMap.get(u.getResidentId()) : null))
                 .toList();
 
         return new PageResponse<>(
