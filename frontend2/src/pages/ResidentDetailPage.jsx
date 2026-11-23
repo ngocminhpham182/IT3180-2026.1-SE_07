@@ -74,7 +74,6 @@ export default function ResidentDetailPage() {
         </Link>
       </div>
       <PageHeader
-        eyebrow="US-02 · HỒ SƠ NHÂN KHẨU"
         title={r.fullName}
         description={`Thuộc hộ ${r.householdId}${r.householdCode ? ` · Căn hộ ${r.apartmentNo}` : ""}`}
         actions={

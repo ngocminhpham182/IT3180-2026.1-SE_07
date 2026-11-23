@@ -52,7 +52,6 @@ export default function SearchPage() {
   return (
     <>
       <PageHeader
-        eyebrow="US-04 · TRA CỨU"
         title="Tìm kiếm nhanh"
         description="Tra cứu theo tên cư dân (có hoặc không dấu), mã hộ hoặc số căn hộ."
       />

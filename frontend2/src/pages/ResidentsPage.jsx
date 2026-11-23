@@ -55,7 +55,6 @@ export default function ResidentsPage() {
   return (
     <>
       <PageHeader
-        eyebrow="US-02 · QUẢN LÝ CƯ DÂN"
         title="Nhân khẩu"
         description="Tra cứu thông tin nhân khẩu trong toàn chung cư. Để thêm mới, mở chi tiết hộ gia đình tương ứng."
       />

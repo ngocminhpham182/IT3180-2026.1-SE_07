@@ -56,11 +56,6 @@ export const feeApi = {
   update: (id, data) => api.put(`/fee-categories/${id}`, data),
   updateStatus: (id, active) =>
     api.patch(`/fee-categories/${id}/status`, { active }),
-  remove: (id, opts) =>
-    api.delete(`/fee-categories/${id}`, {
-      ...opts,
-      suppressSessionExpired: true,
-    }),
   preview: (data) => api.post("/fee-calculation/preview", data),
 };
 function getMockReceivables(periodId, params = {}) {
@@ -265,4 +260,6 @@ export const userApi = {
   create: (data) => api.post("/users", data),
   updateRoles: (id, roles) => api.put(`/users/${id}/roles`, { roles }),
   updateStatus: (id, active) => api.patch(`/users/${id}/status`, { active }),
+  resetPassword: (id, data) =>
+    api.post(`/users/${id}/password-reset`, data || {}),
 };

@@ -38,6 +38,8 @@ export default function UsersPage() {
   const [editing, setEditing] = useState(null);
   const [newRoles, setNewRoles] = useState([]);
   const [confirm, setConfirm] = useState(null);
+  const [resettingUser, setResettingUser] = useState(null);
+  const [resetResult, setResetResult] = useState(null);
   const [actionError, setActionError] = useState(null);
   const [busy, setBusy] = useState(false);
   useEffect(() => {
@@ -143,10 +145,24 @@ export default function UsersPage() {
       setBusy(false);
     }
   };
+  const performResetPassword = async () => {
+    if (busy || !resettingUser || isSelf(current, resettingUser)) return;
+    setBusy(true);
+    setActionError(null);
+    try {
+      const res = await userApi.resetPassword(resettingUser.id, {});
+      setResetResult(res);
+      setResettingUser(null);
+    } catch (err) {
+      setActionError(err);
+      setResettingUser(null);
+    } finally {
+      setBusy(false);
+    }
+  };
   return (
     <>
       <PageHeader
-        eyebrow="US-09 · QUẢN TRỊ HỆ THỐNG"
         title="Tài khoản & phân quyền"
         description="Cấp quyền truy cập theo vai trò và kiểm soát trạng thái tài khoản."
         actions={
@@ -273,6 +289,21 @@ export default function UsersPage() {
                           }}
                         >
                           Phân quyền
+                        </button>
+                        <button
+                          className="link-btn"
+                          disabled={u.id === current?.id}
+                          title={
+                            u.id === current?.id
+                              ? "Không thể tự đặt lại mật khẩu của chính mình"
+                              : ""
+                          }
+                          onClick={() => {
+                            setResettingUser(u);
+                            setActionError(null);
+                          }}
+                        >
+                          Đặt lại mật khẩu
                         </button>
                         <button
                           className={`link-btn ${(u.active ?? u.isActive) ? "danger-text" : ""}`}
@@ -422,6 +453,45 @@ export default function UsersPage() {
           onClose={() => setConfirm(null)}
           onConfirm={toggleStatus}
         />
+      )}
+      {resettingUser && (
+        <Confirm
+          title={`Đặt lại mật khẩu cho tài khoản ${resettingUser.username}?`}
+          description="Hệ thống sẽ tạo một mật khẩu tạm thời mới và yêu cầu người dùng đổi mật khẩu khi đăng nhập lần tới."
+          action="Đặt lại mật khẩu"
+          busy={busy}
+          onClose={() => setResettingUser(null)}
+          onConfirm={performResetPassword}
+        />
+      )}
+      {resetResult && (
+        <Modal
+          title="Đặt lại mật khẩu thành công"
+          onClose={() => setResetResult(null)}
+          footer={
+            <button
+              className="btn btn-primary"
+              onClick={() => setResetResult(null)}
+            >
+              Đóng
+            </button>
+          }
+        >
+          <Alert tone="info">
+            Vui lòng gửi thông tin đăng nhập tạm thời dưới đây cho người dùng.
+          </Alert>
+          <dl className="data-list">
+            <DataLine label="Tên đăng nhập">{resetResult.username}</DataLine>
+            <DataLine label="Mật khẩu tạm thời">
+              <strong style={{ fontSize: "1.15rem", letterSpacing: "1px", color: "#1e40af" }}>
+                {resetResult.temporaryPassword}
+              </strong>
+            </DataLine>
+          </dl>
+          <p className="subtle" style={{ marginTop: "1rem" }}>
+            Người dùng sẽ bắt buộc phải đổi mật khẩu ngay sau khi đăng nhập thành công.
+          </p>
+        </Modal>
       )}
     </>
   );

@@ -18,21 +18,10 @@ export default function LoginPage() {
   const [showPass, setShowPass] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
-  const [seconds, setSeconds] = useState(0);
-  const [lockedUsername, setLockedUsername] = useState("");
-  const locked =
-    seconds > 0 && form.username.trim().toLowerCase() === lockedUsername;
-  useEffect(() => {
-    if (!seconds) return;
-    const timer = setInterval(
-      () => setSeconds((s) => Math.max(s - 1, 0)),
-      1000,
-    );
-    return () => clearInterval(timer);
-  }, [seconds > 0]);
+
   const submit = async (e) => {
     e.preventDefault();
-    if (busy || locked) return;
+    if (busy) return;
     setError(null);
     if (!form.username.trim() || !form.password) {
       setError({
@@ -54,26 +43,11 @@ export default function LoginPage() {
     } catch (err) {
       const data = err instanceof ApiError ? err : { message: err.message };
       setError(data);
-      if (data.code === "ACCOUNT_LOCKED") {
-        setLockedUsername(form.username.trim().toLowerCase());
-        setSeconds(
-          Math.max(
-            0,
-            Number(data.details?.remainingSeconds) ||
-              Math.ceil(
-                (Date.parse(data.details?.lockedUntil) - Date.now()) / 1000,
-              ) ||
-              0,
-          ),
-        );
-      }
     } finally {
       setBusy(false);
     }
   };
-  const timeText = `${Math.floor(seconds / 60)
-    .toString()
-    .padStart(2, "0")}:${(seconds % 60).toString().padStart(2, "0")}`;
+
   return (
     <div className="login-shell">
       <section className="login-intro">
@@ -112,7 +86,6 @@ export default function LoginPage() {
           {error && (
             <Alert>
               {error.message}
-              {locked && <span> · Thử lại sau {timeText}</span>}
             </Alert>
           )}
           <form onSubmit={submit} noValidate>
@@ -168,7 +141,7 @@ export default function LoginPage() {
               </div>
             </Field>
             <button
-              disabled={busy || locked}
+              disabled={busy}
               type="submit"
               className="btn btn-primary btn-block"
             >

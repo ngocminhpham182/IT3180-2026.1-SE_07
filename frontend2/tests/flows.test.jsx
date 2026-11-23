@@ -60,20 +60,18 @@ it("US08 AC2 invalid credentials do not show expired-token notice", async () => 
   expect(screen.queryByText(/Phiên đăng nhập/)).not.toBeInTheDocument();
   expect(sessionStorage.getItem("bluemoon_access_token")).toBeNull();
 });
-it("US08 AC3 allows B to log in when A is locked", async () => {
+it("US08 AC3 allows B to log in after A fails login", async () => {
   server((p, m, b) =>
     p === "/auth/login"
       ? b.username === "manager01"
-        ? fail("ACCOUNT_LOCKED", 423, {}, { remainingSeconds: 900 })
+        ? fail("INVALID_CREDENTIALS", 401)
         : ok({ accessToken: "test-B", expiresIn: 3600, user: account })
       : undefined,
   );
   app("/dang-nhap", false);
   login();
-  await screen.findByText(/Thử lại sau/);
-  expect(screen.getByRole("button", { name: "Đăng nhập" })).toBeDisabled();
+  await screen.findByText("Sai tài khoản hoặc mật khẩu");
   fill(/Tên đăng nhập/, "manager02");
-  expect(screen.getByRole("button", { name: "Đăng nhập" })).toBeEnabled();
   fireEvent.click(screen.getByRole("button", { name: "Đăng nhập" }));
   await screen.findByRole("heading", { name: "Hộ gia đình" });
 });

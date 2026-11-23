@@ -10,7 +10,6 @@ const messages = {
   NO_CHANGES: "Chưa có thay đổi nào so với thông tin hiện tại.",
   RESIDENT_NOT_IN_HOUSEHOLD: "Nhân khẩu không thuộc hộ của bạn.",
   INVALID_CREDENTIALS: "Sai tài khoản hoặc mật khẩu",
-  ACCOUNT_LOCKED: "Tài khoản đang bị khóa tạm thời. Vui lòng thử lại sau.",
   TOKEN_EXPIRED: "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
   TOKEN_INVALID: "Phiên đăng nhập không còn hợp lệ. Vui lòng đăng nhập lại.",
   UNAUTHORIZED: "Vui lòng đăng nhập để tiếp tục.",
@@ -53,7 +52,6 @@ const codes = {
   404: "NOT_FOUND",
   409: "DUPLICATE",
   422: "VALIDATION_ERROR",
-  423: "ACCOUNT_LOCKED",
 };
 export class ApiError extends Error {
   constructor(payload = {}, status = 0) {
@@ -71,8 +69,9 @@ export class ApiError extends Error {
     this.name = "ApiError";
     this.code = code;
     this.status = status;
+    const rawErrors = payload?.errors || payload?.details?.errors || {};
     this.fields = Object.fromEntries(
-      Object.entries(payload?.errors || {}).map(([key, value]) => [
+      Object.entries(rawErrors).map(([key, value]) => [
         key,
         typeof value === "string"
           ? value

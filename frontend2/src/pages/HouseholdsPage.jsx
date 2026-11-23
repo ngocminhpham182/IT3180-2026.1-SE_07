@@ -51,7 +51,6 @@ export default function HouseholdsPage() {
   return (
     <>
       <PageHeader
-        eyebrow="US-01 · QUẢN LÝ CƯ DÂN"
         title="Hộ gia đình"
         description="Quản lý danh sách căn hộ, chủ hộ và tình trạng hoạt động."
         actions={

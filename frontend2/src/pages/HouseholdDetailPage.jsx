@@ -151,7 +151,6 @@ export default function HouseholdDetailPage() {
         </Link>
       </div>
       <PageHeader
-        eyebrow={`US-01 · HỒ SƠ HỘ ${house.householdCode}`}
         title={`Căn hộ ${house.apartmentNo}`}
         description={`Mã hộ khẩu: ${house.householdCode}`}
         actions={

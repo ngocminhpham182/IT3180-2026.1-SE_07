@@ -55,7 +55,6 @@ export default function PeriodsPage() {
   return (
     <>
       <PageHeader
-        eyebrow="US-14 · KHOẢN PHẢI THU"
         title="Kỳ thu"
         description="Lập danh sách đầu kỳ, kiểm tra số tiền từng hộ và theo dõi kỳ đã đóng sổ."
         actions={

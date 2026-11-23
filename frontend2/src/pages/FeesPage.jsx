@@ -24,7 +24,6 @@ export default function FeesPage() {
   const [busy, setBusy] = useState(false);
   const [actionError, setActionError] = useState(null);
   const [notice, setNotice] = useState("");
-  const [blockedFee, setBlockedFee] = useState(null);
   useEffect(() => {
     const ctrl = new AbortController();
     setLoading(true);
@@ -54,17 +53,12 @@ export default function FeesPage() {
     setBusy(true);
     setActionError(null);
     try {
-      if (action.kind === "delete") await feeApi.remove(action.fee.id);
-      else await feeApi.updateStatus(action.fee.id, !action.fee.active);
+      await feeApi.updateStatus(action.fee.id, !action.fee.active);
       setNotice("Đã cập nhật danh mục khoản thu.");
       setReload((x) => x + 1);
       setAction(null);
     } catch (e) {
       setActionError(e);
-      if (e.code === "HAS_TRANSACTIONS") {
-        setBlockedFee(action.fee);
-        setReload((x) => x + 1);
-      }
       setAction(null);
     } finally {
       setBusy(false);
@@ -73,7 +67,6 @@ export default function FeesPage() {
   return (
     <>
       <PageHeader
-        eyebrow="US-12 · US-13 · QUẢN LÝ THU PHÍ"
         title="Danh mục khoản thu"
         description="Thiết lập khoản bắt buộc, đóng góp tự nguyện và tính thử phí theo diện tích."
         actions={
@@ -83,27 +76,7 @@ export default function FeesPage() {
         }
       />
       <Alert tone="success">{notice}</Alert>
-      <Alert>
-        {actionError?.message}
-        {blockedFee && (
-          <>
-            {" "}
-            Khoản đã được sử dụng, hãy ngừng sử dụng thay vì xóa.{" "}
-            <button
-              className="btn btn-secondary"
-              onClick={() => {
-                setAction({
-                  kind: "status",
-                  fee: { ...blockedFee, active: true },
-                });
-                setBlockedFee(null);
-              }}
-            >
-              Ngừng sử dụng khoản thu
-            </button>
-          </>
-        )}
-      </Alert>
+      <Alert>{actionError?.message}</Alert>
       <section className="panel">
         <div className="filter-bar">
           <input
@@ -205,22 +178,10 @@ export default function FeesPage() {
                         >
                           {f.active ? "Ngừng" : "Bật lại"}
                         </button>
-                        <button
-                          className="btn btn-outline-danger"
-                          disabled={f.inUse}
-                          title={
-                            f.inUse
-                              ? "Đã có công nợ, chỉ có thể ngừng sử dụng"
-                              : undefined
-                          }
-                          onClick={() => setAction({ kind: "delete", fee: f })}
-                        >
-                          Xóa
-                        </button>
                       </div>
                       {f.inUse && (
                         <small className="cell-note">
-                          Đã được sử dụng; không thể xóa.
+                          Đã phát sinh công nợ
                         </small>
                       )}
                     </td>
@@ -248,14 +209,12 @@ export default function FeesPage() {
       {action && (
         <Confirm
           title={
-            action.kind === "delete"
-              ? "Xóa khoản thu?"
-              : action.fee.active
-                ? "Ngừng sử dụng khoản thu?"
-                : "Bật lại khoản thu?"
+            action.fee.active
+              ? "Ngừng sử dụng khoản thu?"
+              : "Bật lại khoản thu?"
           }
           description={`${action.fee.name}. Các khoản phải thu đã lập giữ nguyên.`}
-          danger={action.kind === "delete"}
+          danger={action.fee.active}
           busy={busy}
           onClose={() => setAction(null)}
           onConfirm={perform}

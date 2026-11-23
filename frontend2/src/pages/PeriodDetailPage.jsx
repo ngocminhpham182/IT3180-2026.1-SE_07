@@ -397,7 +397,6 @@ function Detail({ id }) {
         <Link to="/ky-thu">← Danh sách kỳ thu</Link>
       </div>
       <PageHeader
-        eyebrow="US-14 · CHI TIẾT KỲ THU"
         title={period.name}
         description={`${period.code} · ${formatDate(period.startDate)} – ${formatDate(period.endDate)}`}
         actions={

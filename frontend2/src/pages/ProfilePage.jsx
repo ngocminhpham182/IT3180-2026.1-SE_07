@@ -93,7 +93,6 @@ export default function ProfilePage() {
   return (
     <>
       <PageHeader
-        eyebrow="US-10 · TÀI KHOẢN CỦA TÔI"
         title="Hồ sơ cá nhân"
         description="Xem và cập nhật thông tin cá nhân, bảo vệ tài khoản của bạn."
       />

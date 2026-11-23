@@ -267,15 +267,15 @@ it("US12 creates a voluntary category without fee, due day or debt fields", asyn
     calculationMethod: "MANUAL",
   });
 });
-it("US12 locks in-use fields and deletion but allows price change", async () => {
+it("US12 locks in-use fields but allows price change", async () => {
   server((p) =>
     p === "/fee-categories" ? ok([{ ...fee, inUse: true }]) : undefined,
   );
   app("/khoan-thu");
   await screen.findByText(fee.name);
   expect(
-    screen.getByRole("button", { name: "Xóa", exact: true }),
-  ).toBeDisabled();
+    screen.queryByRole("button", { name: "Xóa", exact: true }),
+  ).not.toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Sửa", exact: true }));
   for (const label of [
     /Mã khoản thu/,
