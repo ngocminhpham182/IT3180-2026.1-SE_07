@@ -1,3 +1,4 @@
+```
 CREATE TABLE household (
     id             BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     household_code VARCHAR(30)  NOT NULL,               
@@ -173,3 +174,4 @@ CREATE TABLE resident_request (
         CHECK ((request_type = 'PROFILE_UPDATE') = (before_values IS NOT NULL))
 );
 
+```
