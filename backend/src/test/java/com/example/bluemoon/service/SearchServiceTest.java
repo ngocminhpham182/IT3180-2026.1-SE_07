@@ -78,10 +78,10 @@ class SearchServiceTest {
     @Test
     @DisplayName("[US-04 AC2] Không có kết quả -> empty = true và hai mảng rỗng")
     void search_noResults_returnsEmptyTrue() {
-        when(householdRepository.quickSearchHouseholds("xyz_not_found", 20)).thenReturn(Collections.emptyList());
-        when(householdRepository.countQuickSearchHouseholds("xyz_not_found")).thenReturn(0L);
-        when(residentRepository.quickSearchResidents("xyz_not_found", 20)).thenReturn(Collections.emptyList());
-        when(residentRepository.countQuickSearchResidents("xyz_not_found")).thenReturn(0L);
+        when(householdRepository.quickSearchHouseholds("xyz\\_not\\_found", 20)).thenReturn(Collections.emptyList());
+        when(householdRepository.countQuickSearchHouseholds("xyz\\_not\\_found")).thenReturn(0L);
+        when(residentRepository.quickSearchResidents("xyz\\_not\\_found", 20)).thenReturn(Collections.emptyList());
+        when(residentRepository.countQuickSearchResidents("xyz\\_not\\_found")).thenReturn(0L);
 
         SearchResponse response = searchService.search("xyz_not_found", "ALL", 20);
 

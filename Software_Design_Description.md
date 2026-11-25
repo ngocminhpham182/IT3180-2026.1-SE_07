@@ -181,15 +181,14 @@ F. Hệ thống quản lý chung cư và cư dân BlueMoon (Sprint 1)
 ├── M3. Cổng cư dân và quản lý đề nghị cư trú
 │   ├── F3.1 Cư dân xem thông tin hộ gia đình và danh sách thành viên trong hộ
 │   ├── F3.2 Cư dân gửi đề nghị chỉnh sửa thông tin nhân khẩu
-│   ├── F3.3 Cư dân gửi đề nghị khai báo tạm vắng
-│   ├── F3.4 Cư dân gửi đề nghị khai báo tạm trú cho người mới / khách
-│   ├── F3.5 Cư dân theo dõi danh sách các đề nghị đã gửi
-│   ├── F3.6 Cư dân xem chi tiết đề nghị (dữ liệu trước/sau thay đổi, kết quả và lý do từ chối)
-│   ├── F3.7 Cư dân hủy đề nghị đang ở trạng thái PENDING
-│   ├── F3.8 BQT xem danh sách hàng đợi các đề nghị từ cư dân
-│   ├── F3.9 BQT xem chi tiết đề nghị và đối chiếu dữ liệu thay đổi
-│   ├── F3.10 BQT phê duyệt đề nghị
-│   └── F3.11 BQT từ chối đề nghị (bắt buộc nhập lý do)
+│   ├── F3.3 Cư dân gửi đề nghị khai báo tạm vắng, tạm trú
+│   ├── F3.4 Cư dân theo dõi danh sách các đề nghị đã gửi
+│   ├── F3.5 Cư dân xem chi tiết đề nghị (dữ liệu trước/sau thay đổi, kết quả và lý do từ chối)
+│   ├── F3.6 Cư dân hủy đề nghị đang ở trạng thái PENDING
+│   ├── F3.7 BQT xem danh sách hàng đợi các đề nghị từ cư dân
+│   ├── F3.8 BQT xem chi tiết đề nghị và đối chiếu dữ liệu thay đổi
+│   ├── F3.9 BQT phê duyệt đề nghị
+│   └── F3.10 BQT từ chối đề nghị (bắt buộc nhập lý do)
 │
 ├── M4. Quản lý khoản thu và lập danh sách khoản phải thu
 │   ├── F4.1 Tạo mới danh mục khoản thu
@@ -205,12 +204,9 @@ F. Hệ thống quản lý chung cư và cư dân BlueMoon (Sprint 1)
 │   ├── F4.11 Đóng / mở lại kỳ thu phí
 │   ├── F4.12 Tính thử phí và xem trước công thức tính tiền cho từng hộ gia đình
 │   ├── F4.13 Lập danh sách khoản phải thu tự động cho các hộ gia đình
-│   └── F4.14 Chạy thử lập danh sách khoản phải thu (Dry-run mode)
 │
-└── Chức năng tra cứu dùng chung
+└── M5. Chức năng tra cứu dùng chung
     └── F5.1 Tìm kiếm nhanh toàn hệ thống theo từ khóa (hỗ trợ tìm tiếng Việt không dấu)
-    ├── F5.2 Tra cứu thông tin hộ gia đình theo mã hộ, số phòng
-    └── F5.3 Tra cứu thông tin nhân khẩu theo họ tên
 ```
 
 ### 3.3 Yêu cầu chức năng (Functional Requirements)
@@ -323,3016 +319,3107 @@ Dưới đây là ma trận phân quyền chi tiết cho 4 vai trò của hệ t
 
 
 
-## 4\. USE CASE
-
-### 4.1 Sơ đồ use case tổng quan
-
-Hệ thống có **24 use case chính** (UC1 – UC24).
-
-```mermaid
-graph LR
-    Admin((Admin))
-    Resident((Cư dân))
-
-    UC1\\\[Quản lý tài khoản<br/>và duyệt đăng ký]
-    UC2\\\[Đăng nhập]
-    UC3\\\[Đổi mật khẩu]
-    UC4\\\[Quản lý căn hộ<br/>và hộ dân trong căn hộ]
-    UC5\\\[Quản lý nhân khẩu]
-    UC6\\\[Quản lý khoản thu]
-    UC7\\\[Thu phí]
-    UC8\\\[Quản lý phí gửi xe]
-    UC9\\\[Cho thuê chỗ gửi xe thừa]
-    UC10\\\[Quản lý phí điện/nước/internet]
-    UC11\\\[Gửi khiếu nại]
-    UC12\\\[Xử lý khiếu nại]
-    UC13\\\[Gửi thông báo]
-    UC14\\\[Xem thông báo]
-    UC15\\\[Tra cứu, thống kê]
-    UC16\\\[Xuất báo cáo Excel/PDF]
-    UC17\\\[Xem khoản phí của hộ]
-    UC18\\\[Xem trạng thái khiếu nại]
-    UC19\\\[Đăng ký tài khoản]
-    UC20\\\[Xác thực OTP email]
-    UC21\\\[Quên mật khẩu bằng OTP]
-    UC22\\\[Thanh toán online<br/>qua VNPay Sandbox]
-    UC23\\\[Xem lịch sử<br/>giao dịch online]
-    UC24\\\[Admin tra cứu<br/>giao dịch online]
-
-    Admin --> UC1
-    Admin --> UC2
-    Admin --> UC3
-    Admin --> UC4
-    Admin --> UC5
-    Admin --> UC6
-    Admin --> UC7
-    Admin --> UC8
-    Admin --> UC9
-    Admin --> UC10
-    Admin --> UC12
-    Admin --> UC13
-    Admin --> UC14
-    Admin --> UC15
-    Admin --> UC16
-    Admin --> UC24
-
-    Resident --> UC2
-    Resident --> UC3
-    Resident --> UC11
-    Resident --> UC14
-    Resident --> UC17
-    Resident --> UC18
-    Resident --> UC22
-    Resident --> UC23
-
-    Resident --> UC19
-    Resident --> UC20
-    Resident --> UC21
-```
-
-**Phân quyền sơ đồ use case:**
-
-* **Công khai – không cần đăng nhập:** UC19 (đăng ký tài khoản), UC20 (xác thực OTP đăng ký), UC21 (quên mật khẩu bằng OTP). Các use case này do cư dân tự thực hiện trước khi đăng nhập, không gắn với vai trò đã xác thực.
-* **Resident:** UC2, UC3, UC11, UC14, UC17, UC18, UC22 (thanh toán online qua VNPay Sandbox), UC23 (xem lịch sử giao dịch online của hộ mình).
-* **Admin:** UC1–UC16, UC24 (tra cứu toàn bộ giao dịch online).
-
-### 4.2 Phân rã use case theo module
-
-**M1 – Quản lý tài khoản và đăng nhập (kèm OTP)**
-
-```mermaid
-graph LR
-    Admin((Admin))
-    User(\\\["Người dùng (Admin/Cư dân)"])
-    Resident((Cư dân))
-
-    A1\\\[Tạo tài khoản]
-    A2\\\[Sửa tài khoản]
-    A3\\\[Khoá/mở khoá tài khoản]
-    A4\\\[Đăng nhập]
-    A5\\\[Đăng xuất]
-    A6\\\[Đổi mật khẩu]
-    A7\\\[Xem thông tin cá nhân]
-    A8\\\[Đăng ký tài khoản]
-    A9\\\[Gửi OTP đăng ký]
-    A10\\\[Xác thực OTP đăng ký]
-    A11\\\[Gửi OTP quên mật khẩu]
-    A12\\\[Đặt lại mật khẩu bằng OTP]
-    A13\\\[Admin duyệt tài khoản<br/>cư dân đăng ký]
-
-    Admin --> A1
-    Admin --> A2
-    Admin --> A3
-    Admin --> A13
-    User --> A4
-    User --> A5
-    User --> A6
-    User --> A7
-    Resident --> A8
-    Resident --> A9
-    Resident --> A10
-    Resident --> A11
-    Resident --> A12
-```
-
-**M2 + M3 – Quản lý căn hộ, hộ dân và nhân khẩu**
-
-```mermaid
-graph LR
-    Admin((Admin))
-
-    B1\\\[Xem danh sách căn hộ]
-    B2\\\[Tìm kiếm căn hộ]
-    B3\\\[Xem chi tiết căn hộ]
-    B4\\\[Chỉnh sửa thông tin căn hộ]
-    B5\\\[Xem hộ dân trong căn hộ]
-    B6\\\[Cập nhật hộ dân trong căn hộ]
-    B7\\\[Gán hộ dân vào căn hộ]
-    B8\\\[Chuyển hộ dân khỏi căn hộ]
-    B9\\\[Thêm nhân khẩu]
-    B10\\\[Sửa nhân khẩu]
-    B11\\\[Chuyển nhân khẩu khỏi hộ<br/>status = MOVED\\\_OUT]
-    B12\\\[Đăng ký tạm trú]
-    B13\\\[Đăng ký tạm vắng]
-    B14\\\[Tra cứu nhân khẩu]
-
-    Admin --> B1
-    Admin --> B2
-    Admin --> B3
-    Admin --> B4
-    Admin --> B5
-    Admin --> B6
-    Admin --> B7
-    Admin --> B8
-    Admin --> B9
-    Admin --> B10
-    Admin --> B11
-    Admin --> B12
-    Admin --> B13
-    Admin --> B14
-```
-
-**M4 + M5 – Quản lý khoản thu, thu phí và thanh toán online**
-
-```mermaid
-graph LR
-    Admin((Admin))
-    Resident((Cư dân))
-
-    C1\\\[Tạo khoản thu]
-    C2\\\[Sửa khoản thu]
-    C3\\\[Xoá/ngừng sử dụng khoản thu]
-    C4\\\[Lập đợt thu phí]
-    C5\\\[Ghi nhận hộ nộp tiền mặt]
-    C6\\\[Xem danh sách hộ chưa nộp]
-    C7\\\[Tra cứu khoản thu]
-    C8\\\[Cư dân chọn khoản phí cần thanh toán]
-    C9\\\[Tạo giao dịch + URL VNPay Sandbox]
-    C10\\\[Nhận return/IPN từ VNPay]
-    C11\\\[Kiểm tra chữ ký + cập nhật trạng thái]
-    C12\\\[Cư dân xem lịch sử giao dịch]
-    C13\\\[Admin tra cứu giao dịch online]
-
-    Admin --> C1
-    Admin --> C2
-    Admin --> C3
-    Admin --> C4
-    Admin --> C5
-    Admin --> C6
-    Admin --> C7
-    Admin --> C13
-    Resident --> C8
-    Resident --> C9
-    Resident --> C12
-```
-
-**M6 – Quản lý phí gửi xe**
-
-```mermaid
-graph LR
-    Admin((Admin))
-
-    D1\\\[Đăng ký xe cho hộ]
-    D2\\\[Huỷ đăng ký xe]
-    D3\\\[Xem danh sách xe]
-    D4\\\[Quản lý chỗ gửi xe]
-    D5\\\[Cho thuê chỗ thừa]
-    D6\\\[Thu phí gửi xe theo tháng]
-
-    Admin --> D1
-    Admin --> D2
-    Admin --> D3
-    Admin --> D4
-    Admin --> D5
-    Admin --> D6
-```
-
-**M7 – Quản lý phí điện, nước, internet**
-
-```mermaid
-graph LR
-    Admin((Admin))
-
-    E1\\\[Nhập hoá đơn điện]
-    E2\\\[Nhập hoá đơn nước]
-    E3\\\[Nhập hoá đơn internet]
-    E4\\\[Sửa hoá đơn]
-    E5\\\[Ghi nhận hộ đã nộp]
-    E6\\\[Tra cứu hoá đơn theo hộ]
-
-    Admin --> E1
-    Admin --> E2
-    Admin --> E3
-    Admin --> E4
-    Admin --> E5
-    Admin --> E6
-```
-
-**M8 + M9 – Khiếu nại và thông báo**
-
-```mermaid
-graph LR
-    Resident((Cư dân))
-    Admin((Admin))
-
-    F1\\\[Gửi khiếu nại]
-    F2\\\[Xem trạng thái khiếu nại]
-    F3\\\[Xem danh sách khiếu nại]
-    F4\\\[Phản hồi khiếu nại]
-    F5\\\[Đánh dấu đã xử lý]
-    F6\\\[Soạn thông báo]
-    F7\\\[Gửi thông báo cho cư dân]
-    F8\\\[Xem thông báo]
-    F9\\\[Đánh dấu thông báo đã đọc]
-
-    Resident --> F1
-    Resident --> F2
-    Resident --> F8
-    Resident --> F9
-    Admin --> F3
-    Admin --> F4
-    Admin --> F5
-    Admin --> F6
-    Admin --> F7
-    Admin --> F8
-    Admin --> F9
-```
-
-**M10 – Tra cứu, thống kê và xuất file**
-
-```mermaid
-graph LR
-    Admin((Admin))
-
-    G1\\\[Thống kê đợt thu]
-    G2\\\[Thống kê đóng góp]
-    G3\\\[Thống kê dân cư]
-    G4\\\[Tra cứu theo hộ]
-    G5\\\[Xuất file Excel]
-    G6\\\[Xuất file PDF]
-
-    Admin --> G1
-    Admin --> G2
-    Admin --> G3
-    Admin --> G4
-    Admin --> G5
-    Admin --> G6
-```
-
-**M11 – Quản trị hệ thống (nhật ký, xoá mềm, cấu hình)**
-
-```mermaid
-graph LR
-    Admin((Admin))
-    System((Hệ thống))
-
-    H1\\\[Tra cứu nhật ký audit log]
-    H2\\\[Xoá mềm tài khoản]
-    H3\\\[Quản lý đơn giá cấu hình]
-    H4\\\[Tự động ghi audit log<br/>khi thao tác thành công]
-
-    Admin --> H1
-    Admin --> H2
-    Admin --> H3
-    System --> H4
-```
-
-Ghi chú: H4 (ghi audit log) không phải thao tác thủ công của Admin mà do **AOP** tự sinh khi một method service gắn `@LogAdminAction` chạy thành công; do đó biểu diễn bằng tác nhân "Hệ thống".
-
-### 4.3 Đặc tả chi tiết các use case quan trọng
-
-#### UC-LOGIN: Đăng nhập
-
-|Mục|Nội dung|
-|-|-|
-|**Tên use case**|Đăng nhập hệ thống|
-|**Actor**|Admin, Cư dân|
-|**Mục đích**|Xác thực người dùng và cấp JWT|
-|**Tiền điều kiện**|Người dùng đã có tài khoản, tài khoản chưa bị khoá và đã được duyệt (`active = TRUE`)|
-|**Hậu điều kiện**|Người dùng nhận được JWT và vào trang chính|
-|**Luồng chính**|1. Người dùng nhập username + mật khẩu<br>2. Hệ thống kiểm tra username trong CSDL<br>3. Hệ thống so sánh mật khẩu băm BCrypt<br>4. Hệ thống sinh JWT chứa userId + role<br>5. Hệ thống trả JWT cho frontend<br>6. Frontend lưu JWT và chuyển sang trang chính theo role|
-|**Luồng phụ**|Không có. Hệ thống không tự khoá tạm sau số lần sai mật khẩu; tài khoản chỉ bị vô hiệu khi `active = FALSE` (Admin chưa duyệt hoặc đã khoá tài khoản)|
-|**Ngoại lệ**|Username không tồn tại → "Tài khoản không tồn tại"<br>Mật khẩu sai → "Mật khẩu không đúng"<br>Tài khoản bị khoá → "Tài khoản đã bị khoá"<br>`active = FALSE` → "Tài khoản chưa được duyệt"|
-
-#### UC-REGISTER: Cư dân tự đăng ký tài khoản
-
-|Mục|Nội dung|
-|-|-|
-|**Tên use case**|Cư dân tự đăng ký tài khoản (có xác thực OTP email)|
-|**Actor**|Cư dân tự đăng ký (chưa đăng nhập, chưa có tài khoản)|
-|**Mục đích**|Cho phép cư dân tự tạo tài khoản RESIDENT, xác thực email bằng OTP, sau đó chờ Admin duyệt|
-|**Tiền điều kiện**|Người dùng chưa có tài khoản trong hệ thống|
-|**Hậu điều kiện**|Tài khoản mới được tạo với role `RESIDENT`, email được xác thực, trạng thái chờ Admin duyệt (`active = FALSE`, `household\\\_id = NULL`); sau khi Admin gán hộ và kích hoạt thì cư dân mới đăng nhập được|
-|**Luồng chính**|1. Người dùng (chưa đăng nhập) truy cập trang Đăng ký<br>2. Nhập: username, mật khẩu, xác nhận mật khẩu, họ tên, email, số điện thoại, mã căn hộ (`requested\\\_apartment\\\_code`)<br>3. Bấm "Gửi OTP"<br>4. Hệ thống kiểm tra dữ liệu hợp lệ, sinh OTP, hash OTP bằng BCrypt và gửi qua email (xem UC-VERIFY-OTP)<br>5. Cư dân nhập OTP nhận được<br>6. Hệ thống xác thực OTP<br>7. Hệ thống băm mật khẩu bằng BCrypt<br>8. Hệ thống lưu tài khoản với `role = RESIDENT`, `active = FALSE`, `household\\\_id = NULL`, `requested\\\_apartment\\\_code = <mã căn hộ cư dân nhập>`<br>9. Hệ thống hiển thị: "Đăng ký thành công, vui lòng chờ Ban quản trị duyệt"<br>10. Admin vào màn hình Quản lý tài khoản, xem các tài khoản chờ duyệt, gán `household\\\_id` phù hợp và bật `active = TRUE`|
-|**Luồng phụ**|Bấm "Huỷ" → không tạo tài khoản, quay về trang Đăng nhập|
-|**Ngoại lệ**|Username đã tồn tại; Mật khẩu và xác nhận không khớp; Mã căn hộ không tồn tại; OTP sai/hết hạn (xem UC-VERIFY-OTP)|
-
-#### UC-VERIFY-OTP: Xác thực OTP email
-
-|Mục|Nội dung|
-|-|-|
-|**Tên use case**|Xác thực email bằng mã OTP|
-|**Actor**|Cư dân (trong luồng đăng ký hoặc quên mật khẩu, chưa đăng nhập)|
-|**Mục đích**|Xác thực email người dùng bằng mã OTP gửi qua email|
-|**Tiền điều kiện**|Người dùng đã yêu cầu gửi OTP (đăng ký, quên mật khẩu hoặc xác nhận thao tác)|
-|**Hậu điều kiện**|OTP hợp lệ thì email được xác thực hoặc người dùng được phép tiếp tục thao tác (đặt lại mật khẩu)|
-|**Luồng chính**|1. Người dùng nhập email<br>2. Hệ thống sinh OTP ngẫu nhiên (6 chữ số)<br>3. Hệ thống hash OTP bằng BCrypt và lưu vào CSDL (`email\\\_otps`) với `purpose`, `expired\\\_at = now + 5 phút`, `used = FALSE`, `failed\\\_attempts = 0`<br>4. Hệ thống gửi OTP về email qua `JavaMailSender`<br>5. Người dùng nhập OTP nhận được<br>6. Hệ thống kiểm tra OTP bằng `BCrypt.matches(inputOtp, otpHashFromDB)`, đồng thời kiểm tra OTP chưa hết hạn, chưa dùng, `failed\\\_attempts < 5`<br>7. Nếu hợp lệ → đặt `used = TRUE`, xác thực email hoặc cho phép đặt lại mật khẩu<br>8. Nếu sai → tăng `failed\\\_attempts`, báo lỗi|
-|**Ngoại lệ**|OTP sai → "Mã OTP không đúng"<br>OTP hết hạn → "Mã OTP đã hết hạn"<br>OTP đã được sử dụng → "Mã OTP đã dùng, vui lòng yêu cầu mã mới"<br>Nhập sai quá số lần cho phép (5 lần) → khoá OTP, yêu cầu xin mã mới<br>Số lần gửi OTP vượt giới hạn (5 lần/15 phút/email) → "Vui lòng thử lại sau"|
-
-#### UC-FORGOT-PASSWORD: Quên mật khẩu bằng OTP
-
-|Mục|Nội dung|
-|-|-|
-|**Tên use case**|Quên mật khẩu – đặt lại bằng OTP gửi qua email|
-|**Actor**|Cư dân (quên mật khẩu, chưa đăng nhập)|
-|**Mục đích**|Cho phép người dùng đặt lại mật khẩu khi quên mật khẩu cũ|
-|**Tiền điều kiện**|Người dùng có tài khoản với email đã đăng ký trong hệ thống|
-|**Hậu điều kiện**|Mật khẩu được thay bằng mật khẩu mới đã băm BCrypt|
-|**Luồng chính**|1. Người dùng mở trang "Quên mật khẩu"<br>2. Nhập email<br>3. Hệ thống tìm tài khoản theo email; nếu có → sinh OTP, hash bằng BCrypt, lưu vào `email\\\_otps` với `purpose = FORGOT\\\_PASSWORD`, gửi qua email<br>4. Người dùng nhập OTP + mật khẩu mới + xác nhận mật khẩu mới<br>5. Hệ thống kiểm tra OTP (xem UC-VERIFY-OTP)<br>6. Hệ thống băm mật khẩu mới bằng BCrypt và cập nhật vào bảng `users`<br>7. Hệ thống đặt OTP `used = TRUE`<br>8. Hiển thị "Đặt lại mật khẩu thành công"|
-|**Ngoại lệ**|Email không tồn tại → vì lý do bảo mật, hệ thống vẫn trả "Nếu email tồn tại, OTP đã được gửi"<br>OTP sai/hết hạn (xem UC-VERIFY-OTP)<br>Mật khẩu mới không khớp xác nhận|
-
-#### UC-CREATE-FEE: Tạo khoản thu
-
-|Mục|Nội dung|
-|-|-|
-|**Tên use case**|Tạo khoản thu|
-|**Actor**|Admin|
-|**Mục đích**|Đăng ký một khoản thu mới vào hệ thống|
-|**Tiền điều kiện**|Admin đã đăng nhập|
-|**Hậu điều kiện**|Khoản thu mới được lưu vào CSDL|
-|**Luồng chính**|1. Admin mở màn hình "Quản lý khoản thu"<br>2. Chọn "Tạo khoản thu mới"<br>3. Nhập: tên khoản thu, loại (bắt buộc/đóng góp), đơn giá (nếu có), đơn vị tính, ghi chú<br>4. Bấm "Lưu"<br>5. Hệ thống kiểm tra dữ liệu hợp lệ<br>6. Hệ thống lưu khoản thu và hiển thị thông báo thành công|
-|**Luồng phụ**|Bấm "Huỷ" → đóng form, không lưu|
-|**Ngoại lệ**|Thiếu trường bắt buộc; Tên khoản thu trùng|
-
-#### UC-COLLECT-FEE: Xác nhận đã nộp tiền mặt
-
-|Mục|Nội dung|
-|-|-|
-|**Tên use case**|Xác nhận hộ đã nộp đủ tiền mặt|
-|**Actor**|Admin|
-|**Mục đích**|Cho phép Admin xác nhận một phiếu nộp đã được cư dân nộp đủ bằng tiền mặt, không nhập|
-|**Tiền điều kiện**|Admin đã đăng nhập; có đợt thu phí đang mở; phiếu nộp thuộc hộ cần xác nhận và đang ở trạng thái `UNPAID`|
-|**Hậu điều kiện**|Phiếu nộp (`payments`) được cập nhật: `amount\\\_paid = amount\\\_due`, `status = PAID`, `payment\\\_method = CASH`, `paid\\\_date` và `paid\\\_at` được ghi nhận, `collected\\\_by` lưu Admin xác nhận|
-|**Luồng chính**|1. Admin mở màn hình "Lập đợt thu / Thu phí"<br>2. Admin chọn đợt thu phí hoặc tìm kiếm hộ cần xác nhận<br>3. Hệ thống hiển thị số tiền phải nộp của phiếu nộp<br>4. Admin tích chọn hoặc bấm nút "Đã nộp tiền mặt"<br>5. Hệ thống hiển thị hộp xác nhận: "Xác nhận hộ này đã nộp đủ tiền mặt?"<br>6. Admin bấm "Xác nhận"<br>7. Hệ thống tự động đặt `amount\\\_paid = amount\\\_due`, `status = PAID`, `payment\\\_method = CASH`, `paid\\\_date = ngày hiện tại`, `paid\\\_at = thời điểm hiện tại`, `collected\\\_by = Admin hiện tại`<br>8. Hệ thống hiển thị thông báo "Xác nhận nộp tiền mặt thành công"|
-|**Luồng phụ**|Admin bấm "Huỷ" ở hộp xác nhận → hệ thống không thay đổi dữ liệu|
-|**Ngoại lệ**|Phiếu nộp đã `PAID` → không cho xác nhận lại<br>Phiếu nộp không tồn tại → báo lỗi<br>Admin không có quyền → 403 Forbidden|
-|**Ghi chú thiết kế**|Phiên bản hiện tại không hỗ trợ nộp thiếu hoặc nộp một phần. Với thanh toán tiền mặt, hệ thống mặc định số tiền cư dân nộp luôn đúng và đủ, nên Admin chỉ xác nhận trạng thái đã nộp.|
-
-#### UC-VNPAY-PAYMENT: Thanh toán online qua VNPay Sandbox
-
-|Mục|Nội dung|
-|-|-|
-|**Tên use case**|Thanh toán online khoản phí/hoá đơn của hộ qua VNPay Sandbox|
-|**Actor**|Cư dân|
-|**Mục đích**|Cho phép cư dân thanh toán online một khoản phí/hoá đơn của hộ mình thông qua cổng VNPay Sandbox|
-|**Tiền điều kiện**|Cư dân đã đăng nhập; tài khoản đã được gán với một household (`household\\\_id` không NULL, `active = TRUE`); có khoản phí/hoá đơn chưa thanh toán thuộc về household đó|
-|**Hậu điều kiện**|- Giao dịch thành công → `payment\\\_transactions.status = SUCCESS`, khoản phí/hoá đơn tương ứng được cập nhật đã thanh toán<br>- Giao dịch thất bại/huỷ → `payment\\\_transactions.status = FAILED` hoặc `CANCELLED`, trạng thái khoản phí/hoá đơn không đổi|
-|**Luồng chính**|1. Cư dân xem danh sách khoản phải nộp gồm phiếu nộp theo đợt thu và hoá đơn điện/nước/internet chưa thanh toán của hộ mình<br>2. Cư dân chọn khoản cần thanh toán → bấm "Thanh toán online"<br>3. Backend kiểm tra khoản phí thuộc household của cư dân; sinh `transaction\\\_code` duy nhất; tạo bản ghi `payment\\\_transactions` với `status = PENDING`, `target\\\_type`, `target\\\_id`, `amount`<br>4. Backend gọi `VnpayService` để tạo URL thanh toán VNPay Sandbox (ký HMAC-SHA512 trên tham số)<br>5. Backend trả `paymentUrl` về frontend<br>6. Frontend chuyển hướng cư dân sang trang thanh toán VNPay Sandbox<br>7. Cư dân thực hiện thanh toán trên VNPay Sandbox (chọn ngân hàng, nhập thông tin giả lập)<br>8. VNPay gọi IPN URL (`GET /api/payments/vnpay/ipn`) đến backend để xác nhận giao dịch; đồng thời trình duyệt cư dân được redirect về Return URL của backend (`GET /api/payments/vnpay/return`)<br>9. Backend kiểm tra chữ ký phản hồi (`vnp\\\_SecureHash`) ở cả IPN và Return; IPN là nguồn cập nhật trạng thái chính<br>10. Backend kiểm tra `transaction\\\_code`, số tiền, và `response\\\_code`<br>11. Nếu IPN hợp lệ và `vnp\\\_ResponseCode = "00"` → cập nhật `payment\\\_transactions.status = SUCCESS`, lưu `vnpay\\\_transaction\\\_no`, `vnpay\\\_bank\\\_code`, `vnpay\\\_pay\\\_date`; cập nhật bản ghi khoản phí/hoá đơn tương ứng là đã thanh toán<br>12. Backend Return URL redirect cư dân về trang kết quả thanh toán của frontend, frontend đọc trạng thái giao dịch đã lưu để hiển thị kết quả|
-|**Luồng phụ**|Cư dân huỷ thanh toán trên VNPay → VNPay trả `vnp\\\_ResponseCode = "24"` → cập nhật `status = CANCELLED`|
-|**Ngoại lệ**|- Thanh toán thất bại (`vnp\\\_ResponseCode ≠ "00"` và ≠ `"24"`) → `status = FAILED`<br>- Phản hồi sai chữ ký → từ chối, ghi log cảnh báo, không cập nhật<br>- Giao dịch đã được xử lý trước đó (idempotency) → bỏ qua, trả kết quả lần đầu<br>- Khoản phí/hoá đơn đã có giao dịch `PENDING` → trả lại `paymentUrl` cũ hoặc yêu cầu cư dân chờ/hủy giao dịch cũ, không tạo thêm giao dịch song song<br>- Số tiền phản hồi không khớp với `amount` hệ thống tạo → từ chối, ghi log cảnh báo<br>- `transaction\\\_code` không tồn tại trong hệ thống → từ chối<br>- Cư dân thử thanh toán khoản phí không thuộc household của mình → 403 Forbidden|
-
-Ghi chú: Thanh toán VNPay hỗ trợ 4 loại `target\\\_type`:
-
-* `FEE\\\_PAYMENT` — thanh toán một phiếu nộp theo đợt thu.
-* `UTILITY\\\_BILL` — thanh toán một hoá đơn điện/nước/internet.
-* `FEE\\\_PAYMENT\\\_BATCH` — thanh toán **gộp** nhiều phiếu nộp trong một giao dịch.
-* `MIXED\\\_PAYMENT\\\_BATCH` — thanh toán **gộp** hỗn hợp cả phiếu nộp lẫn hoá đơn tiện ích trong một giao dịch.
-
-Với các loại gộp, danh sách id và số tiền từng khoản được lưu ở `target\\\_ids` / `target\\\_amounts` / `utility\\\_bill\\\_ids`. Không thêm `PARKING\\\_FEE` làm `target\\\_type` riêng: phí gửi xe hằng tháng được tổng hợp thành một đợt thu trong `fee\\\_periods/payments` với khoản thu loại phí gửi xe (`unit = PER\\\_VEHICLE` hoặc `FIXED`). Vì vậy nếu cư dân thanh toán phí gửi xe online thì hệ thống vẫn xử lý qua `target\\\_type = FEE\\\_PAYMENT` (hoặc gộp chung trong một batch).
-
-#### UC-VIEW-MY-PAYMENT-HISTORY: Cư dân xem lịch sử giao dịch online
-
-|Mục|Nội dung|
-|-|-|
-|**Tên use case**|Cư dân xem lịch sử giao dịch thanh toán online của hộ mình|
-|**Actor**|Cư dân|
-|**Tiền điều kiện**|Cư dân đã đăng nhập, có `household\\\_id`|
-|**Hậu điều kiện**|Cư dân thấy danh sách giao dịch online của household mình|
-|**Luồng chính**|1. Cư dân vào màn hình "Lịch sử giao dịch online"<br>2. Frontend gọi `GET /api/payments/vnpay/my-history` (kèm JWT)<br>3. Backend lấy `household\\\_id` từ JWT, truy vấn `payment\\\_transactions WHERE household\\\_id = ?`<br>4. Frontend hiển thị bảng: mã giao dịch, khoản phí, số tiền, ngày, trạng thái|
-|**Ngoại lệ**|Chưa có giao dịch nào → hiển thị danh sách trống|
-
-#### UC-ADMIN-PAYMENT-LOOKUP: Admin tra cứu giao dịch online
-
-|Mục|Nội dung|
-|-|-|
-|**Tên use case**|Admin tra cứu danh sách giao dịch thanh toán online|
-|**Actor**|Admin|
-|**Tiền điều kiện**|Admin đã đăng nhập|
-|**Hậu điều kiện**|Admin xem được danh sách giao dịch online toàn hệ thống, có thể lọc theo trạng thái, hộ, khoảng thời gian|
-|**Luồng chính**|1. Admin vào màn hình "Giao dịch thanh toán online"<br>2. Lọc theo trạng thái (PENDING/SUCCESS/FAILED/CANCELLED), hộ, ngày, `target\\\_type`<br>3. Frontend gọi `GET /api/admin/payment-transactions?status=…\\\&householdId=…\\\&fromDate=…\\\&toDate=…`<br>4. Backend trả danh sách `payment\\\_transactions` tương ứng (có phân trang)<br>5. Admin có thể xem chi tiết từng giao dịch|
-|**Ngoại lệ**|–|
-
-#### UC-COMPLAINT: Gửi khiếu nại
-
-|Mục|Nội dung|
-|-|-|
-|**Tên use case**|Cư dân gửi khiếu nại|
-|**Actor**|Cư dân|
-|**Tiền điều kiện**|Cư dân đã đăng nhập|
-|**Hậu điều kiện**|Khiếu nại được lưu với trạng thái "NEW"|
-|**Luồng chính**|1. Cư dân vào màn hình "Khiếu nại của tôi"<br>2. Bấm "Gửi khiếu nại mới"<br>3. Nhập tiêu đề, chọn loại (FEE/SECURITY/CLEANING/OTHER), nội dung<br>4. Bấm "Gửi"<br>5. Hệ thống lưu khiếu nại và trả về mã khiếu nại<br>6. Hệ thống hiển thị thông báo "Đã gửi thành công"|
-|**Ngoại lệ**|Tiêu đề hoặc nội dung trống → báo lỗi|
-
-#### UC-HANDLE-COMPLAINT: Xử lý khiếu nại
-
-|Mục|Nội dung|
-|-|-|
-|**Tên use case**|Phản hồi và đóng khiếu nại|
-|**Actor**|Admin|
-|**Tiền điều kiện**|Khiếu nại có trạng thái "NEW" hoặc "IN\_PROGRESS"|
-|**Hậu điều kiện**|Khiếu nại có phản hồi, trạng thái cập nhật|
-|**Luồng chính**|1. Admin mở danh sách khiếu nại<br>2. Chọn khiếu nại cần xử lý<br>3. Nhập nội dung phản hồi<br>4. Đổi trạng thái sang "IN\_PROGRESS" hoặc "RESOLVED"<br>5. Bấm "Lưu"<br>6. Hệ thống cập nhật khiếu nại và hiển thị phản hồi cho cư dân|
-
-#### UC-NOTIFY: Gửi thông báo
-
-|Mục|Nội dung|
-|-|-|
-|**Tên use case**|Gửi thông báo cho cư dân|
-|**Actor**|Admin|
-|**Tiền điều kiện**|Admin đã đăng nhập|
-|**Hậu điều kiện**|Thông báo được lưu và hiển thị cho người nhận|
-|**Luồng chính**|1. Admin vào màn hình "Thông báo"<br>2. Bấm "Soạn thông báo mới"<br>3. Nhập tiêu đề, nội dung<br>4. Chọn phạm vi: ALL / BY\_FLOOR / BY\_HOUSEHOLD<br>5. Bấm "Gửi"<br>6. Hệ thống tạo bản ghi notification và các bản ghi notification\_recipients tương ứng|
-|**Ngoại lệ**|Không chọn người nhận → báo lỗi|
-
-#### UC-EXPORT: Xuất báo cáo
-
-|Mục|Nội dung|
-|-|-|
-|**Tên use case**|Xuất báo cáo Excel hoặc PDF|
-|**Actor**|Admin|
-|**Tiền điều kiện**|Đã chọn loại báo cáo và phạm vi dữ liệu|
-|**Hậu điều kiện**|File Excel/PDF được tải về máy người dùng|
-|**Luồng chính**|1. Admin vào màn hình "Thống kê và xuất file"<br>2. Chọn loại báo cáo (đợt thu, dân cư, đóng góp, giao dịch online…)<br>3. Chọn khoảng thời gian / phạm vi<br>4. Chọn định dạng Excel hoặc PDF<br>5. Bấm "Xuất file"<br>6. Backend sinh file, trả về frontend, trình duyệt tải về|
-
-\---
-
-## 5\. THIẾT KẾ KIẾN TRÚC
+## 4. USE CASE DIAGRAM
+
+### 4.1 Use Case diagram tổng quan
+
+Hệ thống quản lý chung cư BlueMoon (Sprint 1) được thiết kế xoay quanh **4 tác nhân (Actors)** chính: **Ban quản trị (BQT)**, **Kế toán (ACCOUNTANT)**, **Cư dân (RESIDENT)** và **Cơ quan chức năng (AUTHORITY)**. 
+
+** [`docs/UML/UseCaseDiagram.asta`](file:///d:/Users/WINDOWS/Downloads/bluemoon2/docs/UML/UseCaseDiagram.asta)
+
+
+### 4.2 Đặc tả chi tiết các use case trọng điểm
+
+#### UC-01: Đăng nhập hệ thống
+
+| Mục | Nội dung |
+| --- | --- |
+| **Tên use case** | Đăng nhập hệ thống và khởi tạo phiên làm việc |
+| **Actor** | Tất cả người dùng (BQT, Kế toán, Cư dân, CQCN) |
+| **Mục đích** | Xác thực danh tính người dùng qua username/password và cấp token JWT |
+| **Tiền điều kiện** | Người dùng đã được cấp tài khoản và tài khoản đang ở trạng thái kích hoạt (`active = true`) |
+| **Hậu điều kiện** | Người dùng nhận được Bearer Token JWT (hiệu lực 8 giờ), lưu vào `sessionStorage` và chuyển hướng đến trang chủ theo vai trò |
+| **Luồng chính** | 1. Người dùng nhập `username` và `password` trên trang Đăng nhập.<br/>2. Frontend kiểm tra dữ liệu đầu vào và gửi `POST /auth/login`.<br/>3. Backend tìm kiếm tài khoản theo `username` (không phân biệt hoa thường).<br/>4. Backend xác thực trạng thái tài khoản (`is_active == true`) và đối chiếu mật khẩu qua `BCryptPasswordEncoder.matches()`.<br/>5. Backend cập nhật `lastLoginAt` và sinh JWT Token chứa thông tin định danh và vai trò (`RoleCode`).<br/>6. Backend trả về `LoginResponse` (kèm token và thời hạn).<br/>7. Frontend lưu token vào `sessionStorage`, gọi `GET /me` để nạp hồ sơ đầy đủ, sau đó chuyển hướng đến trang tương ứng với vai trò. |
+| **Ngoại lệ** | - Thiếu thông tin hoặc sai định dạng: Trả về `400 VALIDATION_ERROR`.<br/>- Không tìm thấy username, tài khoản bị khóa, hoặc sai mật khẩu: Đều trả về chung một mã lỗi `401 INVALID_CREDENTIALS` để bảo mật thông tin tài khoản. |
+
+#### UC-02: Ban quản trị tạo tài khoản người dùng
+
+| Mục | Nội dung |
+| --- | --- |
+| **Tên use case** | Tạo tài khoản người dùng nội bộ hoặc tài khoản cư dân |
+| **Actor** | Ban quản trị (BQT) |
+| **Mục đích** | Cấp tài khoản đăng nhập cho nhân sự tòa nhà hoặc cho cư dân liên kết với hồ sơ nhân khẩu |
+| **Tiền điều kiện** | BQT đã đăng nhập hệ thống và có vai trò `BQT` |
+| **Hậu điều kiện** | Tài khoản mới được lưu vào bảng `app_user` với trạng thái `active = true`, `mustChangePassword = true` và các vai trò tương ứng |
+| **Luồng chính** | 1. BQT mở form Tạo tài khoản, nhập username, họ tên, email, số điện thoại, mật khẩu ban đầu và chọn danh sách vai trò.<br/>2. Nếu chọn vai trò `RESIDENT`, BQT tra cứu và chọn đúng `residentId` của nhân khẩu đang cư trú.<br/>3. BQT bấm "Lưu", Frontend gọi `POST /users`.<br/>4. Backend kiểm tra tính duy nhất của `username`, `email` và `residentId`.<br/>5. Backend băm mật khẩu bằng BCrypt, gán cờ `mustChangePassword = true`, lưu vào CSDL và trả về `UserResponse`.<br/>6. Frontend hiển thị thông báo thành công và tải lại danh sách tài khoản. |
+| **Ngoại lệ** | - Trùng `username` hoặc `email`: Trả về `409 DUPLICATE`.<br/>- Vai trò `RESIDENT` mà không truyền `residentId`: Trả về `422 RESIDENT_LINK_REQUIRED`.<br/>- Nhân khẩu đã có tài khoản hoặc không ở trạng thái `RESIDING`: Trả về lỗi `400/409`. |
+
+#### UC-03: Tạo hộ gia đình kèm chủ hộ
+
+| Mục | Nội dung |
+| --- | --- |
+| **Tên use case** | Tạo mới hộ gia đình và chỉ định chủ hộ ban đầu |
+| **Actor** | Ban quản trị (BQT) |
+| **Mục đích** | Thiết lập thông tin căn hộ, mã hộ gia đình và hồ sơ nhân khẩu chủ hộ ban đầu |
+| **Tiền điều kiện** | BQT đã đăng nhập hệ thống |
+| **Hậu điều kiện** | Bản ghi `household`, `resident` (chủ hộ) và bản ghi biến động ban đầu `resident_movement` (loại `MOVE_IN`, `isInitial = true`) được tạo đồng thời trong một giao dịch |
+| **Luồng chính** | 1. BQT nhập thông tin hộ: mã hộ, số căn hộ, tầng, diện tích.<br/>2. BQT nhập thông tin chủ hộ: họ tên, ngày sinh, giới tính, CCCD/CMND, số điện thoại.<br/>3. BQT bấm "Lưu", Frontend gọi `POST /households`.<br/>4. Backend chuẩn hóa dữ liệu (trim, uppercase), kiểm tra trùng lặp mã hộ, số căn hộ và CCCD chủ hộ.<br/>5. Trong cùng một giao dịch transactional: Backend lưu `household` (`status = ACTIVE`), lưu `resident` (`is_head = true`, `status = RESIDING`), và lưu `resident_movement` (`MOVE_IN`, `is_initial = true`).<br/>6. Backend trả về `HouseholdResponse` (`residentCount = 1`, `presentCount = 1`).<br/>7. Frontend chuyển hướng đến trang chi tiết hộ gia đình vừa tạo. |
+| **Ngoại lệ** | - Trùng mã hộ hoặc số căn hộ: Trả về `409 DUPLICATE`.<br/>- Dữ liệu không hợp lệ (diện tích âm, ngày sinh trước 1900): Trả về `400 VALIDATION_ERROR`. |
+
+#### UC-04: Ghi nhận biến động cư trú nhân khẩu
+
+| Mục | Nội dung |
+| --- | --- |
+| **Tên use case** | Ghi nhận biến động nhân khẩu (chuyển đi, chuyển hộ, tạm trú, tạm vắng, qua đời, trở về) |
+| **Actor** | Ban quản trị (BQT) |
+| **Mục đích** | Cập nhật trạng thái cư trú của nhân khẩu và ghi nhận nhật ký pháp lý append-only |
+| **Tiền điều kiện** | Nhân khẩu tồn tại và đang ở trạng thái cư trú cho phép chuyển đổi |
+| **Hậu điều kiện** | Trạng thái nhân khẩu được cập nhật; bản ghi `resident_movement` được thêm mới; nếu chủ hộ chuyển đi thì yêu cầu chỉ định chủ hộ mới |
+| **Luồng chính** | 1. BQT mở màn hình Ghi nhận biến động tại hồ sơ nhân khẩu, chọn loại biến động phù hợp.<br/>2. BQT nhập ngày hiệu lực, ngày bắt đầu/kết thúc (nếu tạm vắng/tạm trú), hộ đích (nếu chuyển hộ), ghi chú.<br/>3. BQT bấm "Xác nhận", Frontend gọi `POST /residents/{id}/movements`.<br/>4. Backend khóa dòng `resident` (`SELECT ... FOR UPDATE`), kiểm tra tính hợp lệ của chuyển đổi trạng thái và ngày hiệu lực.<br/>5. Nếu nhân khẩu là chủ hộ và rời hộ (`MOVE_OUT`, `TRANSFER`, `DEATH`), Backend kiểm tra ứng viên chủ hộ mới; nếu chưa có chủ hộ mới chỉ định trong request thì trả về `422 HEAD_REQUIRED` kèm danh sách ứng viên.<br/>6. Backend cập nhật trạng thái nhân khẩu, lưu bản ghi `resident_movement` mới (append-only), tự động khóa tài khoản người dùng nếu chuyển đi hoặc qua đời.<br/>7. Backend trả về `RecordMovementResponse` thành công. |
+| **Ngoại lệ** | - Chuyển đổi trạng thái trái quy tắc: Trả về `422 INVALID_TRANSITION`.<br/>- Thiếu chỉ định chủ hộ thay thế: Trả về `422 HEAD_REQUIRED`. |
+
+#### UC-05: Cư dân gửi đề nghị cư trú trực tuyến
+
+| Mục | Nội dung |
+| --- | --- |
+| **Tên use case** | Cư dân gửi đề nghị cập nhật hồ sơ, tạm vắng hoặc tạm trú |
+| **Actor** | Cư dân (RESIDENT) |
+| **Mục đích** | Cho phép cư dân chủ động nộp yêu cầu thay đổi thông tin cư trú lên Ban quản trị |
+| **Tiền điều kiện** | Cư dân đã đăng nhập, tài khoản đã gắn với nhân khẩu trong một hộ `ACTIVE` |
+| **Hậu điều kiện** | Bản ghi `resident_request` được tạo ở trạng thái `PENDING` (chưa thay đổi trực tiếp hồ sơ nhân khẩu) |
+| **Luồng chính** | 1. Cư dân mở trang "Hộ của tôi" (`/ho-cua-toi`), chọn loại đề nghị cần gửi.<br/>2. Với đề nghị Cập nhật thông tin: Chọn thành viên trong hộ và nhập dữ liệu mới.<br/>3. Với đề nghị Tạm vắng: Chọn thành viên, nhập khoảng thời gian từ ngày - đến ngày.<br/>4. Với đề nghị Tạm trú: Nhập thông tin khách lưu trú và thời gian lưu trú.<br/>5. Cư dân bấm "Gửi đề nghị", Frontend gọi `POST /me/resident-requests`.<br/>6. Backend kiểm tra quyền sở hữu hộ, kiểm tra tính hợp lệ và chụp lại ảnh dữ liệu hiện tại (`beforeValues`).<br/>7. Backend lưu bản ghi `resident_request` với trạng thái `PENDING` và trả về `201 Created`. |
+| **Ngoại lệ** | - Đã có đề nghị cùng loại đang chờ duyệt cho nhân khẩu này: Trả về `409 PENDING_REQUEST_EXISTS`.<br/>- Không có thay đổi dữ liệu so với hiện tại: Trả về `422 NO_CHANGES`. |
+
+#### UC-06: Ban quản trị phê duyệt / từ chối đề nghị cư trú
+
+| Mục | Nội dung |
+| --- | --- |
+| **Tên use case** | Thẩm định, phê duyệt hoặc từ chối đề nghị cư trú của cư dân |
+| **Actor** | Ban quản trị (BQT) |
+| **Mục đích** | Xử lý các yêu cầu cư trú do cư dân gửi lên và đồng bộ dữ liệu vào hệ thống |
+| **Tiền điều kiện** | Đề nghị đang ở trạng thái chờ duyệt (`status = PENDING`) |
+| **Hậu điều kiện** | Nếu duyệt: Đề nghị chuyển thành `APPROVED`, tự động áp dụng thay đổi hồ sơ nhân khẩu hoặc sinh bản ghi biến động cư trú. Nếu từ chối: Đề nghị chuyển thành `REJECTED` kèm lý do bắt buộc |
+| **Luồng chính** | 1. BQT vào hàng đợi đề nghị cư trú (`/yeu-cau-cu-dan`), chọn xem chi tiết đề nghị.<br/>2. Giao diện hiển thị đối chiếu trực quan dữ liệu trước và sau thay đổi (JSON diff).<br/>3. Trường hợp phê duyệt: BQT nhập ghi chú tùy chọn và bấm "Phê duyệt" (`POST /resident-requests/{id}/approve`). Backend khóa dòng đề nghị, kiểm tra dữ liệu gốc chưa bị thay đổi (`REQUEST_OUTDATED`), áp dụng cập nhật vào bảng `resident` hoặc gọi `recordMovement()` để ghi nhận biến động.<br/>4. Trường hợp từ chối: BQT nhập lý do từ chối bắt buộc và bấm "Từ chối" (`POST /resident-requests/{id}/reject`). Backend cập nhật trạng thái `REJECTED` và lưu `decisionReason`.<br/>5. Backend trả về kết quả phản hồi cập nhật. |
+| **Ngoại lệ** | - Dữ liệu nhân khẩu đã bị sửa đổi trong thời gian chờ duyệt: Trả về `409 REQUEST_OUTDATED`.<br/>- Đề nghị đã được xử lý trước đó: Trả về `409 REQUEST_NOT_PENDING`. |
+
+#### UC-07: Lập danh sách khoản phải thu cho kỳ thu (Generate Receivables)
+
+| Mục | Nội dung |
+| --- | --- |
+| **Tên use case** | Lập danh sách khoản phải thu (công nợ) tự động cho các hộ gia đình trong kỳ thu |
+| **Actor** | Kế toán (ACCOUNTANT), Ban quản trị (BQT) |
+| **Mục đích** | Sinh dữ liệu các khoản phải nộp cho toàn bộ hộ dân đang hoạt động theo các khoản thu bắt buộc |
+| **Tiền điều kiện** | Kỳ thu phí tồn tại, đang mở (`status = OPEN`) và chưa từng lập danh sách (`generated_at IS NULL`); có ít nhất 1 khoản thu bắt buộc (`MANDATORY`) đang kích hoạt |
+| **Hậu điều kiện** | Kỳ thu được đánh dấu `generated_at = now`, các bản ghi công nợ được sinh hàng loạt vào bảng `receivable` |
+| **Luồng chính** | 1. Người dùng mở trang Chi tiết kỳ thu phí (`/ky-thu-phi/:id`), bấm nút "Xem trước" (Dry-run).<br/>2. Frontend gọi `POST /billing-periods/{id}/generate?dryRun=true`.<br/>3. Backend tính toán thử nghiệm số khoản phải thu, tổng tiền dự kiến và danh sách các hộ bị bỏ qua (vd: thiếu diện tích) mà không ghi DB.<br/>4. Frontend hiển thị bảng xem trước tổng hợp. Người dùng kiểm tra số liệu và bấm "Xác nhận lập danh sách".<br/>5. Frontend gọi `POST /billing-periods/{id}/generate` (chế độ chính thức).<br/>6. Backend khóa dòng kỳ thu và các khoản thu bắt buộc, thực thi câu lệnh chèn hàng loạt (`INSERT ... SELECT`) vào bảng `receivable`, cập nhật `generated_at` và `generated_by`.<br/>7. Backend trả về `BillingGenerationResponse` thành công. |
+| **Ngoại lệ** | - Kỳ thu đã đóng hoặc đã từng lập danh sách: Trả về lỗi `422 PERIOD_CLOSED` hoặc `409 ALREADY_GENERATED`.<br/>- Không có khoản thu bắt buộc nào đang hoạt động: Trả về `422 NO_ACTIVE_FEE`. |
+
+---
+
+---
+
+## 5. THIẾT KẾ KIẾN TRÚC
 
 ### 5.1 Kiến trúc tổng quan
 
-Hệ thống thiết kế theo **kiến trúc 3 tầng (3-tier)** cho ứng dụng web, có tích hợp với hai dịch vụ ngoài: **SMTP server** (gửi email OTP) và **VNPay Sandbox** (cổng thanh toán):
+Hệ thống BlueMoon được thiết kế theo **kiến trúc 3 tầng (3-tier Architecture)** tiêu chuẩn cho ứng dụng web doanh nghiệp hiện đại, bao gồm:
+* **Tầng Trình diễn (Presentation Layer - Frontend):** Ứng dụng Single Page Application (SPA) phát triển trên nền tảng **React 18.3.1** và build tool **Vite 6.0.5**. Frontend giao tiếp với Backend hoàn toàn thông qua giao thức **HTTP/HTTPS** và định dạng dữ liệu **JSON** (RESTful API).
+* **Tầng Nghiệp vụ (Business Logic Layer - Backend):** Ứng dụng **Spring Boot 4.x** (nền tảng **Java 21/25**), tổ chức theo mô hình phân lớp (Layered Architecture: Controller - Service - Repository). Backend chịu trách nhiệm xác thực/phân quyền (Spring Security + JJWT), thực thi logic nghiệp vụ, tính toán công nợ và quản lý giao dịch CSDL.
+* **Tầng Dữ liệu (Data Layer - Database):** Hệ quản trị cơ sở dữ liệu quan hệ **PostgreSQL 14+**, đảm bảo tính toàn vẹn dữ liệu (ACID), hỗ trợ các kiểu dữ liệu nâng cao (`JSONB`, `TIMESTAMPTZ`, `NUMERIC`) và khóa dòng chống xung đột ghi (`SELECT ... FOR UPDATE`).
 
 ```mermaid
 graph TB
-    subgraph Client\\\[Tầng Client]
-        Browser\\\[Trình duyệt<br/>React SPA]
+    subgraph ClientLayer["Tầng Client (Trình duyệt)"]
+        Browser["React 18 SPA (Vite 6)<br/>Port: 5173 / HTTPS<br/>Quản lý state, Form Validation, UI"]
     end
 
-    subgraph Server\\\[Tầng Server – Spring Boot]
-        Controller\\\[Controller<br/>REST API]
-        Service\\\[Service<br/>Xử lý nghiệp vụ<br/>EmailService, OtpService<br/>PaymentService, VnpayService]
-        Repository\\\[Repository<br/>JPA]
+    subgraph ServerLayer["Tầng Server (Spring Boot Application)"]
+        Security["Spring Security & JWT Filter<br/>Bearer Token Authentication & RBAC"]
+        Controller["REST Controllers<br/>12 Controllers: Auth, User, Household, Resident, Fee, Period..."]
+        Service["Service Layer<br/>12 Services: Xử lý nghiệp vụ, Tính toán phí, Phê duyệt"]
+        Repository["Data Access Layer<br/>Spring Data JPA + Specifications + Native Queries"]
     end
 
-    subgraph DB\\\[Tầng Dữ liệu]
-        MySQL\\\[(MySQL 8.x)]
+    subgraph DataLayer["Tầng Dữ liệu (PostgreSQL 14+)"]
+        Postgres["PostgreSQL Database<br/>Port: 5432<br/>10 Bảng quan hệ + Triggers + Ràng buộc toàn vẹn"]
     end
 
-    subgraph External\\\[Dịch vụ ngoài]
-        SMTP\\\[SMTP Server]
-        VNPay\\\[VNPay Sandbox]
-    end
-
-    Browser -- "HTTP + JSON<br/>(REST API)" --> Controller
+    Browser -- "HTTP/HTTPS (REST API JSON)<br/>Header: Authorization: Bearer <token>" --> Security
+    Security --> Controller
     Controller --> Service
     Service --> Repository
-    Repository --> MySQL
-    Service -- "SMTP<br/>JavaMailSender" --> SMTP
-    Service -- "Tạo URL thanh toán<br/>+ Verify chữ ký" --> VNPay
-    VNPay -- "Return URL<br/>+ IPN URL" --> Controller
-    Browser -- "Redirect tới<br/>VNPay Sandbox" --> VNPay
+    Repository -- "JDBC / SQL (HikariCP)" --> Postgres
 ```
 
-* **Tầng Client (React):** giao diện người dùng, gọi REST API. Khi thanh toán online, frontend chuyển hướng (redirect) cư dân sang trang thanh toán VNPay Sandbox.
-* **Tầng Server (Spring Boot):** xử lý nghiệp vụ, phân quyền, truy xuất CSDL; gửi email OTP qua SMTP; tạo URL thanh toán VNPay Sandbox; nhận return/IPN từ VNPay và kiểm tra chữ ký.
-* **Tầng Dữ liệu (MySQL):** lưu trữ dữ liệu lâu dài, bao gồm OTP đã hash và giao dịch thanh toán online.
-* **Dịch vụ ngoài:**
+### 5.2 Sơ đồ thành phần (Component Diagram)
 
-  * **SMTP Server**: gửi email OTP (Gmail SMTP hoặc tương đương).
-  * **VNPay Sandbox**: cổng thanh toán; nhận yêu cầu thanh toán, trả kết quả qua return URL và IPN URL.
+Sơ đồ thành phần mô tả sự phân rã kiến trúc của hệ thống thành các module logic độc lập, thể hiện rõ giao tiếp giữa các thành phần frontend, các tầng backend và hệ thống lưu trữ.
 
-### 5.2 Luồng kiến trúc cho 2 chức năng mới
+> Mô hình chi tiết được thiết kế và lưu trữ tại file: [docs/UML/Component Diagram.asta](file:///d:/Users/WINDOWS/Downloads/bluemoon2/docs/UML/Component%20Diagram.asta).
 
-**Luồng gửi/xác thực OTP qua email:**
 
-1. Frontend gọi `POST /api/auth/send-otp` (hoặc `/forgot-password/send-otp`).
-2. `OtpService` sinh OTP ngẫu nhiên 6 chữ số, hash bằng BCrypt, lưu vào `email\\\_otps`.
-3. `EmailService` gọi `JavaMailSender` để gửi email OTP qua SMTP.
-4. Frontend hiển thị form nhập OTP; gọi `POST /api/auth/verify-otp`.
-5. `OtpService` so khớp hash, kiểm tra `expired\\\_at`, `used`, `failed\\\_attempts`.
-6. Nếu hợp lệ → đánh dấu `used = TRUE`, hoàn tất xác thực; ngược lại tăng `failed\\\_attempts` và báo lỗi.
+### 5.3 Sơ đồ triển khai (Deployment Diagram)
 
-**Luồng thanh toán online qua VNPay Sandbox:**
+Hệ thống được thiết kế để triển khai linh hoạt trên hạ tầng máy chủ cục bộ hoặc môi trường container hóa (Docker).
 
-1. Frontend gọi `POST /api/payments/vnpay/create-url` với `target\\\_type`, `target\\\_id` (hoặc danh sách khoản khi thanh toán gộp).
-2. `PaymentService` kiểm tra khoản phí thuộc household của cư dân (lấy từ JWT), sinh `transaction\\\_code` duy nhất, lưu `payment\\\_transactions` với `status = PENDING`.
-3. `VnpayService` xây tham số `vnp\\\_\\\*`, ký HMAC-SHA512 bằng secret key VNPay → trả về `paymentUrl`.
-4. Frontend nhận `paymentUrl`, chuyển hướng cư dân sang VNPay Sandbox.
-5. Cư dân thanh toán; VNPay gọi `GET /api/payments/vnpay/ipn` từ server đến server để xác nhận chính thức, đồng thời redirect trình duyệt cư dân về `GET /api/payments/vnpay/return` trên backend.
-6. `VnpayService` kiểm tra `vnp\\\_SecureHash`, đối chiếu `transaction\\\_code`, `amount`, `vnp\\\_ResponseCode`.
-7. Nếu hợp lệ và thành công → `PaymentService` cập nhật `payment\\\_transactions.status = SUCCESS`, cập nhật khoản phí/hoá đơn tương ứng (`payments.status = PAID` với `payment\\\_method = ONLINE`, hoặc `utility\\\_bills.status = PAID`, `payment\\\_method = ONLINE`).
-8. Backend Return URL: nếu giao dịch còn `PENDING` (IPN chưa tới) thì chốt trạng thái dự phòng sau khi verify chữ ký + khớp số tiền; nếu đã ở trạng thái cuối thì chỉ đọc trạng thái. Sau đó redirect cư dân về trang kết quả của frontend; frontend chỉ hiển thị trạng thái đã lưu, không tự quyết định giao dịch thành công/thất bại.
-9. Đảm bảo idempotency: một giao dịch chỉ được cập nhật một lần; IPN và Return không ghi đè lẫn nhau.
+> Mô hình chi tiết được thiết kế và lưu trữ tại file: [docs/UML/Deployment Diagram.asta](file:///d:/Users/WINDOWS/Downloads/bluemoon2/docs/UML/Deployment%20Diagram.asta).
 
-### 5.3 Kiến trúc backend – cấu trúc package
 
-Backend áp dụng **kiến trúc phân lớp (Layered Architecture)**, base package thực tế là `org.example.backend`, với các package:
+### 5.4 Cấu trúc Backend (Spring Boot)
+
+Mã nguồn backend được tổ chức theo tiêu chuẩn của kiến trúc phân lớp (Layered Architecture), đặt trong base package `com.example.bluemoon`:
 
 ```
-org.example.backend
-├── controller     // 18 REST controller, xử lý HTTP request
-├── service        // Logic nghiệp vụ (gồm cả EmailService, OtpService,
-│   │              //   VnpayService, PaymentService, AuditLogService, ReportService...)
-│   ├── mapper     // Chuyển Entity ↔ DTO thủ công (ẩn field nhạy cảm)
-│   └── report     // Sinh báo cáo Excel (Apache POI) và PDF (OpenPDF)
-├── repository     // Truy xuất CSDL (Spring Data JPA)
-│   └── projection // Các projection cho truy vấn thống kê
-├── entity         // 19 Entity ánh xạ bảng CSDL
-│   └── enums      // 14 enum trạng thái/loại
-├── dto            // Đối tượng truyền dữ liệu giữa FE và BE
-│   ├── request    // Request DTO + Bean Validation
-│   └── response   // ApiResponse<T>, PageResponse<T> và các response DTO
-├── security       // JwtUtil, JwtFilter, SecurityConfig, CustomUserDetails(Service),
-│                  //   CurrentUserService (JWT, BCrypt, cấu hình Spring Security)
-├── aspect         // LogAdminAction, AuditAspect, AuditContext (ghi audit log qua AOP)
-├── exception      // GlobalExceptionHandler, NotFoundException, BadRequestException
-├── config         // CorsConfig, OpenApiConfig, VnpayConfig, InitialDataConfig,
-│                  //   DatabaseInitializerConfig (CORS, Swagger, VNPay, seed data)
-└── BackendApplication.java   // @SpringBootApplication, lớp main
+backend/src/main/java/com/example/bluemoon/
+├── BluemoonApplication.java           // Lớp khởi chạy Spring Boot
+├── config/                            // Cấu hình hệ sinh thái Spring
+│   ├── PasswordConfig.java            // BCryptPasswordEncoder bean (độ mạnh 10)
+│   └── DatabaseSequenceSynchronizer.java // Đồng bộ sequence PostgreSQL khi khởi động
+├── controller/                        // 12 REST Controller tiếp nhận request HTTP
+│   ├── AuthController.java            // Đăng nhập (/auth/login)
+│   ├── UserController.java            // Quản lý tài khoản (/users)
+│   ├── RoleController.java            // Danh mục vai trò (/roles)
+│   ├── MeController.java              // Hồ sơ cá nhân & đổi mật khẩu (/me)
+│   ├── HouseholdController.java       // Hộ gia đình (/households)
+│   ├── ResidentController.java        // Nhân khẩu & Biến động (/residents)
+│   ├── ResidentRequestController.java // Yêu cầu cư dân (/resident-requests)
+│   ├── FeeCategoryController.java     // Danh mục khoản thu (/fee-categories)
+│   ├── BillingPeriodController.java   // Kỳ thu phí (/billing-periods)
+│   ├── BillingGenerationController.java // Lập danh sách công nợ (/billing-periods/{id}/generate)
+│   ├── FeeCalculationController.java  // Tính toán thử nghiệm phí (/fee-calculations/preview)
+│   └── SearchController.java          // Tra cứu tổng hợp (/search)
+├── dto/                               // 30+ Request và Response Data Transfer Objects
+├── exception/                         // Xử lý ngoại lệ tập trung (GlobalExceptionHandler)
+├── model/                             // 9 Entity JPA ánh xạ bảng CSDL
+│   ├── AppRole.java, AppUser.java
+│   ├── Household.java, Resident.java, ResidentMovement.java, ResidentRequest.java
+│   ├── FeeCategory.java, BillingPeriod.java, Receivable.java
+│   └── enums/                         // 13 Enum nghiệp vụ chuẩn hóa
+├── repository/                        // 9 Spring Data JPA Repository
+│   └── specification/                 // JPA Specification cho lọc động (User, Request)
+├── response/                          // ApiResponse<T>, ApiErrorResponse chuẩn hóa
+├── security/                          // Spring Security 6 & JWT 0.12.6
+│   ├── JwtAuthenticationFilter.java   // Bộ lọc phân tích Bearer JWT cho mỗi request
+│   ├── JwtService.java                // Sinh & xác minh JWT (HMAC-SHA256, 8 giờ)
+│   └── SecurityConfig.java            // Cấu hình URL Authorization & CORS
+└── service/                           // 11 Service xử lý nghiệp vụ chính
 ```
 
-Khác với bản thiết kế ban đầu, EmailService/OtpService, VnpayService/VnpayConfig và AuditLogService **không** nằm trong các package riêng `email`/`payment`/`audit`: phần gửi email và thanh toán đặt trong `service` (+ `config.VnpayConfig`), còn cơ chế audit log được tách thành package `aspect` triển khai bằng **Spring AOP** (annotation `@LogAdminAction` + `AuditAspect`) thay vì gọi `AuditLogService` thủ công ở từng nơi.
+### 5.5 Cấu trúc Frontend (React)
 
-Sơ đồ package:
-
-```mermaid
-graph TB
-    Controller\\\["controller — 18 REST controller<br/>AuthController, UserController, ProfileController<br/>ApartmentController, HouseholdController, ResidentController<br/>FeeController, FeePeriodController, PaymentController<br/>PaymentVnpayController, UtilityBillController<br/>ParkingController, VehicleController<br/>ComplaintController, NotificationController<br/>SystemConfigController, ReportController, AuditLogController"]
-    Service\\\["service<br/>AuthService, OtpService, EmailService<br/>UserService, ApartmentService<br/>HouseholdLifecycleService, ResidentService<br/>FeeService, FeePeriodService, PaymentService<br/>VnpayService, UtilityBillService, UtilityFeeService<br/>ParkingService, ParkingFeeService, VehicleService<br/>ComplaintService, NotificationService<br/>SystemConfigService, ReportService, AuditLogService<br/>+ mapper/ + report/"]
-    Repository\\\["repository<br/>UserRepository, RoleRepository, EmailOtpRepository<br/>ApartmentRepository, HouseholdRepository, ResidentRepository<br/>FeeRepository, FeePeriodRepository, PaymentRepository<br/>PaymentTransactionRepository, UtilityBillRepository<br/>ParkingSlotRepository, ParkingRegistrationRepository, VehicleRepository<br/>ComplaintRepository, NotificationRepository, NotificationRecipientRepository<br/>SystemConfigRepository, AuditLogRepository + projection/"]
-    Entity\\\["entity — 19 Entity<br/>User, Role, EmailOtp<br/>Apartment, Household, Resident<br/>Fee, FeePeriod, Payment, PaymentTransaction<br/>UtilityBill, Vehicle, ParkingSlot, ParkingRegistration<br/>Complaint, Notification, NotificationRecipient<br/>SystemConfig, AuditLog + enums/"]
-    DTO\\\["dto<br/>request/ — Request DTO + Bean Validation<br/>response/ — ApiResponse, PageResponse, response DTO"]
-    Security\\\["security<br/>JwtUtil, JwtFilter, SecurityConfig<br/>CustomUserDetails, CustomUserDetailsService, CurrentUserService"]
-    Aspect\\\["aspect<br/>@LogAdminAction<br/>AuditAspect, AuditContext"]
-    Config\\\["config<br/>CorsConfig, OpenApiConfig, VnpayConfig<br/>InitialDataConfig, DatabaseInitializerConfig"]
-    Exception\\\["exception<br/>GlobalExceptionHandler<br/>NotFoundException, BadRequestException"]
-
-    Controller --> Service
-    Controller --> DTO
-    Service --> Repository
-    Service --> Entity
-    Service -.->|@LogAdminAction| Aspect
-    Aspect --> Repository
-    Repository --> Entity
-    Controller --> Security
-    Controller -.-> Exception
-```
-
-**Vai trò các service chính:**
-
-* `EmailService`: bao bọc `JavaMailSender`, gửi email OTP qua SMTP (dev dùng Mailtrap).
-* `OtpService`: sinh OTP ngẫu nhiên, hash bằng BCrypt, lưu vào `email\\\_otps`, kiểm tra OTP (hash khớp + chưa hết hạn + chưa dùng + chưa quá `failed\\\_attempts`), kiểm soát rate-limit (5 lần/15 phút/email).
-* `PaymentService`: tạo `PaymentTransaction` với `status = PENDING`, sinh `transaction\\\_code` duy nhất, cập nhật trạng thái sau khi nhận kết quả VNPay, đồng thời cập nhật bản ghi khoản phí/hoá đơn tương ứng; xác nhận nộp tiền mặt.
-* `VnpayService`: xây URL thanh toán VNPay Sandbox, tính `vnp\\\_SecureHash` bằng HMAC-SHA512, kiểm tra chữ ký phản hồi từ VNPay khi nhận return/IPN.
-* `AuditLogService`: ghi và tra cứu bảng `audit\\\_logs`. **Việc ghi log không gọi thủ công ở từng service** mà được kích hoạt tự động qua AOP: annotation `@LogAdminAction(entity, action, description, detail)` đặt trên method service, `AuditAspect` (advice `@AfterReturning`) chỉ ghi log khi method thành công và có user đăng nhập.
-* `ReportService` (+ package `service/report`): sinh báo cáo thống kê và xuất Excel (Apache POI) / PDF (OpenPDF).
-* `SystemConfigService`: quản lý đơn giá cấu hình (điện, nước, internet, phí gửi xe máy/ô tô) lưu trong bảng `system\\\_configs`.
-
-**Không thiết kế:** `PaymentGatewayService` tổng quát, `MockPaymentService`, cổng thanh toán khác ngoài VNPay Sandbox.
-
-### 5.4 Cấu trúc frontend (React)
-
-Frontend dùng **React 19 + Vite + Tailwind CSS 4 + react-router-dom 7 + axios**, đặt trong thư mục `Frontend/`. Cây `src/` thực tế:
+Mã nguồn frontend đặt tại `frontend2/src/`, xây dựng theo mô hình module hóa giao diện người dùng:
 
 ```
-src/
-├── api/           // axiosClient.js + 15 module API theo domain (16 file)
-│   ├── axiosClient.js   // instance axios: baseURL http://localhost:9090, gắn JWT,
-│   │                    //   401/403 → auto logout, callApi() chuẩn hoá ApiResponse
-│   ├── authApi.js, otpApi.js, apartmentApi.js, householdApi.js, residentApi.js
-│   ├── feeApi.js, paymentApi.js, vnpayApi.js, utilityApi.js, vehicleApi.js
-│   ├── complaintApi.js, notificationApi.js, reportApi.js
-│   └── auditLogApi.js, systemConfigApi.js
-├── components/
-│   ├── common/index.jsx   // Button, Card, DataTable, Input, Select, Badge, StatusBadge, Pagination
-│   ├── layout/Layout.jsx, layout/SectionHeader.jsx  // sidebar + header + điều hướng theo state `active`
-│   └── auth/AuthShell.jsx // khung dùng chung cho các trang xác thực
-├── pages/         // Mỗi màn hình một file
-│   ├── LoginPage, RegisterPage, ForgotPasswordPage, OtpVerifyPage, IntroductionPage
-│   ├── Dashboard, Registrations, Accounts, Profile
-│   ├── Apartments, Residents
-│   ├── Fees, Payments, MyFees
-│   ├── Vehicles, Utilities
-│   ├── Complaints, Notifications
-│   ├── Statistics, AuditLogs
-│   └── VnpayReturnPage
-├── routes/        // AppRoutes.jsx (public/protected), ProtectedRoute.jsx, AppShell.jsx
-├── context/       // AuthContext.jsx – lưu JWT + thông tin user (key localStorage `bluemoon\\\_auth`)
-├── data/          // navigation.js – menu Admin/Resident
-└── utils/         // helpers.js (money()), logger.js
+frontend2/src/
+├── api/
+│   └── http.js                // Wrapper fetch() tập trung: cấu hình Base URL, tự động
+│                              // đính kèm Bearer token, bắt lỗi 401 bắn event phiên hết hạn
+├── context/
+│   └── AuthContext.jsx        // Quản lý phiên: token, user, login(), signOut(),
+│                              // tự động gọi GET /me xác minh tính hợp lệ của tài khoản
+├── components/                // Các component giao diện tái sử dụng
+│   ├── Layout.jsx             // Khung bố cục chính: Sidebar + Header + Container
+│   ├── ProtectedRoute.jsx     // Chặn truy cập trái phép theo vai trò (RBAC)
+│   ├── PageHeader.jsx         // Tiêu đề trang, thanh hành động (actions)
+│   ├── Modal.jsx              // Hộp thoại popup chuẩn
+│   ├── StatusBadge.jsx        // Hiển thị badge trạng thái màu sắc chuẩn
+│   └── FeeCalculationPreviewModal.jsx // Modal xem trước danh sách lập công nợ
+├── pages/                     // 15 Màn hình chức năng chính
+│   ├── LoginPage.jsx, HomePage.jsx
+│   ├── HouseholdsPage.jsx, HouseholdDetailPage.jsx, MyHouseholdPage.jsx
+│   ├── ResidentsPage.jsx, ResidentDetailPage.jsx
+│   ├── ResidentRequestsPage.jsx, ResidentRequestDetailPage.jsx
+│   ├── FeesPage.jsx, PeriodsPage.jsx, PeriodDetailPage.jsx
+│   ├── UsersPage.jsx, ProfilePage.jsx, SearchPage.jsx
+├── App.jsx                    // Cấu hình định tuyến Route (React Router v7)
+├── index.css / styles.css     // Hệ thống thiết kế CSS dùng chung (design tokens)
+└── main.jsx                   // Điểm khởi đầu ứng dụng React
 ```
 
-Giải thích:
+### 5.6 Quy ước REST API & Danh mục Endpoint chi tiết
 
-* `Apartments`: màn hình quản lý danh sách căn hộ, tìm kiếm/lọc và xem trạng thái; vào chi tiết để xem/cập nhật hộ dân và nhân khẩu trong căn hộ.
-* `MyFees`, `VnpayReturnPage`: trang cư dân xem khoản phí của hộ và trang nhận kết quả sau khi thanh toán VNPay (`/payment-result`).
-* Toàn bộ giao diện dùng **Tailwind CSS** (không CSS module/CSS-in-JS); gọi backend **chỉ qua các module trong `api/`**, không gọi axios trực tiếp.
+* **Quy ước URL:** Mọi endpoint gọi từ frontend đều có tiền tố trực tiếp (ví dụ: `/auth/login`, `/households`, `/residents`), hỗ trợ proxy chuyển hướng `/api/*` về backend cổng 8080.
+* **Xác thực:** Mọi endpoint (trừ `POST /auth/login`) bắt buộc kèm header `Authorization: Bearer <accessToken>`.
+* **Cấu trúc Envelope Response:**
+  * Thành công: `{ "success": true, "message": "...", "data": <T> }`
+  * Phân trang: `data: { "content": [...], "page": 1, "size": 20, "totalElements": 100, "totalPages": 5 }`
+  * Thất bại: `{ "success": false, "code": "ERROR_CODE", "message": "Mô tả lỗi tiếng Việt", "errors": {...} }`
 
-### 5.5 Quy ước REST API
+#### Bảng danh mục toàn bộ REST API của hệ thống (Sprint 1)
 
-URL có dạng `/api/<tài\\\_nguyên>`, sử dụng các HTTP method:
-
-|Method|Mục đích|Ví dụ|
-|-|-|-|
-|GET|Đọc dữ liệu|`GET /api/households`|
-|POST|Tạo mới|`POST /api/fees`|
-|PUT|Cập nhật|`PUT /api/households/{id}`|
-|DELETE|Xoá|`DELETE /api/fees/{id}`|
-
-Mỗi request (trừ các endpoint PUBLIC như `/api/auth/login`, `/api/auth/register`, `/api/auth/send-otp`, `/api/auth/verify-otp`, `/api/auth/forgot-password/\\\*`, `/api/auth/reset-password`, `/api/payments/vnpay/return`, `/api/payments/vnpay/ipn`) đều phải gửi header `Authorization: Bearer <JWT>`.
-
-Controller không trả trực tiếp Entity JPA cho frontend. Mọi dữ liệu trả về phải được ánh xạ sang DTO để tránh vòng lặp JSON giữa các quan hệ hai chiều (`User` - `Household` - `Resident`) và tránh lộ trường nhạy cảm như `password\\\_hash`, `otp\\\_hash`.
-
-Định dạng response thống nhất:
-
-```json
-{
-  "success": true,
-  "data": {},
-  "message": "..."
-}
-```
-
-Khi có lỗi:
-
-```json
-{
-  "success": false,
-  "errorCode": "FEE\\\_NOT\\\_FOUND",
-  "message": "Không tìm thấy khoản thu"
-}
-```
-
-### 5.6 Danh sách REST API chi tiết
-
-**Tài khoản và xác thực:**
-
-|Method|Endpoint|Quyền|Mục đích|
-|-|-|-|-|
-|POST|`/api/auth/send-otp` (≡ `/register/send-otp`)|PUBLIC|Gửi OTP đăng ký; backend cố định `purpose = REGISTER` (không lấy từ body)|
-|POST|`/api/auth/verify-otp` (≡ `/register/verify-otp`)|PUBLIC|Xác thực OTP đăng ký; backend cố định `purpose = REGISTER`|
-|POST|`/api/auth/register`|PUBLIC|Cư dân tự đăng ký tài khoản (sau khi OTP đăng ký đã hợp lệ)|
-|POST|`/api/auth/login`|PUBLIC|Đăng nhập, trả JWT|
-|POST|`/api/auth/forgot-password/send-otp`|PUBLIC|Gửi OTP cho luồng quên mật khẩu; body: `{ email }`|
-|POST|`/api/auth/reset-password`|PUBLIC|Đặt lại mật khẩu sau khi OTP hợp lệ; body: `{ email, otp, newPassword }`|
-|POST|`/api/users`|ADMIN|Tạo tài khoản nội bộ|
-|GET|`/api/users`|ADMIN|Danh sách toàn bộ tài khoản|
-|GET|`/api/users/pending`|ADMIN|Lấy danh sách tài khoản cư dân chờ duyệt|
-|PUT|`/api/users/{id}`|ADMIN|Sửa thông tin tài khoản|
-|PUT|`/api/users/{id}/approve`|ADMIN|Duyệt tài khoản cư dân, gán hộ, bật `active = TRUE`|
-|DELETE|`/api/users/{id}/reject`|ADMIN|Từ chối tài khoản cư dân đang chờ duyệt|
-|DELETE|`/api/users/{id}`|ADMIN|Xoá mềm tài khoản (đặt `deleted = TRUE`)|
-|POST|`/api/users/grant-access`|ADMIN|Cấp tài khoản truy cập cho một nhân khẩu/hộ|
-|PUT|`/api/users/{id}/lock`|ADMIN|Khoá tài khoản|
-|PUT|`/api/users/{id}/unlock`|ADMIN|Mở khoá tài khoản|
-|GET|`/api/me/profile`|ADMIN, RESIDENT|Xem hồ sơ cá nhân|
-|PUT|`/api/me/profile/update`|ADMIN, RESIDENT|Cập nhật hồ sơ cá nhân|
-|PUT|`/api/me/password`|ADMIN, RESIDENT|Đổi mật khẩu của chính mình|
-
-**Căn hộ và hộ dân:**
-
-|Method|Endpoint|Quyền|Mục đích|
-|-|-|-|-|
-|GET|`/api/apartments`|ADMIN|Danh sách căn hộ|
-|GET|`/api/apartments/{id}`|ADMIN|Chi tiết căn hộ|
-|GET|`/api/apartments/search`|ADMIN|Tìm kiếm căn hộ|
-|PUT|`/api/apartments/{id}`|ADMIN|Sửa thông tin căn hộ|
-|GET|`/api/apartments/{id}/household`|ADMIN|Hộ dân đang ở trong căn hộ|
-|POST|`/api/apartments/{id}/household`|ADMIN|Gán hộ mới vào căn hộ trống|
-|PUT|`/api/apartments/{id}/household`|ADMIN|Cập nhật/chuyển hộ trong căn hộ|
-|POST|`/api/households/move-in`|ADMIN|Tạo hộ mới chuyển vào (move-in)|
-|POST|`/api/households/{householdId}/members`|ADMIN|Thêm nhân khẩu (thành viên) vào hộ|
-|POST|`/api/households/{householdId}/move-out`|ADMIN|Chuyển cả hộ ra (đặt `Household.status = MOVED\\\_OUT`)|
-|GET|`/api/households/{householdId}/accounts`|ADMIN|Xem các tài khoản gắn với hộ|
-
-(Không có `POST /api/apartments` và `DELETE /api/apartments/{id}` vì số căn hộ cố định. Việc tra cứu/quản lý nhân khẩu của hộ dùng các endpoint `/api/residents` bên dưới.)
-
-**Nhân khẩu:**
-
-|Method|Endpoint|Quyền|Mục đích|
-|-|-|-|-|
-|GET|`/api/residents`|ADMIN|Tra cứu danh sách nhân khẩu, lọc theo căn hộ/hộ dân/trạng thái cư trú|
-|POST|`/api/residents`|ADMIN|Thêm nhân khẩu vào một Household ACTIVE|
-|GET|`/api/residents/{id}`|ADMIN|Xem chi tiết nhân khẩu|
-|PUT|`/api/residents/{id}`|ADMIN|Sửa thông tin nhân khẩu|
-|PUT|`/api/residents/{id}/move-out`|ADMIN|Chuyển nhân khẩu khỏi hộ, cập nhật `status = MOVED\\\_OUT`, không xoá vật lý|
-|PUT|`/api/residents/{id}/temporary-residence`|ADMIN|Đăng ký/cập nhật tạm trú, đặt `residency\\\_status = TEMPORARY`|
-|PUT|`/api/residents/{id}/permanent-residence`|ADMIN|Chuyển về thường trú, đặt `residency\\\_status = PERMANENT`|
+| Nhóm | Method | Endpoint | Quyền (RBAC) | Mục đích nghiệp vụ |
+| --- | --- | --- | --- | --- |
+| **Xác thực** | POST | `/auth/login` | PUBLIC | Đăng nhập bằng username/password, nhận JWT token 8 giờ |
+| **Tài khoản cá nhân** | GET | `/me` | Authenticated | Lấy hồ sơ tài khoản hiện tại, vai trò và thông tin hộ cư dân |
+| | PUT | `/me/password` | Authenticated | Đổi mật khẩu của chính mình (yêu cầu mật khẩu cũ) |
+| **Quản trị người dùng** | GET | `/users` | BQT, AUTHORITY | Danh sách tài khoản (hỗ trợ phân trang, lọc theo role, search) |
+| | POST | `/users` | BQT | Tạo tài khoản mới (gán role BQT, ACCOUNTANT, AUTHORITY, RESIDENT) |
+| | GET | `/users/{id}` | BQT, AUTHORITY | Xem chi tiết thông tin một tài khoản |
+| | PUT | `/users/{id}` | BQT | Cập nhật thông tin cá nhân/liên hệ của tài khoản |
+| | PATCH | `/users/{id}/status` | BQT | Khóa (`active = false`) hoặc Kích hoạt (`active = true`) tài khoản |
+| | POST | `/users/{id}/reset-password` | BQT | Đặt lại mật khẩu mặc định (bật cờ `mustChangePassword = true`) |
+| | GET | `/roles` | BQT, AUTHORITY | Lấy danh mục 4 vai trò hệ thống (`BQT`, `ACCOUNTANT`, `RESIDENT`, `AUTHORITY`) |
+| **Hộ gia đình** | GET | `/households` | BQT, AUTHORITY, ACCOUNTANT | Danh sách hộ gia đình (phân trang, lọc theo tầng, số phòng, trạng thái) |
+| | POST | `/households` | BQT | Tạo mới hộ gia đình (khai báo số phòng, diện tích, tạo kèm chủ hộ) |
+| | GET | `/households/{id}` | BQT, AUTHORITY, ACCOUNTANT | Chi tiết hộ gia đình, danh sách thành viên và công nợ hiện hữu |
+| | PUT | `/households/{id}` | BQT | Cập nhật thông tin hộ gia đình (diện tích, tầng) |
+| | PATCH | `/households/{id}/head` | BQT | Thay đổi chủ hộ sang một nhân khẩu thường trú khác trong hộ |
+| | GET | `/households/my` | RESIDENT | Cư dân xem thông tin hộ của mình, danh sách thành viên, công nợ |
+| **Nhân khẩu & Cư trú** | GET | `/residents` | BQT, AUTHORITY | Danh sách nhân khẩu (phân trang, lọc theo trạng thái cư trú, từ khóa) |
+| | POST | `/residents` | BQT | Thêm nhân khẩu vào hộ (sinh mới, chuyển đến, tạm trú) |
+| | GET | `/residents/{id}` | BQT, AUTHORITY | Chi tiết nhân khẩu và lịch sử các lần biến động cư trú |
+| | PUT | `/residents/{id}` | BQT | Chỉnh sửa thông tin nhân khẩu (họ tên, CCCD, ngày sinh, quan hệ) |
+| | POST | `/residents/movement` | BQT | Khai báo biến động cư trú (tạm vắng, tạm trú, chuyển đi, qua đời) |
+| | GET | `/residents/{id}/movements` | BQT, AUTHORITY | Tra cứu toàn bộ lịch sử biến động cư trú của một nhân khẩu |
+| **Yêu cầu cư dân** | GET | `/resident-requests` | BQT, RESIDENT | Danh sách yêu cầu (cư dân chỉ xem của hộ mình, BQT xem toàn bộ) |
+| | POST | `/resident-requests` | RESIDENT | Cư dân nộp yêu cầu chỉnh sửa thông tin, tạm vắng, tạm trú |
+| | GET | `/resident-requests/{id}` | BQT, RESIDENT | Xem chi tiết yêu cầu, dữ liệu trước/sau và lý do phê duyệt/từ chối |
+| | POST | `/resident-requests/{id}/approve` | BQT | Phê duyệt yêu cầu (tự động cập nhật hồ sơ hoặc ghi nhận biến động) |
+| | POST | `/resident-requests/{id}/reject` | BQT | Từ chối yêu cầu (bắt buộc nhập lý do từ chối `decisionReason`) |
+| | POST | `/resident-requests/{id}/cancel` | RESIDENT | Cư dân hủy yêu cầu đang ở trạng thái `PENDING` |
+| **Khoản thu** | GET | `/fee-categories` | BQT, ACCOUNTANT | Danh sách khoản thu (phân trang, lọc bắt buộc/tự nguyện, trạng thái) |
+| | POST | `/fee-categories` | BQT, ACCOUNTANT | Tạo khoản thu mới (mã, tên, cách tính PER_AREA / FIXED / MANUAL, đơn giá) |
+| | GET | `/fee-categories/{id}` | BQT, ACCOUNTANT | Xem chi tiết thông tin một khoản thu |
+| | PUT | `/fee-categories/{id}` | BQT, ACCOUNTANT | Sửa khoản thu (chặn sửa cách tính/loại phí nếu đã phát sinh công nợ) |
+| | PATCH | `/fee-categories/{id}/status` | BQT, ACCOUNTANT | Bật/tắt trạng thái hoạt động (`isActive = true/false`) |
+| **Kỳ thu phí** | GET | `/billing-periods` | BQT, ACCOUNTANT | Danh sách kỳ thu phí (phân trang, lọc theo trạng thái OPEN/CLOSED) |
+| | POST | `/billing-periods` | BQT, ACCOUNTANT | Mở kỳ thu phí mới (mã kỳ, tên kỳ, ngày bắt đầu, ngày kết thúc) |
+| | GET | `/billing-periods/{id}` | BQT, ACCOUNTANT | Chi tiết kỳ thu phí, thống kê tổng nợ, danh sách khoản nợ theo hộ |
+| | PATCH | `/billing-periods/{id}/status` | BQT | Đóng sổ kỳ (`CLOSED` - yêu cầu đã lập công nợ) hoặc Mở lại kỳ (`OPEN`) |
+| **Tính toán & Lập công nợ** | POST | `/billing-periods/{id}/generate` | BQT, ACCOUNTANT | Sinh danh sách công nợ hàng loạt (hỗ trợ `?dryRun=true` xem trước) |
+| | POST | `/fee-calculations/preview` | BQT, ACCOUNTANT | Xem trước số tiền phải nộp của một hộ theo danh sách khoản thu |
+| **Tra cứu tổng hợp** | GET | `/search` | BQT, AUTHORITY, ACCOUNTANT | Tìm kiếm nhanh hộ gia đình hoặc nhân khẩu theo từ khóa, số phòng |
 
 
+---
 
-**Khoản thu và thu phí:**
-
-|Method|Endpoint|Quyền|Mục đích|
-|-|-|-|-|
-|GET|`/api/fees`|ADMIN|Danh sách khoản thu, có phân trang/lọc|
-|GET|`/api/fees/{id}`|ADMIN|Xem chi tiết khoản thu|
-|GET|`/api/fees/search`|ADMIN|Tìm kiếm khoản thu theo tên, loại, trạng thái|
-|POST|`/api/fees`|ADMIN|Tạo khoản thu|
-|PUT|`/api/fees/{id}`|ADMIN|Sửa khoản thu|
-|DELETE|`/api/fees/{id}`|ADMIN|Xoá/ngừng sử dụng khoản thu khi chưa phát sinh dữ liệu liên quan|
-|GET|`/api/fee-periods`|ADMIN|Danh sách đợt thu phí|
-|GET|`/api/fee-periods/{id}`|ADMIN|Xem chi tiết một đợt thu phí|
-|POST|`/api/fee-periods`|ADMIN|Lập đợt thu phí (tự sinh `payments`)|
-|PUT|`/api/fee-periods/{id}`|ADMIN|Cập nhật thông tin đợt thu phí|
-|PUT|`/api/fee-periods/{id}/close`|ADMIN|Đóng đợt thu phí|
-|GET|`/api/admin/payments`|ADMIN|Tra cứu phiếu nộp (lọc theo đợt thu/hộ/trạng thái)|
-|PUT|`/api/admin/payments/{id}/confirm-cash`|ADMIN|Xác nhận phiếu nộp đã nộp đủ tiền mặt; hệ thống tự đặt `amount\\\_paid = amount\\\_due` và `status = PAID`|
-|GET|`/api/payments/my-household`|RESIDENT|Cư dân xem phiếu nộp của hộ mình|
-|GET|`/api/utility-bills/my-household`|RESIDENT|Cư dân xem hoá đơn điện/nước/internet của hộ mình|
-
-**Thanh toán online qua VNPay Sandbox:**
-
-|Method|Endpoint|Quyền|Mục đích|
-|-|-|-|-|
-|POST|`/api/payments/vnpay/create-url`|RESIDENT|Tạo giao dịch VNPay Sandbox và trả về `paymentUrl`. Body: `{ targetType, targetId, ... }` (hỗ trợ thanh toán gộp nhiều khoản)|
-|GET|`/api/payments/vnpay/return`|PUBLIC|Return URL nhận redirect trình duyệt từ VNPay Sandbox. Backend kiểm tra chữ ký, kiểm tra khớp số tiền, và nếu giao dịch còn `PENDING` thì chốt trạng thái dự phòng (cập nhật transaction + khoản phí/hoá đơn) trong trường hợp IPN chưa tới; nếu giao dịch đã ở trạng thái cuối thì chỉ đọc trạng thái. Sau đó redirect cư dân về trang kết quả của frontend.|
-|GET|`/api/payments/vnpay/ipn`|PUBLIC|Nhận thông báo IPN từ VNPay Sandbox (server-to-server). Backend kiểm tra `vnp\\\_SecureHash`; đây là nguồn xác nhận chính (server-to-server) để cập nhật trạng thái thanh toán.|
-|GET|`/api/payments/vnpay/my-history`|RESIDENT|Cư dân xem lịch sử giao dịch VNPay của hộ mình|
-|GET|`/api/admin/payment-transactions`|ADMIN|Admin tra cứu toàn bộ giao dịch online (có thể lọc theo `status`, `householdId`, `fromDate`, `toDate`, `targetType`)|
-|GET|`/api/admin/payment-transactions/{id}`|ADMIN|Admin xem chi tiết một giao dịch online|
-
-Ghi chú phân quyền: `POST /api/payments/vnpay/create-url` chỉ dành cho **RESIDENT** là có chủ ý. Admin không thanh toán online hộ cư dân để tránh sai lệch audit log và trách nhiệm thanh toán. Khi cần kiểm thử VNPay Sandbox hoặc khắc phục lỗi, Admin/nhóm phát triển sử dụng một tài khoản Resident test đã được gán vào Household test; Admin chỉ tra cứu/đối soát giao dịch qua các endpoint `/api/admin/payment-transactions`.
-
-**Phương tiện, tiện ích, khiếu nại, thông báo:**
-
-|Method|Endpoint|Quyền|Mục đích|
-|-|-|-|-|
-|POST|`/api/vehicles`|ADMIN|Đăng ký xe cho hộ|
-|PUT|`/api/vehicles/{id}`|ADMIN|Cập nhật xe|
-|DELETE|`/api/vehicles/{id}`|ADMIN|Xoá đăng ký xe|
-|GET|`/api/vehicles/household/{householdId}`|ADMIN|Danh sách xe theo hộ|
-|GET|`/api/vehicles/my-household`|RESIDENT|Cư dân xem xe của hộ mình|
-|GET|`/api/parking-slots`|ADMIN|Danh sách chỗ gửi xe|
-|GET|`/api/parking-slots/summary`|ADMIN|Thống kê chỗ gửi (tổng/đã dùng/còn trống)|
-|POST|`/api/parking-registrations`|ADMIN|Đăng ký/cho thuê chỗ gửi xe|
-|PUT|`/api/parking-registrations/{id}/end`|ADMIN|Kết thúc đăng ký gửi xe (`status = ENDED`)|
-|POST|`/api/admin/parking-fees/generate`|ADMIN|Sinh phí gửi xe theo tháng|
-|GET|`/api/parking-registrations/my-household`|RESIDENT|Cư dân xem đăng ký gửi xe của hộ|
-|POST|`/api/utility-bills`|ADMIN|Tạo hoá đơn điện/nước/internet|
-|POST|`/api/utility-bills/import`|ADMIN|Nhập hoá đơn hàng loạt từ file Excel|
-|GET|`/api/utility-bills/import-template`|ADMIN|Tải file Excel mẫu để nhập hoá đơn|
-|POST|`/api/admin/utility-fees/generate`|ADMIN|Sinh hoá đơn tiện ích theo định mức cấu hình|
-|PUT|`/api/utility-bills/{id}`|ADMIN|Sửa hoá đơn|
-|DELETE|`/api/utility-bills/{id}`|ADMIN|Xoá hoá đơn|
-|PUT|`/api/admin/utility-bills/{id}/confirm-cash`|ADMIN|Xác nhận hoá đơn đã nộp tiền mặt; đặt `status = PAID`, `payment\\\_method = CASH`|
-|GET|`/api/utility-bills`|ADMIN|Danh sách hoá đơn (lọc theo hộ/tháng)|
-|GET|`/api/utility-bills/{id}`|ADMIN|Chi tiết hoá đơn|
-|POST|`/api/complaints`|RESIDENT|Gửi khiếu nại|
-|GET|`/api/complaints/my`|RESIDENT|Khiếu nại của tôi|
-|GET|`/api/complaints/{id}`|ADMIN, RESIDENT|Chi tiết khiếu nại (RESIDENT chỉ xem khiếu nại do mình gửi)|
-|GET|`/api/complaints`|ADMIN|Danh sách khiếu nại|
-|PUT|`/api/complaints/{id}/response`|ADMIN|Phản hồi/đổi trạng thái khiếu nại|
-|POST|`/api/notifications`|ADMIN|Gửi thông báo|
-|GET|`/api/notifications/my`|ADMIN, RESIDENT|Thông báo gửi cho user hiện tại|
-|GET|`/api/notifications/sent`|ADMIN|Thông báo Admin đã gửi|
-|PUT|`/api/notifications/{id}/read`|ADMIN, RESIDENT|Đánh dấu đã đọc|
-|PUT|`/api/notifications/{id}/unread`|ADMIN, RESIDENT|Đánh dấu chưa đọc|
-|GET|`/api/system-configs`|ADMIN, RESIDENT|Xem đơn giá cấu hình (điện/nước/internet/gửi xe)|
-|PUT|`/api/system-configs/{key}`|ADMIN|Cập nhật một đơn giá cấu hình|
-|GET|`/api/reports/fee-periods/statistics`|ADMIN|Thống kê tình trạng các đợt thu|
-|GET|`/api/reports/households/statistics`|ADMIN|Thống kê theo hộ gia đình|
-|GET|`/api/reports/residents/statistics`|ADMIN|Thống kê dân cư, nhân khẩu, tạm trú/tạm vắng|
-|GET|`/api/reports/fee-periods/excel` · `/pdf`|ADMIN|Xuất báo cáo đợt thu (Excel/PDF)|
-|GET|`/api/reports/households/excel` · `/pdf`|ADMIN|Xuất báo cáo hộ gia đình (Excel/PDF)|
-|GET|`/api/reports/residents/excel` · `/pdf`|ADMIN|Xuất báo cáo dân cư (Excel/PDF)|
-|GET|`/api/reports/payment-transactions/excel` · `/pdf`|ADMIN|Xuất báo cáo giao dịch online (Excel/PDF)|
-|GET|`/api/admin/audit-logs`|ADMIN|Tra cứu audit log (phân trang, mới nhất trước)|
-
-\---
-
-## 6\. THIẾT KẾ LỚP
+## 6. THIẾT KẾ LỚP
 
 ### 6.1 Tổng quan các lớp chính
 
-Hệ thống có **19 lớp Entity chính**, chia thành 9 nhóm:
+Hệ thống BlueMoon được thiết kế theo nguyên lý thiết kế hướng đối tượng (OOP) và kiến trúc phân lớp chuẩn mực của Spring Data JPA. Các lớp chính bao gồm:
+* **9 Lớp Entity chính (Domain Models):** Ánh xạ trực tiếp tới 9 bảng nghiệp vụ trong PostgreSQL: `Household`, `Resident`, `AppRole`, `AppUser`, `ResidentMovement`, `FeeCategory`, `BillingPeriod`, `Receivable`, `ResidentRequest`.
+* **13 Enum chuẩn hóa:** `RoleCode`, `Gender`, `HouseholdStatus`, `ResidencyStatus`, `ResidentEntryType`, `MovementType`, `SearchType`, `ResidentRequestType`, `ResidentRequestStatus`, `FeeKind`, `CalculationMethod`, `BillingCycle`, `BillingPeriodStatus`.
+* **12 REST Controller:** Tiếp nhận request HTTP, kiểm tra phân quyền tiền xử lý (`@PreAuthorize`), validate dữ liệu đầu vào (`@Valid`) và chuyển giao xử lý cho tầng Service.
+* **11 Service nghiệp vụ (+ JwtService):** Chứa toàn bộ quy tắc nghiệp vụ, giao dịch tính toán công nợ (`@Transactional`), phê duyệt và kiểm tra toàn vẹn dữ liệu.
+* **9 Spring Data JPA Repository:** Cung cấp các thao tác CRUD, khóa dòng `SELECT ... FOR UPDATE`, và các câu truy vấn tối ưu hóa (JPA Specification, Native Queries).
 
-|Nhóm|Lớp|
-|-|-|
-|Tài khoản|User, Role|
-|Xác thực OTP|EmailOtp|
-|Cư trú|Apartment, Household, Resident|
-|Thu phí|Fee, FeePeriod, Payment|
-|Giao dịch online|PaymentTransaction|
-|Phương tiện và Tiện ích|Vehicle, ParkingSlot, ParkingRegistration, UtilityBill|
-|Tương tác|Complaint, Notification, NotificationRecipient|
-|Cấu hình hệ thống|SystemConfig|
-|Nhật ký hệ thống|AuditLog|
+---
 
-**Nguyên tắc thiết kế:** Entity chỉ giữ dữ liệu và các hành vi đơn giản (getter/setter, hàm tiện ích). Logic xác thực, sinh danh sách phải thu, ghi nhận thanh toán, xử lý thanh toán online và ghi audit log được đặt trong các Service tương ứng (`AuthService`, `FeePeriodService`, `PaymentService`, `VnpayService`, `OtpService`, `EmailService`, `AuditLogService`).
+### 6.2 Sơ đồ lớp Mô hình miền (Domain Model)
 
-### 6.2 Sơ đồ lớp nhóm Tài khoản, OTP và Cư trú
+Mô hình miền thể hiện các thực thể cốt lõi của tòa nhà chung cư, các thuộc tính nghiệp vụ và mối quan hệ giữa chúng.
 
-```mermaid
-classDiagram
-    class User {
-        +Long id
-        +String username
-        +String passwordHash
-        +String fullName
-        +String email
-        +String phone
-        +boolean active
-        +boolean deleted
-        +boolean emailVerified
-        +String requestedApartmentCode
-        +Role role
-        +Household household
-        +Resident resident
-    }
-    class Role {
-        +Long id
-        +String name
-        +String description
-    }
-    class EmailOtp {
-        +Long id
-        +String email
-        +String otpHash
-        +String purpose
-        +LocalDateTime expiredAt
-        +Boolean used
-        +Integer failedAttempts
-        +LocalDateTime createdAt
-    }
-    class Apartment {
-        +Long id
-        +String code
-        +Integer floor
-        +BigDecimal area
-        +String status
-        +String note
-    }
-    class Household {
-        +Long id
-        +String code
-        +Apartment apartment
-        +Resident headOfHousehold
-        +LocalDate moveInDate
-        +String status
-    }
-    class Resident {
-        +Long id
-        +String fullName
-        +String idCard
-        +LocalDate dateOfBirth
-        +String gender
-        +String relationToHead
-        +String residencyStatus
-        +String status
-        +Household household
-    }
+> Mô hình chi tiết được thiết kế và lưu trữ tại file: [docs/UML/Class Diagram/domain model.asta](file:///d:/Users/WINDOWS/Downloads/bluemoon2/docs/UML/Class%20Diagram/domain%20model.asta).
 
-    User "n" --> "1" Role
-    User "n" --> "0..1" Household : tài khoản cư dân (Admin = NULL)
-    Apartment "1" --> "0..n" Household : có hộ dân theo thời gian
-    Household "1" --> "1" Apartment
-    Household "1" --> "n" Resident
-    Household "1" --> "1" Resident : chủ hộ
-```
 
-**Ràng buộc nghiệp vụ Apartment ↔ Household:** Một căn hộ có thể từng có nhiều hộ dân theo thời gian, **nhưng tại một thời điểm chỉ có tối đa một hộ dân có trạng thái ACTIVE**. Khi hộ chuyển đi, đặt `Household.status = MOVED\\\_OUT`; khi cần gán hộ mới, tạo bản ghi `Household` mới với cùng `apartment\\\_id` và `status = ACTIVE`. Không cần bảng lịch sử riêng.
+### 6.3 Sơ đồ lớp Xác thực & Phân quyền (Authentication & Authorization)
 
-**Ghi chú serialize JSON và DTO:** Quan hệ `User → Household`, `Household → Resident (headOfHousehold)` và `Resident → Household` có thể tạo vòng tham chiếu khi serialize JSON nếu Controller trả trực tiếp Entity JPA. Vì vậy Controller **không trả trực tiếp Entity** cho frontend mà phải chuyển sang DTO (`UserDTO`, `HouseholdDTO`, `ResidentDTO`, ...). Nếu trong một số trường hợp vẫn cần serialize Entity, phải chặn một chiều quan hệ bằng `@JsonIgnore`, `@JsonBackReference/@JsonManagedReference` hoặc cấu hình tương đương để tránh lỗi vòng lặp JSON và tránh lộ dữ liệu nhạy cảm như `passwordHash`.
+Đặc tả các lớp phụ trách tiếp nhận yêu cầu đăng nhập, xác thực thông tin, sinh Bearer JWT token và lọc phân quyền cho mọi request.
 
-### 6.3 Sơ đồ lớp nhóm Thu phí và Giao dịch online
+> Mô hình chi tiết được thiết kế và lưu trữ tại file: [docs/UML/Class Diagram/authentication & authorization.asta](file:///d:/Users/WINDOWS/Downloads/bluemoon2/docs/UML/Class%20Diagram/authentication%20&%20authorization.asta).
 
-```mermaid
-classDiagram
-    class Fee {
-        +Long id
-        +String name
-        +String type
-        +BigDecimal unitPrice
-        +String unit
-        +String description
-        +Boolean active
-    }
-    class FeePeriod {
-        +Long id
-        +Fee fee
-        +String name
-        +LocalDate startDate
-        +LocalDate endDate
-        +String status
-    }
-    class Payment {
-        +Long id
-        +FeePeriod feePeriod
-        +Household household
-        +BigDecimal amountDue
-        +BigDecimal amountPaid
-        +LocalDate paidDate
-        +String status
-        +String transactionCode
-        +LocalDateTime paidAt
-        +String note
-        +User collectedBy
-    }
-    class PaymentTransaction {
-        +Long id
-        +String transactionCode
-        +Household household
-        +User user
-        +String targetType
-        +Long targetId
-        +String targetIds
-        +String targetAmounts
-        +String utilityBillIds
-        +BigDecimal amount
-        +String status
-        +String vnpayTransactionNo
-        +String vnpayResponseCode
-        +String vnpayBankCode
-        +String vnpayPayDate
-        +String paymentUrl
-        +LocalDateTime paidAt
-        +LocalDateTime createdAt
-        +LocalDateTime updatedAt
-    }
 
-    Fee "1" --> "n" FeePeriod
-    FeePeriod "1" --> "n" Payment
-    Payment "n" --> "1" Household
-    PaymentTransaction "n" --> "1" Household
-    PaymentTransaction "n" --> "1" User
-```
+### 6.4 Sơ đồ lớp Quản lý Người dùng & Hồ sơ cá nhân (User Account & Profile Management)
 
-### 6.4 Sơ đồ lớp nhóm Phương tiện và Tiện ích
+Đặc tả các lớp phụ trách quản lý danh sách tài khoản, kích hoạt/khóa tài khoản, cấp lại mật khẩu và cập nhật hồ sơ cá nhân (`/me`).
 
-```mermaid
-classDiagram
-    class Vehicle {
-        +Long id
-        +String licensePlate
-        +String type
-        +Household household
-        +LocalDate registeredDate
-        +Boolean active
-    }
-    class ParkingSlot {
-        +Long id
-        +String code
-        +String type
-        +String status
-    }
-    class ParkingRegistration {
-        +Long id
-        +ParkingSlot slot
-        +Vehicle vehicle
-        +String renterName
-        +String renterPhone
-        +LocalDate startDate
-        +LocalDate endDate
-        +BigDecimal monthlyFee
-        +String status
-    }
-    class UtilityBill {
-        +Long id
-        +Household household
-        +UtilityType type
-        +Integer month
-        +Integer year
-        +Integer oldIndex
-        +Integer newIndex
-        +BigDecimal amount
-        +UtilityBillStatus status
-        +LocalDate paidDate
-        +PaymentMethod paymentMethod
-        +String transactionCode
-        +LocalDateTime paidAt
-    }
+> Mô hình chi tiết được thiết kế và lưu trữ tại file: [docs/UML/Class Diagram/user account & profile management.asta](file:///d:/Users/WINDOWS/Downloads/bluemoon2/docs/UML/Class%20Diagram/user%20account%20&%20profile%20management.asta).
 
-    Vehicle "n" --> "1" Household
-    ParkingRegistration "n" --> "1" ParkingSlot
-    ParkingRegistration "0..1" --> "1" Vehicle
-    UtilityBill "n" --> "1" Household
-```
 
-### 6.5 Sơ đồ lớp nhóm Tương tác và Nhật ký hệ thống
+### 6.5 Sơ đồ lớp Quản lý Hộ gia đình, Nhân khẩu & Biến động cư trú (Household & Resident Management)
 
-```mermaid
-classDiagram
-    class Complaint {
-        +Long id
-        +User sender
-        +Household household
-        +String title
-        +String category
-        +String content
-        +String status
-        +String response
-        +User handledBy
-        +LocalDateTime createdAt
-        +LocalDateTime respondedAt
-    }
-    class Notification {
-        +Long id
-        +String title
-        +String content
-        +User sender
-        +String scope
-        +LocalDateTime sentAt
-    }
-    class AuditLog {
-        +Long id
-        +String adminUsername
-        +String action
-        +String targetEntity
-        +String details
-        +LocalDateTime timestamp
-    }
+Đặc tả các lớp điều phối thông tin căn hộ, hộ gia đình, nhân khẩu, quan hệ chủ hộ, tiếp nhận cư trú và lịch sử biến động.
 
-    class SystemConfig {
-        +Long id
-        +String configKey
-        +BigDecimal configValue
-        +String description
-    }
+> Mô hình chi tiết được thiết kế và lưu trữ tại file: [docs/UML/Class Diagram/household & resident & movement management.asta](file:///d:/Users/WINDOWS/Downloads/bluemoon2/docs/UML/Class%20Diagram/household%20&%20resident%20&%20movement%20management.asta).
 
-    class NotificationRecipient {
-        +Long id
-        +Notification notification
-        +User recipient
-        +Boolean isRead
-        +LocalDateTime readAt
-    }
 
-    Notification "1" --> "n" NotificationRecipient
-    NotificationRecipient "n" --> "1" User
-    Complaint "n" --> "1" User
-    Complaint "n" --> "1" Household
-```
+### 6.6 Sơ đồ lớp Quản lý Yêu cầu cư dân (Resident Request Management)
 
-**Lưu ý về AuditLog:** khác bản thiết kế ban đầu, `AuditLog` **không** tham chiếu khoá ngoại tới `User` mà chỉ lưu `adminUsername` (chuỗi) của người thao tác. Bản ghi được sinh **tự động qua AOP** (`@LogAdminAction` + `AuditAspect`, advice `@AfterReturning`) chỉ khi method service chạy thành công và có user đăng nhập trong `SecurityContext`. `action` nhận các giá trị `CREATE`/`UPDATE`/`DELETE`; `targetEntity` là tên thực thể bị tác động (vd `User`, `Fee`, `Payment`); `details` là chuỗi mô tả (có thể lấy từ `AuditContext`, SpEL trong thuộc tính `detail`, hoặc `description` tĩnh). Không lưu IP, user-agent, OTP, mật khẩu hay `vnp\\\_SecureHash`.
+Đặc tả các lớp tiếp nhận đề nghị cư trú trực tuyến từ cư dân, tính toán diff dữ liệu, phê duyệt tự động ghi nhận biến động hoặc từ chối kèm lý do.
 
-### 6.6 Đặc tả chi tiết các lớp chính
+> Mô hình chi tiết được thiết kế và lưu trữ tại file: [docs/UML/Class Diagram/resident request management.asta](file:///d:/Users/WINDOWS/Downloads/bluemoon2/docs/UML/Class%20Diagram/resident%20request%20management.asta).
 
-**User** – Tài khoản người dùng
 
-|Thuộc tính|Kiểu|Ý nghĩa|
-|-|-|-|
-|id|Long|Khoá chính|
-|username|String|Tên đăng nhập (duy nhất)|
-|passwordHash|String|Mật khẩu đã băm BCrypt|
-|fullName|String|Họ tên|
-|email|String|Email liên hệ|
-|phone|String|Số điện thoại|
-|active|boolean|true: đang dùng, false: bị khoá hoặc chưa duyệt (mặc định false)|
-|deleted|boolean|Cờ **xoá mềm** (soft delete). `JwtFilter` từ chối mọi request của tài khoản `deleted = true`; "xoá" tài khoản chỉ đặt cờ này, không xoá vật lý|
-|emailVerified|boolean|true nếu email đã xác thực qua OTP|
-|requestedApartmentCode|String|Mã căn hộ cư dân khai khi tự đăng ký (chờ Admin duyệt). NULL với Admin và với tài khoản đã được duyệt|
-|role|Role|Vai trò (FK `role\\\_id`)|
-|household|Household|Hộ gắn với tài khoản (FK `household\\\_id`); **NULL với role ADMIN** và NULL khi cư dân mới đăng ký chưa được duyệt|
-|resident|Resident|Nhân khẩu tương ứng của tài khoản cư dân (FK `resident\\\_id`), dùng khi cấp tài khoản truy cập cho một nhân khẩu; NULL nếu chưa gắn|
 
-Trách nhiệm: lưu thông tin định danh người dùng. **Logic xác thực (`login`) và đổi mật khẩu được đặt trong `AuthService`/`ProfileController`**, không đặt trong Entity. `JwtFilter` mỗi request nạp lại User từ DB và từ chối nếu `deleted` hoặc `!active`.
+### 6.7 Sơ đồ lớp Quản lý Khoản thu & Lập kỳ thu phí (Fee & Billing Management)
 
-**EmailOtp** – Mã OTP gửi qua email
+Đặc tả các lớp cấu hình danh mục khoản thu, tạo kỳ thu, tính toán thử nghiệm và sinh công nợ hàng loạt cho toàn bộ hộ gia đình.
 
-|Thuộc tính|Kiểu|Ý nghĩa|
-|-|-|-|
-|id|Long|Khoá chính|
-|email|String|Email nhận OTP|
-|otpHash|String|OTP đã hash BCrypt (không bao giờ lưu plain)|
-|purpose|String|`REGISTER`, `FORGOT\\\_PASSWORD`|
-|expiredAt|LocalDateTime|Thời điểm hết hạn (= createdAt + 5 phút)|
-|used|Boolean|TRUE nếu OTP đã dùng|
-|failedAttempts|Integer|Số lần nhập sai (tối đa 5)|
-|createdAt|LocalDateTime|Thời điểm sinh OTP|
+> Mô hình chi tiết được thiết kế và lưu trữ tại file: [docs/UML/Class Diagram/fee & billing management.asta](file:///d:/Users/WINDOWS/Downloads/bluemoon2/docs/UML/Class%20Diagram/fee%20&%20billing%20management.asta).
 
-Trách nhiệm: lưu OTP đã hash. Mọi thao tác sinh/kiểm tra OTP thuộc về `OtpService`.
 
-**Apartment** – Căn hộ
 
-|Thuộc tính|Kiểu|Ý nghĩa|
-|-|-|-|
-|id|Long|Khoá chính|
-|code|String|Số căn hộ (duy nhất)|
-|floor|Integer|Tầng|
-|area|BigDecimal|Diện tích (m²)|
-|status|ApartmentStatus|`AVAILABLE`, `OCCUPIED`|
-|note|String|Ghi chú|
-
-Trách nhiệm: lưu thông tin **cố định** của căn hộ. Số căn hộ trong chung cư là cố định, không có thêm/xoá trong vận hành thông thường. **Một căn hộ có thể từng có nhiều Household theo thời gian, nhưng tại một thời điểm chỉ có tối đa một Household ở trạng thái ACTIVE.**
-
-**Household** – Hộ dân/Hộ khẩu trong căn hộ
-
-|Thuộc tính|Kiểu|Ý nghĩa|
-|-|-|-|
-|id|Long|Khoá chính|
-|code|String|Mã hộ khẩu (vd: BM-1201)|
-|apartment|Apartment|Căn hộ tương ứng|
-|headOfHousehold|Resident|Chủ hộ|
-|moveInDate|LocalDate|Ngày chuyển đến|
-|status|String|`ACTIVE`, `MOVED\\\_OUT`|
-
-Trách nhiệm: lưu thông tin hộ dân. Tại một thời điểm, mỗi `Apartment` chỉ có tối đa một `Household` ở `status = ACTIVE`. **Logic thêm/chuyển nhân khẩu nằm trong `HouseholdService`.**
-
-**Resident** – Nhân khẩu
-
-|Thuộc tính|Kiểu|Ý nghĩa|
-|-|-|-|
-|id|Long|Khoá chính|
-|fullName|String|Họ tên|
-|idCard|String|CCCD/CMND|
-|dateOfBirth|LocalDate|Ngày sinh|
-|gender|String|MALE/FEMALE/OTHER|
-|relationToHead|String|Vợ/chồng/con/bố/mẹ/khác|
-|residencyStatus|String|`PERMANENT` (thường trú), `TEMPORARY` (tạm trú), `ABSENT` (tạm vắng)|
-|status|String|`ACTIVE` (còn thuộc hộ), `MOVED\\\_OUT` (đã chuyển khỏi hộ)|
-|household|Household|Hộ khẩu|
-
-Trách nhiệm: lưu thông tin nhân khẩu. **`residencyStatus`** biểu diễn tình trạng cư trú (thường trú/tạm trú/tạm vắng); **`status`** biểu diễn nhân khẩu còn thuộc hộ hay đã chuyển đi. Khi chuyển nhân khẩu khỏi hộ, **không xoá vật lý** mà cập nhật `status = MOVED\\\_OUT`.
-
-**Fee** – Khoản thu
-
-|Thuộc tính|Kiểu|Ý nghĩa|
-|-|-|-|
-|id|Long|Khoá chính|
-|name|String|Tên khoản thu|
-|type|String|MANDATORY / DONATION|
-|unitPrice|BigDecimal|Đơn giá (có thể null)|
-|unit|String|PER\_M2, PER\_PERSON, PER\_HOUSEHOLD, PER\_VEHICLE, FIXED, NONE|
-|description|String|Mô tả|
-|active|Boolean|Khoản thu còn dùng hay không. Nếu khoản thu đã phát sinh `FeePeriod`/`Payment`, không xoá vật lý mà đặt `active = false` để ngừng sử dụng|
-
-Trách nhiệm: lưu danh mục khoản thu. **`FeeService.deleteOrDeactivateFee(...)`** chỉ xoá vật lý khi khoản thu chưa phát sinh dữ liệu liên quan; nếu đã có `FeePeriod` hoặc `Payment`, service chuyển sang `active = false` để giữ toàn vẹn dữ liệu và lịch sử thu phí.
-
-**FeePeriod** – Đợt thu phí
-
-|Thuộc tính|Kiểu|Ý nghĩa|
-|-|-|-|
-|id|Long|Khoá chính|
-|fee|Fee|Khoản thu áp dụng|
-|name|String|Tên đợt|
-|startDate, endDate|LocalDate|Khoảng thời gian thu|
-|status|String|OPEN, CLOSED|
-
-Trách nhiệm: lưu thông tin đợt thu. **Việc sinh danh sách phiếu nộp cho các hộ thuộc về `FeePeriodService`**, không phải method của entity. Với khoản thu `MANDATORY`, hệ thống tự sinh `payments` cho các Household ACTIVE. Với khoản thu `DONATION`, hệ thống không tạo công nợ bắt buộc cho mọi hộ; chỉ tạo/cập nhật `payments` khi hộ thực sự đóng góp, nên không đưa các hộ chưa đóng góp vào danh sách “chưa nộp”.
-
-**Payment** – Phiếu nộp
-
-|Thuộc tính|Kiểu|Ý nghĩa|
-|-|-|-|
-|id|Long|Khoá chính|
-|feePeriod|FeePeriod|Đợt thu phí|
-|household|Household|Hộ nộp|
-|amountDue|BigDecimal|Số tiền phải nộp|
-|amountPaid|BigDecimal|Số tiền đã nộp|
-|paidDate|LocalDate|Ngày nộp|
-|status|String|UNPAID, PAID|
-|paymentMethod|String|`CASH` (Admin ghi nhận tiền mặt) hoặc `ONLINE` (qua VNPay Sandbox)|
-|transactionCode|String|Mã giao dịch online (NULL nếu nộp tiền mặt). Khi VNPay thành công, copy `transaction\\\_code` từ `payment\\\_transactions`|
-|paidAt|LocalDateTime|Thời điểm thanh toán hoàn tất|
-|note|String|Ghi chú|
-|collectedBy|User|Admin ghi nhận (NULL nếu thanh toán online)|
-
-Trách nhiệm: lưu phiếu nộp. **`PaymentService.confirmCashPayment(...)`** xử lý xác nhận đã nộp đủ tiền mặt bằng cách đặt `amount\\\_paid = amount\\\_due` và `status = PAID`; **`PaymentService.markPaidByVnpay(transactionCode, ...)`** cập nhật khi VNPay xác nhận thành công.
-
-**PaymentTransaction** – Giao dịch thanh toán online
-
-|Thuộc tính|Kiểu|Ý nghĩa|
-|-|-|-|
-|id|Long|Khoá chính|
-|transactionCode|String|Mã giao dịch duy nhất do hệ thống sinh (vd: `BM-20260527-000123`)|
-|household|Household|Hộ thanh toán|
-|user|User|Người thực hiện thanh toán (cư dân đăng nhập)|
-|targetType|String|`FEE\\\_PAYMENT` (phiếu nộp), `UTILITY\\\_BILL` (hoá đơn điện/nước/internet)|
-|targetId|Long|ID của bản ghi khoản phí/hoá đơn tương ứng|
-|amount|BigDecimal|Số tiền giao dịch|
-|status|String|`PENDING`, `SUCCESS`, `FAILED`, `CANCELLED`|
-|vnpayTransactionNo|String|`vnp\\\_TransactionNo` do VNPay trả về|
-|vnpayResponseCode|String|`vnp\\\_ResponseCode` do VNPay trả về|
-|vnpayBankCode|String|`vnp\\\_BankCode`|
-|vnpayPayDate|String|`vnp\\\_PayDate`|
-|paymentUrl|String|URL thanh toán VNPay đã sinh|
-|paidAt|LocalDateTime|Thời điểm xác nhận thành công|
-|createdAt|LocalDateTime|Thời điểm tạo giao dịch|
-|updatedAt|LocalDateTime|Thời điểm cập nhật cuối|
-
-Trách nhiệm: lưu thông tin giao dịch online. Bảng này chỉ dành cho giao dịch qua VNPay Sandbox nên không cần thuộc tính `paymentMethod`; phương thức được hiểu mặc định là ONLINE. `vnp\\\_SecureHash` chỉ dùng để xác thực callback tại thời điểm nhận Return/IPN, không lưu lâu dài trong Entity. **Mọi thao tác tạo URL, kiểm tra chữ ký, cập nhật trạng thái thuộc về `PaymentService` và `VnpayService`.**
-
-**Vehicle, ParkingSlot, ParkingRegistration** – như mô tả cũ, với `monthlyFee: BigDecimal` thay cho `Double`.
-
-**Quy tắc tính phí gửi xe (`monthlyFee`):**
-
-* Xe máy (MOTORBIKE): 70.000đ/xe/tháng – mặc định khi đăng ký cho hộ.
-* Ô tô (CAR): 1.200.000đ/xe/tháng – mặc định khi đăng ký cho hộ.
-* Cho thuê chỗ gửi xe thừa (`vehicle\\\_id = NULL`, có `renter\\\_name/renter\\\_phone`): phí thuê nhập thủ công theo thoả thuận giữa BQT và người thuê.
-
-**UtilityBill** – Hoá đơn điện/nước/internet, với `amount: BigDecimal`, `paymentMethod`, `transactionCode`, `paidAt` để khớp luồng thanh toán online.
-
-**AuditLog** – Nhật ký audit lưu trong CSDL
-
-|Thuộc tính|Kiểu|Ý nghĩa|
-|-|-|-|
-|id|Long|Khoá chính|
-|adminUsername|String|Username của người (Admin) thực hiện thao tác; lấy từ `SecurityContext`|
-|action|String|Hành động: `CREATE` / `UPDATE` / `DELETE`|
-|targetEntity|String|Tên thực thể bị tác động (vd `User`, `Fee`, `Payment`, `UtilityBill`...)|
-|details|String|Chuỗi mô tả chi tiết thao tác (tối đa 1000 ký tự)|
-|timestamp|LocalDateTime|Thời điểm ghi log (`@CreationTimestamp`)|
-
-Trách nhiệm: lưu vết các thao tác quản trị để Admin tra cứu. **Cơ chế ghi: AOP** — gắn annotation `@LogAdminAction(entity, action, description, detail)` lên method service; `AuditAspect` dùng advice `@AfterReturning` chỉ ghi log khi method thành công và có user đăng nhập. Giá trị `details` được phân giải theo thứ tự ưu tiên: `AuditContext.consume()` (service tự set) → biểu thức SpEL trong `detail()` (tham chiếu tham số `#id`, `#dto` và kết quả `#result`) → `description()` tĩnh. AuditLog **không** lưu khoá ngoại User, không lưu IP/user-agent, không lưu mật khẩu, OTP nguyên bản, `vnp\\\_HashSecret` hay `vnp\\\_SecureHash`. ⚠️ Dự án dùng `aspectjweaver` trực tiếp thay cho `spring-boot-starter-aop`.
-
-**Complaint, Notification, NotificationRecipient** – giữ nguyên cấu trúc, không thay đổi.
-
-\---
-
-## 7\. THIẾT KẾ CƠ SỞ DỮ LIỆU
+## 7. THIẾT KẾ CƠ SỞ DỮ LIỆU
 
 ### 7.1 Sơ đồ thực thể quan hệ (ERD)
 
-```mermaid
-erDiagram
-    ROLES ||--o{ USERS : "có"
-    USERS }o--o| HOUSEHOLDS : "thuộc hộ nếu là cư dân đã duyệt"
-    APARTMENTS ||--o{ HOUSEHOLDS : "có hộ dân theo thời gian"
-    HOUSEHOLDS ||--o{ RESIDENTS : "gồm"
-    HOUSEHOLDS ||--o{ VEHICLES : "có"
-    HOUSEHOLDS ||--o{ UTILITY\\\_BILLS : "có"
-    HOUSEHOLDS ||--o{ PAYMENTS : "nộp"
-    HOUSEHOLDS ||--o{ PAYMENT\\\_TRANSACTIONS : "thanh toán online"
-    USERS ||--o{ PAYMENT\\\_TRANSACTIONS : "thực hiện"
-
-    FEES ||--o{ FEE\\\_PERIODS : "có đợt thu"
-    FEE\\\_PERIODS ||--o{ PAYMENTS : "sinh"
-
-    PARKING\\\_SLOTS ||--o{ PARKING\\\_REGISTRATIONS : "được gán"
-    VEHICLES ||--o{ PARKING\\\_REGISTRATIONS : "đăng ký"
-
-    USERS ||--o{ COMPLAINTS : "gửi"
-    HOUSEHOLDS ||--o{ COMPLAINTS : "thuộc hộ"
-    NOTIFICATIONS ||--o{ NOTIFICATION\\\_RECIPIENTS : "gửi đến"
-    USERS ||--o{ NOTIFICATION\\\_RECIPIENTS : "nhận"
-
-    ROLES {
-        BIGINT id PK
-        VARCHAR name
-        VARCHAR description
-    }
-    USERS {
-        BIGINT id PK
-        VARCHAR username UK
-        VARCHAR password\\\_hash
-        VARCHAR full\\\_name
-        VARCHAR email
-        VARCHAR phone
-        BOOLEAN active
-        BOOLEAN deleted
-        BOOLEAN email\\\_verified
-        VARCHAR requested\\\_apartment\\\_code
-        BIGINT role\\\_id FK
-        BIGINT household\\\_id FK
-        BIGINT resident\\\_id FK
-    }
-    EMAIL\\\_OTPS {
-        BIGINT id PK
-        VARCHAR email
-        VARCHAR otp\\\_hash
-        VARCHAR purpose
-        DATETIME expired\\\_at
-        BOOLEAN used
-        INT failed\\\_attempts
-        DATETIME created\\\_at
-    }
-    APARTMENTS {
-        BIGINT id PK
-        VARCHAR code UK
-        INT floor
-        DECIMAL area
-        VARCHAR status
-        TEXT note
-    }
-    HOUSEHOLDS {
-        BIGINT id PK
-        VARCHAR code UK
-        BIGINT apartment\\\_id FK
-        BIGINT head\\\_resident\\\_id FK
-        DATE move\\\_in\\\_date
-        VARCHAR status
-    }
-    RESIDENTS {
-        BIGINT id PK
-        BIGINT household\\\_id FK
-        VARCHAR full\\\_name
-        VARCHAR id\\\_card UK
-        DATE date\\\_of\\\_birth
-        VARCHAR gender
-        VARCHAR relation\\\_to\\\_head
-        VARCHAR residency\\\_status
-        VARCHAR status
-    }
-    FEES {
-        BIGINT id PK
-        VARCHAR name UK
-        VARCHAR type
-        DECIMAL unit\\\_price
-        VARCHAR unit
-        TEXT description
-        BOOLEAN active
-    }
-    FEE\\\_PERIODS {
-        BIGINT id PK
-        BIGINT fee\\\_id FK
-        VARCHAR name
-        DATE start\\\_date
-        DATE end\\\_date
-        VARCHAR status
-    }
-    PAYMENTS {
-        BIGINT id PK
-        BIGINT fee\\\_period\\\_id FK
-        BIGINT household\\\_id FK
-        DECIMAL amount\\\_due
-        DECIMAL amount\\\_paid
-        DATE paid\\\_date
-        VARCHAR status
-        VARCHAR payment\\\_method
-        VARCHAR transaction\\\_code
-        DATETIME paid\\\_at
-        TEXT note
-        BIGINT collected\\\_by FK
-    }
-    PAYMENT\\\_TRANSACTIONS {
-        BIGINT id PK
-        VARCHAR transaction\\\_code UK
-        BIGINT household\\\_id FK
-        BIGINT user\\\_id FK
-        VARCHAR target\\\_type
-        BIGINT target\\\_id
-        TEXT target\\\_ids
-        TEXT target\\\_amounts
-        TEXT utility\\\_bill\\\_ids
-        DECIMAL amount
-        VARCHAR status
-        VARCHAR vnpay\\\_transaction\\\_no
-        VARCHAR vnpay\\\_response\\\_code
-        VARCHAR vnpay\\\_bank\\\_code
-        VARCHAR vnpay\\\_pay\\\_date
-        TEXT payment\\\_url
-        DATETIME paid\\\_at
-        DATETIME created\\\_at
-        DATETIME updated\\\_at
-    }
-    AUDIT\\\_LOGS {
-        BIGINT id PK
-        VARCHAR admin\\\_username
-        VARCHAR action
-        VARCHAR target\\\_entity
-        VARCHAR details
-        DATETIME timestamp
-    }
-    SYSTEM\\\_CONFIGS {
-        BIGINT id PK
-        VARCHAR config\\\_key UK
-        DECIMAL config\\\_value
-        VARCHAR description
-    }
-    VEHICLES {
-        BIGINT id PK
-        BIGINT household\\\_id FK
-        VARCHAR license\\\_plate UK
-        VARCHAR type
-        DATE registered\\\_date
-        BOOLEAN active
-    }
-    PARKING\\\_SLOTS {
-        BIGINT id PK
-        VARCHAR code UK
-        VARCHAR type
-        VARCHAR status
-    }
-    PARKING\\\_REGISTRATIONS {
-        BIGINT id PK
-        BIGINT slot\\\_id FK
-        BIGINT vehicle\\\_id FK
-        VARCHAR renter\\\_name
-        VARCHAR renter\\\_phone
-        DATE start\\\_date
-        DATE end\\\_date
-        DECIMAL monthly\\\_fee
-        VARCHAR status
-    }
-    UTILITY\\\_BILLS {
-        BIGINT id PK
-        BIGINT household\\\_id FK
-        VARCHAR type
-        INT month
-        INT year
-        INT old\\\_index
-        INT new\\\_index
-        DECIMAL amount
-        VARCHAR status
-        DATE paid\\\_date
-        VARCHAR payment\\\_method
-        VARCHAR transaction\\\_code
-        DATETIME paid\\\_at
-    }
-    COMPLAINTS {
-        BIGINT id PK
-        BIGINT sender\\\_user\\\_id FK
-        BIGINT household\\\_id FK
-        VARCHAR title
-        VARCHAR category
-        TEXT content
-        VARCHAR status
-        TEXT response
-        BIGINT handled\\\_by FK
-        DATETIME created\\\_at
-        DATETIME responded\\\_at
-    }
-    NOTIFICATIONS {
-        BIGINT id PK
-        VARCHAR title
-        TEXT content
-        BIGINT sender\\\_id FK
-        VARCHAR scope
-        DATETIME sent\\\_at
-    }
-    NOTIFICATION\\\_RECIPIENTS {
-        BIGINT id PK
-        BIGINT notification\\\_id FK
-        BIGINT recipient\\\_id FK
-        BOOLEAN is\\\_read
-        DATETIME read\\\_at
-    }
-```
-
-### 7.2 Danh sách bảng
-
-Hệ thống gồm **19 bảng** trong MySQL:
-
-|STT|Bảng|Mục đích|
-|-|-|-|
-|1|`roles`|Vai trò trong hệ thống|
-|2|`users`|Tài khoản người dùng|
-|3|`email\\\_otps`|OTP gửi qua email (đăng ký, quên mật khẩu, xác nhận thao tác)|
-|4|`apartments`|Danh mục căn hộ (cố định, không thêm/xoá khi vận hành)|
-|5|`households`|Hộ dân/Hộ khẩu sống trong căn hộ theo thời gian|
-|6|`residents`|Nhân khẩu|
-|7|`fees`|Danh mục khoản thu|
-|8|`fee\\\_periods`|Đợt thu phí|
-|9|`payments`|Phiếu nộp theo đợt thu|
-|10|`payment\\\_transactions`|Giao dịch thanh toán online qua VNPay Sandbox|
-|11|`audit\\\_logs`|Nhật ký audit nghiệp vụ lưu trong CSDL|
-|12|`vehicles`|Xe đăng ký gửi|
-|13|`parking\\\_slots`|Chỗ gửi xe|
-|14|`parking\\\_registrations`|Đăng ký gửi xe / cho thuê chỗ|
-|15|`utility\\\_bills`|Hoá đơn điện/nước/internet|
-|16|`complaints`|Khiếu nại của cư dân|
-|17|`notifications`|Thông báo|
-|18|`notification\\\_recipients`|Người nhận thông báo|
-|19|`system\\\_configs`|Đơn giá cấu hình (điện, nước, internet, phí gửi xe máy/ô tô)|
-
-Ghi chú: hệ thống có **19 bảng** và **19 Entity chính**. Không thêm bảng `parking\\\_fee\\\_bills`, không thêm bảng lịch sử biến động nhân khẩu, không thêm role mới và không thêm cổng thanh toán khác ngoài VNPay Sandbox. Schema do Hibernate sinh tự động từ Entity (`spring.jpa.hibernate.ddl-auto=update`).
-
-### 7.3 Chi tiết các bảng quan trọng
-
-**Bảng `users`**
-
-|Cột|Kiểu|Ràng buộc|Mô tả|
-|-|-|-|-|
-|id|BIGINT|PK, AUTO\_INCREMENT|Khoá chính|
-|username|VARCHAR(50)|NOT NULL, UNIQUE|Tên đăng nhập|
-|password\_hash|VARCHAR(255)|NOT NULL|Mật khẩu đã băm BCrypt|
-|full\_name|VARCHAR(100)|NOT NULL|Họ tên|
-|email|VARCHAR(100)||Email liên hệ|
-|phone|VARCHAR(20)|||
-|active|BOOLEAN|DEFAULT FALSE|Cư dân tự đăng ký mặc định `FALSE`, chờ Admin duyệt. Admin được tạo nội bộ với `TRUE`|
-|deleted|BOOLEAN|NOT NULL, DEFAULT FALSE|Cờ **xoá mềm**; `JwtFilter` chặn tài khoản `deleted = TRUE`|
-|email\_verified|BOOLEAN|DEFAULT FALSE|TRUE sau khi OTP đăng ký được xác thực|
-|requested\_apartment\_code|VARCHAR(20)|NULL|Mã căn hộ cư dân khai khi tự đăng ký, chờ Admin duyệt. NULL với Admin và với tài khoản đã được duyệt|
-|role\_id|BIGINT|FK → roles(id), NOT NULL|Vai trò|
-|household\_id|BIGINT|FK → households(id), NULL|Hộ gắn với tài khoản. NULL với Admin; NULL với cư dân chưa được duyệt; có giá trị với cư dân đã được Admin gán hộ|
-|resident\_id|BIGINT|FK → residents(id), NULL|Nhân khẩu tương ứng (khi cấp tài khoản cho một nhân khẩu); NULL nếu chưa gắn|
-
-Giải thích `requested\\\_apartment\\\_code`:
-
-* Khi cư dân tự đăng ký, tài khoản có `role = RESIDENT`, `active = FALSE`, `household\\\_id = NULL`, và `requested\\\_apartment\\\_code` chứa mã căn hộ cư dân khai báo.
-* Sau khi Admin kiểm tra, Admin gán tài khoản vào household phù hợp (`household\\\_id = …`) và kích hoạt (`active = TRUE`); `requested\\\_apartment\\\_code` có thể giữ nguyên hoặc đặt NULL tuỳ chính sách.
-* **Không tạo bảng đăng ký riêng**.
-
-**Bảng `email\\\_otps`**
-
-```sql
-CREATE TABLE email\\\_otps (
-    id BIGINT PRIMARY KEY AUTO\\\_INCREMENT,
-    email VARCHAR(100) NOT NULL,
-    otp\\\_hash VARCHAR(255) NOT NULL,
-    purpose VARCHAR(50) NOT NULL,           -- REGISTER, FORGOT\\\_PASSWORD (String, không phải ENUM DB)
-    expired\\\_at DATETIME NOT NULL,
-    used BOOLEAN DEFAULT FALSE,
-    failed\\\_attempts INT DEFAULT 0,
-    created\\\_at DATETIME DEFAULT CURRENT\\\_TIMESTAMP,
-    INDEX idx\\\_email\\\_purpose (email, purpose),
-    INDEX idx\\\_created\\\_at (created\\\_at)
-);
-```
-
-Quy ước:
-
-* `otp\\\_hash`: OTP đã hash BCrypt; **không bao giờ lưu OTP plain**.
-* `purpose`: phân loại mục đích OTP để tránh dùng nhầm OTP đăng ký cho việc đặt lại mật khẩu.
-* `expired\\\_at = created\\\_at + 5 phút`.
-* `failed\\\_attempts` tăng mỗi lần nhập sai; vượt 5 → khoá OTP, yêu cầu OTP mới.
-* Rate limit: trong 15 phút, mỗi `email` chỉ được tạo tối đa 5 bản ghi (kiểm tra qua `COUNT(\\\*) WHERE email = ? AND created\\\_at > NOW() - INTERVAL 15 MINUTE`).
-
-**Bảng `apartments`**
-
-|Cột|Kiểu|Ràng buộc|Mô tả|
-|-|-|-|-|
-|id|BIGINT|PK, AUTO\_INCREMENT|Khoá chính|
-|code|VARCHAR(20)|UNIQUE, NOT NULL|Số căn hộ|
-|floor|INT|NOT NULL|Tầng|
-|area|DECIMAL(10,2)|NOT NULL|Diện tích (m²)|
-|status|VARCHAR(20)|NOT NULL, DEFAULT 'AVAILABLE'|`AVAILABLE` / `OCCUPIED` (enum `ApartmentStatus`)|
-|note|TEXT||Ghi chú|
-
-Lưu ý:
-
-* Số căn hộ trong chung cư BlueMoon là **cố định**, không có API thêm/xoá căn hộ.
-* **Một căn hộ có thể có nhiều Household theo thời gian, nhưng tại một thời điểm chỉ có tối đa một Household ở trạng thái ACTIVE.** Không cần bảng lịch sử riêng.
-* Apartment ở trạng thái `AVAILABLE` không có Household ACTIVE nào.
-
-**Bảng `households`**
-
-|Cột|Kiểu|Ràng buộc|Mô tả|
-|-|-|-|-|
-|id|BIGINT|PK|Khoá chính|
-|code|VARCHAR(20)|UNIQUE, NOT NULL|Mã hộ dân/hộ khẩu|
-|apartment\_id|BIGINT|FK → apartments(id)|Căn hộ mà hộ dân đang/đã ở|
-|head\_resident\_id|BIGINT|FK → residents(id), NULL|Chủ hộ; cho phép NULL khi vừa tạo Household rồi mới thêm Resident đầu tiên|
-|move\_in\_date|DATE||Ngày chuyển vào|
-|status|VARCHAR(20)|NOT NULL, DEFAULT 'ACTIVE'|`ACTIVE` / `MOVED\\\_OUT` (enum `HouseholdStatus`)|
-
-Ràng buộc nghiệp vụ: với mỗi `apartment\\\_id`, chỉ có tối đa một dòng có `status = 'ACTIVE'`. Trong hiện thực, schema được Hibernate sinh tự động từ Entity (không có cột generated column hay partial unique index), nên ràng buộc "tối đa 1 Household ACTIVE/căn hộ" được **đảm bảo ở tầng service** (`HouseholdLifecycleService`) khi thực hiện move-in/move-out, không dựa vào ràng buộc CSDL.
-
-Quy trình tạo Household để tránh vòng phụ thuộc với chủ hộ:
-
-1. Tạo `Household` với `head\\\_resident\\\_id = NULL`.
-2. Thêm Resident đầu tiên vào Household (qua `POST /api/households/{id}/members`).
-3. Cập nhật `head\\\_resident\\\_id` bằng `id` của Resident được chọn làm chủ hộ.
-
-**Bảng `residents`**
-
-|Cột|Kiểu|Mô tả|
-|-|-|-|
-|id|BIGINT PK||
-|household\_id|BIGINT FK||
-|full\_name|VARCHAR(100)||
-|id\_card|VARCHAR(20) UNIQUE||
-|date\_of\_birth|DATE||
-|gender|VARCHAR(10)|MALE/FEMALE/OTHER|
-|relation\_to\_head|VARCHAR(30)||
-|residency\_status|VARCHAR(20)|`PERMANENT` / `TEMPORARY` / `ABSENT` (tình trạng cư trú)|
-|status|VARCHAR(20) DEFAULT 'ACTIVE'|`ACTIVE` (còn thuộc hộ) / `MOVED\\\_OUT` (đã chuyển khỏi hộ)|
-
-Giải thích:
-
-* `residency\\\_status`: thường trú / tạm trú / tạm vắng.
-* `status`: còn thuộc hộ hay đã chuyển đi.
-* Khi chuyển nhân khẩu khỏi hộ: **không xoá vật lý**, chỉ cập nhật `status = 'MOVED\\\_OUT'`. Không cần bảng lịch sử biến động nhân khẩu.
-
-**Bảng `fees`**
-
-|Cột|Kiểu|Mô tả|
-|-|-|-|
-|id|BIGINT PK||
-|name|VARCHAR(100) UNIQUE|Tên khoản thu|
-|type|VARCHAR(20)|MANDATORY / DONATION|
-|unit\_price|DECIMAL(15,2)|Đơn giá, có thể NULL|
-|unit|VARCHAR(20)|PER\_M2 / PER\_PERSON / PER\_HOUSEHOLD / PER\_VEHICLE / FIXED / NONE|
-|description|TEXT||
-|active|BOOLEAN DEFAULT TRUE|TRUE: còn được dùng để lập đợt thu mới; FALSE: đã ngừng sử dụng, chỉ giữ để bảo toàn dữ liệu lịch sử|
-
-Quy tắc xoá/ngừng sử dụng:
-
-* Nếu khoản thu chưa phát sinh `fee\\\_periods` và chưa có `payments` liên quan → cho phép xoá vật lý.
-* Nếu khoản thu đã phát sinh dữ liệu liên quan → không xoá vật lý; chỉ cập nhật `active = FALSE` để ngừng sử dụng cho các đợt thu mới.
-* `FeeService` phải kiểm tra ràng buộc này trước khi thực hiện `DELETE /api/fees/{id}`.
-
-**Bảng `fee\\\_periods`**
-
-|Cột|Kiểu|Mô tả|
-|-|-|-|
-|id|BIGINT PK||
-|fee\_id|BIGINT FK||
-|name|VARCHAR(100)||
-|start\_date, end\_date|DATE||
-|status|VARCHAR(20)|OPEN / CLOSED|
-
-Quy tắc sinh phiếu nộp:
-
-* Với `fees.type = MANDATORY`: khi lập đợt thu, hệ thống tự sinh `payments` cho các Household ACTIVE.
-* Với `fees.type = DONATION`: không sinh công nợ bắt buộc cho mọi hộ. Hệ thống chỉ tạo `payments` khi Admin ghi nhận hộ có đóng góp hoặc khi cư dân chủ động thanh toán một khoản đóng góp được mở cho hộ; các hộ chưa đóng góp không bị tính là nợ/chưa nộp.
-* Với phí gửi xe hằng tháng: có thể tạo một `FeePeriod` riêng cho phí gửi xe; `amount\\\_due` được tính từ các `parking\\\_registrations` ACTIVE của hộ tại tháng đó.
-
-**Bảng `payments`**
-
-|Cột|Kiểu|Mô tả|
-|-|-|-|
-|id|BIGINT PK||
-|fee\_period\_id|BIGINT FK||
-|household\_id|BIGINT FK||
-|amount\_due|DECIMAL(15,2)|Số phải nộp|
-|amount\_paid|DECIMAL(15,2) DEFAULT 0|Số đã nộp|
-|paid\_date|DATE||
-|status|VARCHAR(20)|UNPAID / PAID|
-|payment\_method|VARCHAR(20) NULL|`CASH` / `ONLINE` (String); NULL khi khoản chưa được thanh toán|
-|transaction\_code|VARCHAR(50) NULL|Mã giao dịch online (chỉ có giá trị khi `payment\\\_method = ONLINE`)|
-|paid\_at|DATETIME NULL|Thời điểm thanh toán hoàn tất (đặc biệt với online)|
-|note|TEXT||
-|collected\_by|BIGINT FK → users(id)|NULL nếu thanh toán online|
-
-Ràng buộc: UNIQUE (`fee\\\_period\\\_id`, `household\\\_id`).
-
-**Bảng `payment\\\_transactions`**
-
-```sql
-CREATE TABLE payment\\\_transactions (
-    id BIGINT PRIMARY KEY AUTO\\\_INCREMENT,
-    transaction\\\_code VARCHAR(50) NOT NULL UNIQUE,
-    household\\\_id BIGINT NOT NULL,
-    user\\\_id BIGINT NOT NULL,
-    -- Hibernate ánh xạ từ trường String → VARCHAR(20):
-    target\\\_type VARCHAR(20) NOT NULL,   -- FEE\\\_PAYMENT, UTILITY\\\_BILL, FEE\\\_PAYMENT\\\_BATCH, MIXED\\\_PAYMENT\\\_BATCH
-    target\\\_id BIGINT NOT NULL,
-    target\\\_ids TEXT,                     -- danh sách id khi thanh toán gộp nhiều phiếu nộp
-    target\\\_amounts TEXT,                 -- số tiền tương ứng từng id (thanh toán gộp)
-    utility\\\_bill\\\_ids TEXT,               -- danh sách id hoá đơn tiện ích khi gộp
-    amount DECIMAL(15,2) NOT NULL,
-    status VARCHAR(20) DEFAULT 'PENDING',   -- PENDING, SUCCESS, FAILED, CANCELLED (String)
-    vnpay\\\_transaction\\\_no VARCHAR(100),
-    vnpay\\\_response\\\_code VARCHAR(20),
-    vnpay\\\_bank\\\_code VARCHAR(50),
-    vnpay\\\_pay\\\_date VARCHAR(20),
-    payment\\\_url TEXT,
-    paid\\\_at DATETIME,
-    created\\\_at DATETIME DEFAULT CURRENT\\\_TIMESTAMP,
-    updated\\\_at DATETIME DEFAULT CURRENT\\\_TIMESTAMP,
-    FOREIGN KEY (household\\\_id) REFERENCES households(id),
-    FOREIGN KEY (user\\\_id) REFERENCES users(id),
-    INDEX idx\\\_household (household\\\_id),
-    INDEX idx\\\_status (status),
-    INDEX idx\\\_target (target\\\_type, target\\\_id)
-);
-```
-
-Giải thích vai trò hai bảng `payments` và `payment\\\_transactions`:
-
-* `payments` dùng để **ghi nhận khoản phải thu và khoản đã nộp** theo đợt thu phí (`fee\\\_periods`). Khi mới sinh phiếu nộp, `status = UNPAID`, `amount\\\_paid = 0`, `payment\\\_method = NULL`. Chỉ khi hộ thực sự nộp tiền thì hệ thống mới cập nhật `payment\\\_method = CASH` hoặc `ONLINE`; trường `transaction\\\_code` liên kết sang `payment\\\_transactions` nếu là online.
-* `payment\\\_transactions` dùng để **theo dõi giao dịch online qua VNPay Sandbox**. Vì bảng này chỉ ghi nhận giao dịch online nên không có cột `payment\\\_method`; phương thức thanh toán được hiểu mặc định là ONLINE. Bảng cũng không lưu `vnpay\\\_secure\\\_hash`; chữ ký `vnp\\\_SecureHash` chỉ được kiểm tra tại thời điểm nhận Return/IPN rồi bỏ, không cần lưu để đối soát. `target\\\_type` nhận các giá trị:
-
-  * `FEE\\\_PAYMENT` → liên kết tới `payments.id` (một phiếu nộp).
-  * `UTILITY\\\_BILL` → liên kết tới `utility\\\_bills.id` (một hoá đơn điện/nước/internet).
-  * `FEE\\\_PAYMENT\\\_BATCH` / `MIXED\\\_PAYMENT\\\_BATCH` → thanh toán **gộp** nhiều khoản trong một giao dịch; danh sách id và số tiền từng khoản lưu ở `target\\\_ids` / `target\\\_amounts` / `utility\\\_bill\\\_ids`.
-* Vì `target\\\_type + target\\\_id` là liên kết đa hình, MySQL không thể tạo FK trực tiếp đến hai bảng khác nhau trên cùng một cột `target\\\_id`. Ràng buộc này phải được kiểm tra ở tầng `PaymentService`: khi `target\\\_type = FEE\\\_PAYMENT` thì `target\\\_id` bắt buộc tồn tại trong `payments`; khi `target\\\_type = UTILITY\\\_BILL` thì `target\\\_id` bắt buộc tồn tại trong `utility\\\_bills`; đồng thời `household\\\_id` của target phải khớp với `household\\\_id` của giao dịch.
-* Khi giao dịch VNPay thành công (`vnp\\\_ResponseCode = "00"`, chữ ký hợp lệ), hệ thống đặt `payment\\\_transactions.status = SUCCESS` và **đồng thời cập nhật bản ghi khoản phí/hoá đơn tương ứng**:
-
-  * Với `FEE\\\_PAYMENT` → `payments`: `status = PAID`, `amount\\\_paid = amount\\\_due`, `payment\\\_method = ONLINE`, `transaction\\\_code = <transaction\\\_code>`, `paid\\\_at`, `paid\\\_date`.
-  * Với `UTILITY\\\_BILL` → `utility\\\_bills`: `status = PAID`, `payment\\\_method = ONLINE`, `transaction\\\_code = <transaction\\\_code>`, `paid\\\_at`, `paid\\\_date`.
-* Không tạo `target\\\_type = PARKING\\\_FEE` riêng. Phí gửi xe hằng tháng được thu như một khoản thu thông thường trong `fee\\\_periods/payments`; số tiền lấy từ các `parking\\\_registrations` đang ACTIVE của hộ. Vì vậy nếu thanh toán online, giao dịch phí gửi xe vẫn đi qua `target\\\_type = FEE\\\_PAYMENT`.
-* Khi tạo giao dịch VNPay mới, `PaymentService` phải kiểm tra trạng thái target trước:
-
-  * Nếu khoản phí/hoá đơn đã `PAID` → từ chối tạo giao dịch mới.
-  * Nếu đã có giao dịch `PENDING` cho cùng `target\\\_type + target\\\_id` → trả lại `payment\\\_url` cũ hoặc yêu cầu cư dân chờ/hủy giao dịch cũ; không tạo nhiều giao dịch `PENDING` song song.
-  * Nếu giao dịch cũ là `FAILED` hoặc `CANCELLED` → cho phép tạo giao dịch mới.
-  * Khi IPN về nhiều lần, chỉ cập nhật nếu transaction đang `PENDING`.
-* **Hệ thống không lưu thông tin thẻ ngân hàng của cư dân**; chỉ lưu các trường `vnpay\\\_\\\*` do VNPay trả về để đối soát.
-
-**Bảng `audit\\\_logs`**
-
-```sql
--- Schema Hibernate sinh từ Entity AuditLog:
-CREATE TABLE audit\\\_logs (
-    id BIGINT PRIMARY KEY AUTO\\\_INCREMENT,
-    admin\\\_username VARCHAR(50),
-    action VARCHAR(20),            -- CREATE / UPDATE / DELETE
-    target\\\_entity VARCHAR(50),     -- User, Fee, Payment, UtilityBill, ...
-    details VARCHAR(1000),
-    timestamp DATETIME             -- @CreationTimestamp
-);
-```
-
-Quy ước:
-
-* Ghi audit log cho các thao tác quản trị (CRUD trên tài nguyên nhạy cảm) thông qua **AOP**: gắn `@LogAdminAction(entity, action, description, detail)` lên method service. `AuditAspect` (advice `@AfterReturning`) chỉ ghi log khi method **thành công** và `SecurityContext` có user đăng nhập (nên thao tác hệ thống/seed data không sinh log).
-* Bảng chỉ lưu `admin\\\_username` (chuỗi), **không có** khoá ngoại tới `users`, không lưu IP/user-agent, không có cột `result` (chỉ ghi khi thành công).
-* `details` lấy theo thứ tự ưu tiên: `AuditContext.consume()` → SpEL trong `detail()` → `description()` tĩnh.
-* Không lưu mật khẩu, OTP nguyên bản, `vnp\\\_HashSecret`, nội dung `vnp\\\_SecureHash`, thông tin thẻ ngân hàng.
-* File log Spring Boot dùng bổ trợ cho debug kỹ thuật; audit nghiệp vụ chính lưu ở bảng này.
-
-**Bảng `vehicles`**
-
-|Cột|Kiểu|Mô tả|
-|-|-|-|
-|id|BIGINT PK||
-|household\_id|BIGINT FK||
-|license\_plate|VARCHAR(20) UNIQUE||
-|type|VARCHAR(20)|MOTORBIKE / CAR|
-|registered\_date|DATE||
-|active|BOOLEAN DEFAULT TRUE||
-
-**Bảng `parking\\\_slots`**
-
-|Cột|Kiểu|Mô tả|
-|-|-|-|
-|id|BIGINT PK||
-|code|VARCHAR(20) UNIQUE||
-|type|VARCHAR(20)|MOTORBIKE / CAR|
-|status|VARCHAR(20)|EMPTY / USED / RENTED|
-
-**Bảng `parking\\\_registrations`**
-
-|Cột|Kiểu|Mô tả|
-|-|-|-|
-|id|BIGINT PK||
-|slot\_id|BIGINT FK||
-|vehicle\_id|BIGINT FK NULL|NULL nếu cho thuê ngoài|
-|renter\_name|VARCHAR(100)||
-|renter\_phone|VARCHAR(20)||
-|start\_date, end\_date|DATE||
-|monthly\_fee|DECIMAL(15,2)||
-|status|VARCHAR(20)|ACTIVE / ENDED|
-
-**Bảng `utility\\\_bills`**
-
-|Cột|Kiểu|Mô tả|
-|-|-|-|
-|id|BIGINT PK|Khoá chính|
-|household\_id|BIGINT FK|Hộ sử dụng dịch vụ|
-|type|VARCHAR(20)|ELECTRICITY / WATER / INTERNET (enum `UtilityType`)|
-|month|INT|1-12|
-|year|INT|Năm lập hoá đơn|
-|old\_index|INT NULL|Chỉ số cũ (điện/nước); NULL với internet|
-|new\_index|INT NULL|Chỉ số mới (điện/nước); NULL với internet|
-|amount|DECIMAL(15,2)|Số tiền hoá đơn|
-|status|VARCHAR(20)|UNPAID / PAID (enum `UtilityBillStatus`)|
-|paid\_date|DATE|Ngày thanh toán|
-|payment\_method|VARCHAR(20) NULL|CASH hoặc ONLINE; NULL khi hoá đơn chưa thanh toán|
-|transaction\_code|VARCHAR(50) NULL|Mã giao dịch online nếu thanh toán qua VNPay|
-|paid\_at|DATETIME NULL|Thời điểm thanh toán hoàn tất|
-
-Ràng buộc UNIQUE (`household\\\_id`, `type`, `month`, `year`).
-
-**Bảng `complaints`**
-
-|Cột|Kiểu|Mô tả|
-|-|-|-|
-|id|BIGINT PK||
-|sender\_user\_id|BIGINT FK → users(id), NOT NULL|Tài khoản đã gửi|
-|household\_id|BIGINT FK → households(id)|Hộ của người gửi|
-|title|VARCHAR(200)||
-|category|VARCHAR(30)|FEE / SECURITY / CLEANING / OTHER|
-|content|TEXT||
-|status|VARCHAR(20) DEFAULT 'NEW'|NEW / IN\_PROGRESS / RESOLVED / REJECTED|
-|response|TEXT||
-|handled\_by|BIGINT FK → users(id)||
-|created\_at|DATETIME DEFAULT CURRENT\_TIMESTAMP||
-|responded\_at|DATETIME||
-
-**Bảng `notifications`**
-
-|Cột|Kiểu|Mô tả|
-|-|-|-|
-|id|BIGINT PK||
-|title|VARCHAR(200)||
-|content|TEXT||
-|sender\_id|BIGINT FK → users(id)||
-|scope|VARCHAR(20)|ALL / BY\_FLOOR / BY\_HOUSEHOLD|
-|sent\_at|DATETIME DEFAULT CURRENT\_TIMESTAMP||
-
-**Bảng `notification\\\_recipients`**
-
-|Cột|Kiểu|Mô tả|
-|-|-|-|
-|id|BIGINT PK||
-|notification\_id|BIGINT FK||
-|recipient\_id|BIGINT FK → users(id)||
-|is\_read|BOOLEAN DEFAULT FALSE||
-|read\_at|DATETIME||
-
-Ràng buộc UNIQUE (`notification\\\_id`, `recipient\\\_id`).
-
-**Bảng `system\\\_configs`**
-
-|Cột|Kiểu|Mô tả|
-|-|-|-|
-|id|BIGINT PK||
-|config\_key|VARCHAR(50) UNIQUE, NOT NULL|Khoá cấu hình: `ELECTRICITY\\\_UNIT\\\_PRICE`, `WATER\\\_UNIT\\\_PRICE`, `INTERNET\\\_PRICE`, `MOTORBIKE\\\_PARKING\\\_PRICE`, `CAR\\\_PARKING\\\_PRICE`|
-|config\_value|DECIMAL(15,2) NOT NULL|Giá trị đơn giá|
-|description|VARCHAR(255)|Mô tả|
-
-Bảng lưu các đơn giá dùng để sinh hoá đơn điện/nước/internet và phí gửi xe; Admin sửa qua `PUT /api/system-configs/{key}`. Đây là bảng/Entity thứ 19, bổ sung so với thiết kế ban đầu.
-
-### 7.4 Một số quan hệ và quy tắc quan trọng
-
-* **Apartments ↔ Households:** 1 - 0..n theo thời gian; tại một thời điểm chỉ có tối đa 1 Household ACTIVE/Apartment. Khi hộ chuyển đi → `Household.status = MOVED\\\_OUT`; gán hộ mới → tạo Household mới với cùng `apartment\\\_id` và `status = ACTIVE`. Ràng buộc này được **đảm bảo ở tầng service** (`HouseholdLifecycleService`) khi move-in/move-out, vì schema do Hibernate sinh từ Entity không có generated column/partial unique index.
-* **Households ↔ Residents:** 1 - n; chuyển nhân khẩu khỏi hộ → đặt `Resident.status = MOVED\\\_OUT`, không xoá vật lý.
-* **Fee\_periods ↔ Payments:** 1 - n. Với khoản bắt buộc, mỗi Household ACTIVE có 1 phiếu nộp/đợt. Với khoản đóng góp tự nguyện, chỉ tạo phiếu nộp khi hộ phát sinh đóng góp thực tế.
-* **Fees:** khoản thu chưa phát sinh dữ liệu có thể xoá vật lý; khoản thu đã có `fee\\\_periods` hoặc `payments` thì không xoá vật lý, chỉ đặt `active = FALSE` để ngừng sử dụng.
-* **Payments ↔ Payment\_transactions:** liên kết qua `transaction\\\_code` khi `payment\\\_method = ONLINE`. Một phiếu nộp có thể có 0 hoặc 1 giao dịch online thành công (vì khi SUCCESS thì khoản đã thanh toán hết, các giao dịch sau cho cùng `target\\\_id` sẽ bị từ chối). `payment\\\_method` để NULL khi chưa thanh toán, tránh hiểu nhầm khoản chưa nộp là tiền mặt.
-* **Tiền tệ:** mọi trường tiền (`unit\\\_price`, `amount\\\_due`, `amount\\\_paid`, `amount`, `monthly\\\_fee`) dùng `DECIMAL(15,2)` trong CSDL và `BigDecimal` trong Java để tránh sai số dấu phẩy động.
-* **Cư dân chỉ thanh toán cho khoản phí của hộ mình:** kiểm tra `household\\\_id` của khoản phí khớp với `household\\\_id` trong JWT của cư dân; vi phạm → 403 Forbidden.
-* **Audit log:** các thao tác tài chính và thao tác thay đổi danh mục khoản thu phải ghi vào `audit\\\_logs` để truy vấn lại; file log chỉ dùng bổ trợ cho debug kỹ thuật.
-
-\---
-
-## 8\. THIẾT KẾ GIAO DIỆN
+Cơ sở dữ liệu của hệ thống quản lý chung cư BlueMoon gồm **10 bảng quan hệ**, được chuẩn hóa ở mức 3NF, đảm bảo toàn vẹn dữ liệu và hỗ trợ xử lý giao dịch cao.
+
+https://www.drawdb.app/editor/diagrams/1e858bde-93c7-4bbf-a25a-ad43a0800c82
+
+### 7.2 Hệ quản trị cơ sở dữ liệu
+
+* **Hệ quản trị CSDL:** PostgreSQL 14+ (Múi giờ lưu trữ: UTC / `TIMESTAMPTZ`, hiển thị ứng dụng: `Asia/Ho_Chi_Minh`).
+* **Tiện ích mở rộng (Extensions):** `unaccent` và `pg_trgm` (hỗ trợ tìm kiếm tiếng Việt không dấu tối ưu).
+* **Script khởi tạo nguồn:** [docs/Script_create_database.md](file:///d:/Users/WINDOWS/Downloads/bluemoon2/docs/Script_create_database.md).
+
+---
+
+### 7.3 Cấu trúc chi tiết 10 bảng dữ liệu
+
+#### 1. Bảng `household` (Hộ gia đình)
+Lưu trữ thông tin căn hộ và các hộ gia đình cư trú.
+
+| Tên cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+| --- | --- | --- | --- |
+| `id` | BIGINT | PK, GENERATED ALWAYS AS IDENTITY | Khóa chính tự tăng |
+| `household_code` | VARCHAR(30) | NOT NULL, UNIQUE | Mã hộ gia đình (vd: `H001`, `H002`) |
+| `apartment_no` | VARCHAR(20) | NOT NULL | Số căn hộ (vd: `101`, `1204`) |
+| `floor` | SMALLINT | NULL | Tầng căn hộ |
+| `area` | NUMERIC(10,2) | NOT NULL, CHECK (area > 0) | Diện tích căn hộ (m²) tính phí quản lý |
+| `status` | VARCHAR(20) | NOT NULL, DEFAULT 'ACTIVE' | Trạng thái: `ACTIVE`, `INACTIVE` |
+| `deleted_at` | TIMESTAMPTZ | NULL | Thời điểm xóa mềm |
+| `created_at` | TIMESTAMPTZ | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Thời điểm tạo |
+| `updated_at` | TIMESTAMPTZ | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Thời điểm cập nhật |
+
+#### 2. Bảng `resident` (Nhân khẩu)
+Lưu trữ thông tin cá nhân của các cư dân trong tòa nhà.
+
+| Tên cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+| --- | --- | --- | --- |
+| `id` | BIGINT | PK, GENERATED ALWAYS AS IDENTITY | Khóa chính tự tăng |
+| `household_id` | BIGINT | NOT NULL, FK → household(id) | Thuộc hộ gia đình nào |
+| `full_name` | VARCHAR(150) | NOT NULL | Họ và tên nhân khẩu |
+| `date_of_birth` | DATE | NOT NULL | Ngày tháng năm sinh |
+| `gender` | VARCHAR(10) | CHECK IN ('MALE', 'FEMALE', 'OTHER') | Giới tính |
+| `identity_number` | VARCHAR(30) | NULL | Số CCCD/CMND hoặc định danh |
+| `phone` | VARCHAR(20) | NULL | Số điện thoại liên hệ |
+| `relationship_to_head` | VARCHAR(50) | NULL | Quan hệ với chủ hộ (Chủ hộ, Vợ, Con...) |
+| `is_head` | BOOLEAN | NOT NULL, DEFAULT FALSE | Đánh dấu có phải là chủ hộ hay không |
+| `residency_status` | VARCHAR(30) | NOT NULL, DEFAULT 'RESIDING' | `RESIDING`, `TEMPORARILY_ABSENT`, `TEMPORARY_RESIDENCE`, `MOVED_OUT`, `DECEASED` |
+| `status_until` | DATE | NULL | Hạn tạm trú / tạm vắng |
+| `move_in_date` | DATE | NULL | Ngày bắt đầu cư trú tại hộ |
+| `move_out_date` | DATE | NULL | Ngày chuyển đi khỏi hộ |
+| `deleted_at` | TIMESTAMPTZ | NULL | Thời điểm xóa mềm |
+| `created_at` | TIMESTAMPTZ | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Thời điểm tạo |
+| `updated_at` | TIMESTAMPTZ | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Thời điểm cập nhật |
+
+#### 3. Bảng `app_role` (Vai trò người dùng)
+Danh mục 4 vai trò cố định trong hệ thống.
+
+| Tên cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+| --- | --- | --- | --- |
+| `id` | BIGINT | PK, GENERATED ALWAYS AS IDENTITY | Khóa chính |
+| `code` | VARCHAR(50) | NOT NULL, UNIQUE | Mã vai trò: `BQT`, `ACCOUNTANT`, `RESIDENT`, `AUTHORITY` |
+| `name` | VARCHAR(100) | NOT NULL | Tên hiển thị tiếng Việt |
+
+#### 4. Bảng `app_user` (Tài khoản người dùng)
+Tài khoản truy cập hệ thống dành cho Ban quản trị, Kế toán, Cơ quan chức năng và Cư dân.
+
+| Tên cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+| --- | --- | --- | --- |
+| `id` | BIGINT | PK, GENERATED ALWAYS AS IDENTITY | Khóa chính |
+| `username` | VARCHAR(100) | NOT NULL, UNIQUE | Tên đăng nhập (không phân biệt hoa thường) |
+| `password_hash` | VARCHAR(255) | NOT NULL | Mật khẩu băm BCrypt |
+| `full_name` | VARCHAR(150) | NOT NULL | Họ tên người dùng |
+| `email` | VARCHAR(255) | NULL, UNIQUE | Email liên hệ |
+| `phone` | VARCHAR(20) | NULL | Số điện thoại |
+| `resident_id` | BIGINT | NULL, UNIQUE, FK → resident(id) | Liên kết 1-1 với hồ sơ nhân khẩu (nếu là cư dân) |
+| `is_active` | BOOLEAN | NOT NULL, DEFAULT TRUE | Trạng thái hoạt động (khóa nếu false) |
+| `last_login_at` | TIMESTAMPTZ | NULL | Lần đăng nhập thành công gần nhất |
+| `password_changed_at` | TIMESTAMPTZ | NULL | Thời điểm đổi mật khẩu lần cuối (dùng invalidate token cũ) |
+| `must_change_password` | BOOLEAN | NOT NULL, DEFAULT FALSE | Bắt buộc đổi mật khẩu ở lần đăng nhập tới |
+| `created_at` | TIMESTAMPTZ | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Thời điểm tạo |
+| `updated_at` | TIMESTAMPTZ | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Thời điểm cập nhật |
+
+#### 5. Bảng `user_role` (Gán vai trò cho tài khoản)
+Bảng liên kết Nhiều - Nhiều giữa tài khoản và vai trò.
+
+| Tên cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+| --- | --- | --- | --- |
+| `user_id` | BIGINT | PK, FK → app_user(id) ON DELETE CASCADE | ID người dùng |
+| `role_id` | BIGINT | PK, FK → app_role(id) ON DELETE RESTRICT | ID vai trò |
+
+#### 6. Bảng `resident_movement` (Nhật ký biến động cư trú)
+Bảng append-only ghi nhận toàn bộ lịch sử biến động cư trú của nhân khẩu.
+
+| Tên cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+| --- | --- | --- | --- |
+| `id` | BIGINT | PK, GENERATED ALWAYS AS IDENTITY | Khóa chính |
+| `resident_id` | BIGINT | NOT NULL, FK → resident(id) | Nhân khẩu xảy ra biến động |
+| `movement_type` | VARCHAR(30) | NOT NULL | Loại biến động: `MOVE_IN`, `MOVE_OUT`, `TRANSFER`, `BIRTH`, `DEATH`, `TEMPORARY_ABSENCE`, `TEMPORARY_RESIDENCE`, `RETURN` |
+| `old_household_id` | BIGINT | NULL, FK → household(id) | Hộ chuyển đi (khi đổi hộ) |
+| `new_household_id` | BIGINT | NULL, FK → household(id) | Hộ chuyển đến (khi đổi hộ) |
+| `effective_date` | DATE | NOT NULL | Ngày có hiệu lực của biến động |
+| `start_date` | DATE | NULL | Ngày bắt đầu tạm trú/tạm vắng |
+| `end_date` | DATE | NULL | Ngày kết thúc tạm trú/tạm vắng |
+| `note` | TEXT | NULL | Ghi chú lý do biến động |
+| `recorded_by` | BIGINT | NOT NULL, FK → app_user(id) | Cán bộ BQT ghi nhận |
+| `recorded_at` | TIMESTAMPTZ | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Thời điểm ghi nhận |
+
+#### 7. Bảng `fee_category` (Danh mục khoản thu)
+Cấu hình các loại phí quản lý, phí vệ sinh và các quỹ vận động tự nguyện.
+
+| Tên cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+| --- | --- | --- | --- |
+| `id` | BIGINT | PK, GENERATED ALWAYS AS IDENTITY | Khóa chính |
+| `code` | VARCHAR(30) | NOT NULL, UNIQUE | Mã khoản thu (vd: `PHI_QL`, `PHI_VS`) |
+| `name` | VARCHAR(150) | NOT NULL | Tên khoản thu |
+| `description` | TEXT | NULL | Mô tả chi tiết mục đích thu |
+| `fee_kind` | VARCHAR(20) | NOT NULL, CHECK IN ('MANDATORY', 'VOLUNTARY') | Bắt buộc hoặc Tự nguyện |
+| `calculation_method` | VARCHAR(20) | NOT NULL, CHECK IN ('PER_AREA', 'FIXED', 'MANUAL') | Theo diện tích, cố định hoặc nhập tay |
+| `unit_price` | NUMERIC(14,2) | NOT NULL, DEFAULT 0, CHECK (unit_price >= 0) | Đơn giá áp dụng (VNĐ) |
+| `billing_cycle` | VARCHAR(20) | NOT NULL, DEFAULT 'MONTHLY' | Chu kỳ thu: `MONTHLY`, `ONE_TIME` |
+| `due_day` | SMALLINT | NULL, CHECK (due_day BETWEEN 1 AND 28) | Ngày đến hạn trong tháng |
+| `is_active` | BOOLEAN | NOT NULL, DEFAULT TRUE | Đang áp dụng hay tạm ngừng |
+| `created_at` | TIMESTAMPTZ | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Thời điểm tạo |
+| `updated_at` | TIMESTAMPTZ | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Thời điểm cập nhật |
+
+#### 8. Bảng `billing_period` (Kỳ thu phí)
+Quản lý các đợt phát động thu phí theo tháng/năm.
+
+| Tên cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+| --- | --- | --- | --- |
+| `id` | BIGINT | PK, GENERATED ALWAYS AS IDENTITY | Khóa chính |
+| `code` | VARCHAR(30) | NOT NULL, UNIQUE | Mã kỳ thu phí (vd: `T10-2026`, `T11-2026`) |
+| `name` | VARCHAR(100) | NOT NULL | Tên kỳ thu phí |
+| `start_date` | DATE | NOT NULL | Ngày bắt đầu kỳ thu |
+| `end_date` | DATE | NOT NULL, CHECK (end_date >= start_date) | Ngày kết thúc kỳ thu |
+| `status` | VARCHAR(20) | NOT NULL, DEFAULT 'OPEN' CHECK IN ('OPEN', 'CLOSED') | Trạng thái kỳ: Mở hoặc Đã đóng sổ |
+| `generated_at` | TIMESTAMPTZ | NULL | Thời điểm lập danh sách công nợ chính thức |
+| `generated_by` | BIGINT | NULL, FK → app_user(id) | Người thực hiện lập danh sách |
+| `closed_at` | TIMESTAMPTZ | NULL | Thời điểm đóng sổ kỳ thu |
+| `closed_by` | BIGINT | NULL, FK → app_user(id) | Người thực hiện đóng sổ |
+
+#### 9. Bảng `receivable` (Khoản phải thu / Công nợ)
+Bản ghi số tiền phải nộp cụ thể của từng hộ gia đình cho từng khoản thu trong một kỳ thu phí.
+
+| Tên cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+| --- | --- | --- | --- |
+| `id` | BIGINT | PK, GENERATED ALWAYS AS IDENTITY | Khóa chính |
+| `household_id` | BIGINT | NOT NULL, FK → household(id) | Hộ gia đình phải nộp |
+| `fee_category_id` | BIGINT | NOT NULL, FK → fee_category(id) | Thuộc khoản thu nào |
+| `billing_period_id` | BIGINT | NOT NULL, FK → billing_period(id) | Thuộc kỳ thu phí nào |
+| `quantity` | NUMERIC(10,2) | NULL | Số lượng/diện tích tính tiền (m²) |
+| `unit_price_applied`| NUMERIC(14,2) | NOT NULL, CHECK (unit_price_applied >= 0) | Đơn giá áp dụng tại thời điểm lập |
+| `amount_due` | NUMERIC(14,2) | NOT NULL, CHECK (amount_due >= 0) | Tổng tiền phải nộp (VNĐ) |
+| `due_date` | DATE | NOT NULL | Hạn chót thanh toán |
+| `description` | TEXT | NULL | Ghi chú diễn giải |
+| `created_by` | BIGINT | NULL, FK → app_user(id) | Cán bộ khởi tạo |
+| `created_at` | TIMESTAMPTZ | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Thời điểm lập |
+| `version` | BIGINT | NOT NULL, DEFAULT 0 | Phiên bản (Optimistic Locking) |
+
+> **Ràng buộc duy nhất:** `UNIQUE (household_id, fee_category_id, billing_period_id)` ngăn chặn hoàn toàn việc sinh trùng công nợ cho cùng một hộ trong một kỳ thu.
+
+#### 10. Bảng `resident_request` (Đề nghị cư trú của cư dân)
+Hàng đợi tiếp nhận và xử lý các đề nghị nộp từ Cổng cư dân.
+
+| Tên cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+| --- | --- | --- | --- |
+| `id` | BIGINT | PK, GENERATED ALWAYS AS IDENTITY | Khóa chính |
+| `request_type` | VARCHAR(30) | NOT NULL, CHECK IN ('PROFILE_UPDATE', 'TEMPORARY_ABSENCE', 'TEMPORARY_RESIDENCE') | Loại đề nghị |
+| `status` | VARCHAR(20) | NOT NULL, DEFAULT 'PENDING' CHECK IN ('PENDING', 'APPROVED', 'REJECTED', 'CANCELLED') | Trạng thái xử lý |
+| `household_id` | BIGINT | NOT NULL, FK → household(id) | Hộ gia đình của cư dân gửi |
+| `resident_id` | BIGINT | NULL, FK → resident(id) | Nhân khẩu liên quan |
+| `submitted_by` | BIGINT | NOT NULL, FK → app_user(id) | Cư dân gửi đề nghị |
+| `submitted_at` | TIMESTAMPTZ | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Thời điểm gửi |
+| `note` | TEXT | NULL | Lời nhắn của cư dân |
+| `proposed` | JSONB | NOT NULL | Dữ liệu đề nghị thay đổi (Payload JSON) |
+| `before_values` | JSONB | NULL | Dữ liệu nhân khẩu gốc trước khi thay đổi (Diff) |
+| `decided_by` | BIGINT | NULL, FK → app_user(id) | Cán bộ BQT phê duyệt/từ chối |
+| `decided_at` | TIMESTAMPTZ | NULL | Thời điểm ra quyết định |
+| `decision_reason` | TEXT | NULL | Lý do từ chối (bắt buộc khi REJECTED) |
+| `decision_note` | TEXT | NULL | Ghi chú phản hồi khi duyệt |
+| `result_resident_id`| BIGINT | NULL, FK → resident(id) | Nhân khẩu mới sinh ra (nếu có) |
+| `result_movement_id`| BIGINT | NULL, FK → resident_movement(id) | Bản ghi biến động cư trú sinh ra tự động |
+
+---
+
+### 7.4 Ràng buộc toàn vẹn & Quy tắc dữ liệu quan trọng
+
+1. **Quan hệ 1 Căn hộ - 1 Hộ gia đình hoạt động:** Tại một thời điểm, một căn hộ chỉ có tối đa 1 hộ gia đình có `status = 'ACTIVE'`. Khi hộ chuyển đi, hộ được cập nhật `status = 'INACTIVE'`, sau đó mới gán hộ mới vào căn hộ.
+2. **Quy tắc Chủ hộ:** Mỗi hộ gia đình `ACTIVE` bắt buộc có đúng 1 chủ hộ (`is_head = TRUE`) có trạng thái cư trú thường trú (`residency_status = 'RESIDING'`).
+3. **Tính toàn vẹn biến động cư trú (Append-Only):** Bảng `resident_movement` có trigger chặn câu lệnh `UPDATE` và `DELETE`, đảm bảo dữ liệu lịch sử di biến động dân cư không thể bị chỉnh sửa hoặc tẩy xóa dưới bất kỳ hình thức nào.
+4. **Khóa dòng chống Race Condition khi lập công nợ:** Lệnh lập danh sách công nợ sử dụng `SELECT ... FOR UPDATE` trên bảng `billing_period` và `fee_category`, khóa cứng kỳ thu để đảm bảo không có hai tiến trình chạy song song gây sinh trùng dữ liệu.
+5. **Ràng buộc kiểm tra trạng thái phê duyệt đề nghị cư trú:**
+   * `status = 'PENDING'` tương đương `decided_at IS NULL`.
+   * `status = 'REJECTED'` bắt buộc `decision_reason` không được để trống.
+   * `result_resident_id` và `result_movement_id` chỉ được phép có giá trị khi `status = 'APPROVED'`.
+
+
+---
+
+## 8. THIẾT KẾ GIAO DIỆN
 
 ### 8.1 Danh sách màn hình
 
-|Mã|Tên màn hình|Người dùng|
-|-|-|-|
-|SC-01|Đăng nhập|Tất cả|
-|SC-02|Dashboard|Tất cả (theo role)|
-|SC-03|Quản lý tài khoản|Admin|
-|SC-04|Quản lý căn hộ|Admin|
-|SC-05|Quản lý nhân khẩu|Admin|
-|SC-06|Quản lý khoản thu|Admin|
-|SC-07|Lập đợt thu / Thu phí|Admin|
-|SC-08|Quản lý phí gửi xe|Admin|
-|SC-09|Quản lý phí điện/nước/internet|Admin|
-|SC-10|Thống kê và xuất file|Admin|
-|SC-11|Gửi/Xử lý khiếu nại|Cư dân (gửi), Admin (xử lý)|
-|SC-12|Gửi/Xem thông báo|Admin (gửi), Cư dân (xem), Admin (xem)|
-|SC-13|Hồ sơ cá nhân + đổi mật khẩu|Tất cả|
-|SC-14|Trang chính của cư dân (khoản phí, hoá đơn của hộ)|Cư dân|
-|SC-15|Đăng ký tài khoản + xác thực OTP email|Cư dân (chưa đăng nhập)|
-|SC-16|Quên mật khẩu + đặt lại mật khẩu qua OTP|Cư dân (chưa đăng nhập)|
-|SC-17|Thanh toán phí của hộ (chọn khoản, khởi tạo VNPay)|Cư dân|
-|SC-18|Trang trả về sau khi thanh toán VNPay (Return URL)|Cư dân|
-|SC-19|Lịch sử thanh toán của cư dân (khu vực trong màn hình khoản phí của hộ – MyFees, không phải màn hình/menu riêng)|Cư dân|
-|SC-20|Tra cứu giao dịch thanh toán online (chức năng "Giao dịch online" trong màn hình Thống kê \& Báo cáo – Statistics, không phải màn hình/menu riêng)|Admin|
-|SC-21|Nhật ký hệ thống (audit log)|Admin|
+Hệ thống frontend của BlueMoon (Sprint 1) bao gồm **15 màn hình giao diện**, tương ứng với 15 page component trong `frontend2/src/pages/`:
 
-### 8.2 Quy ước chung
+| Mã MH | Tên màn hình | Đường dẫn Route | Tệp mã nguồn | Người dùng phân quyền |
+| --- | --- | --- | --- | --- |
+| **SC-01** | Đăng nhập | `/login` | `LoginPage.jsx` | Mọi người dùng (chưa đăng nhập) |
+| **SC-02** | Trang chủ & Điều hướng | `/` | `HomePage.jsx` | Tự động chuyển trang theo vai trò (`homeForRoles`) |
+| **SC-03** | Quản lý Hộ gia đình | `/ho-gia-dinh` | `HouseholdsPage.jsx` | BQT, Kế toán, Cơ quan chức năng |
+| **SC-04** | Chi tiết Hộ gia đình | `/ho-gia-dinh/:id` | `HouseholdDetailPage.jsx` | BQT, Kế toán, Cơ quan chức năng |
+| **SC-05** | Hộ gia đình của tôi | `/ho-cua-toi` | `MyHouseholdPage.jsx` | Cư dân (RESIDENT) |
+| **SC-06** | Quản lý Nhân khẩu | `/nhan-khau` | `ResidentsPage.jsx` | BQT, Cơ quan chức năng |
+| **SC-07** | Chi tiết Nhân khẩu & Biến động | `/nhan-khau/:id` | `ResidentDetailPage.jsx` | BQT, Cơ quan chức năng |
+| **SC-08** | Danh sách Yêu cầu cư dân | `/yeu-cau-cu-dan` | `ResidentRequestsPage.jsx` | BQT, Cư dân (RESIDENT) |
+| **SC-09** | Chi tiết & Xử lý Yêu cầu | `/yeu-cau-cu-dan/:id` | `ResidentRequestDetailPage.jsx` | BQT, Cư dân (RESIDENT) |
+| **SC-10** | Danh mục Khoản thu | `/khoan-thu` | `FeesPage.jsx` | BQT, Kế toán (ACCOUNTANT) |
+| **SC-11** | Danh sách Kỳ thu phí | `/ky-thu-phi` | `PeriodsPage.jsx` | BQT, Kế toán (ACCOUNTANT) |
+| **SC-12** | Chi tiết Kỳ thu & Lập công nợ | `/ky-thu-phi/:id` | `PeriodDetailPage.jsx` | BQT, Kế toán (ACCOUNTANT) |
+| **SC-13** | Tra cứu tổng hợp | `/tra-cuu` | `SearchPage.jsx` | BQT, Kế toán, Cơ quan chức năng |
+| **SC-14** | Quản lý Tài khoản | `/tai-khoan` | `UsersPage.jsx` | Ban quản trị (BQT), Cơ quan chức năng |
+| **SC-15** | Hồ sơ cá nhân & Đổi mật khẩu | `/ho-so` | `ProfilePage.jsx` | Mọi người dùng đã đăng nhập |
 
-* Font: Inter / Roboto, cỡ 14 cho nội dung, 16-20 cho tiêu đề.
-* Bố cục: thanh menu bên trái + thanh trên cùng + nội dung chính.
-* Thanh menu hiển thị theo role; mục nào không có quyền sẽ ẩn.
-* Bảng dữ liệu có phân trang, tìm kiếm, sắp xếp.
-* Form: trường bắt buộc đánh dấu \*, có thông báo lỗi ngay dưới trường.
-* Thông báo thao tác (thành công/lỗi) dạng toast ở góc phải.
-* Trường nhập OTP gồm 6 ô số riêng biệt; có nút "Gửi lại OTP" bị vô hiệu hoá 60 giây sau mỗi lần gửi.
-* Số tiền trên giao diện luôn hiển thị có dấu phân cách hàng nghìn và đơn vị "đ" (ví dụ: 1.500.000 đ).
+---
 
-### 8.3 Đặc tả màn hình chính
+### 8.2 Quy ước giao diện chung
 
-**SC-01 – Đăng nhập**
+* **Bố cục khung (Layout):** Khung giao diện bao gồm thanh Sidebar cố định bên trái (hiển thị menu mục theo vai trò người dùng), Header phía trên cùng (hiển thị thông tin người dùng, vai trò và nút Đăng xuất), và Vùng nội dung chính (Content Container) có thanh cuộn độc lập.
+* **Quy tắc điều hướng mặc định sau đăng nhập (`homeForRoles`):**
+  * `BQT` hoặc `ACCOUNTANT`: Chuyển hướng tới `/ho-gia-dinh`.
+  * `RESIDENT`: Chuyển hướng tới `/ho-cua-toi`.
+  * Các vai trò khác (`AUTHORITY`): Chuyển hướng tới `/ho-so`.
+* **Phân trang & Tìm kiếm:** Bảng dữ liệu có phân trang chuẩn (mặc định 20 dòng/trang), hỗ trợ tìm kiếm tức thời và lọc đa tiêu chí.
+* **Định dạng tiền tệ & Ngày tháng:** Số tiền luôn định dạng có dấu chấm phân cách hàng nghìn kèm hậu tố "đ" (vd: `150.000 đ`). Ngày tháng hiển thị theo định dạng `dd/MM/yyyy`.
+* **Trạng thái & Màu sắc nhận diện:**
+  * Xanh lục (`ACTIVE`, `APPROVED`, `OPEN`): Trạng thái hoạt động, tích cực.
+  * Vàng cam (`PENDING`, `TEMPORARY_RESIDENCE`): Đang chờ duyệt, tạm thời.
+  * Đỏ (`INACTIVE`, `REJECTED`, `CLOSED`, `MOVED_OUT`): Đã đóng, từ chối, chuyển đi.
 
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Tất cả|
-|Chức năng|Nhập username, mật khẩu để vào hệ thống; link "Quên mật khẩu" sang SC-16; link "Đăng ký tài khoản" sang SC-15|
-|Dữ liệu nhập|Username (text), Mật khẩu (password)|
-|Kết quả|Vào dashboard tương ứng role hoặc hiển thị lỗi|
+---
 
-**SC-02 – Dashboard**
+### 8.3 Đặc tả các màn hình chức năng chính
 
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Tất cả (nội dung khác nhau theo role)|
-|Chức năng|Hiển thị tổng quan: số hộ, số đợt thu mở, số khiếu nại mới, số thông báo chưa đọc|
-|Dữ liệu nhập|Không có|
-|Kết quả|Các thẻ thống kê và link nhanh sang các trang chức năng|
+#### SC-01 – Đăng nhập (`LoginPage.jsx`)
+* **Người dùng:** Mọi người dùng truy cập hệ thống.
+* **Chức năng:** Nhập tên đăng nhập và mật khẩu; kiểm tra tính hợp lệ dữ liệu tại client trước khi gọi `POST /auth/login`; lưu token và thời hạn vào `sessionStorage`; gọi tiếp `GET /me` lấy hồ sơ đầy đủ; chuyển hướng thông minh theo vai trò.
+* **Xử lý lỗi:** Hiển thị thông báo "Sai tài khoản hoặc mật khẩu" đồng nhất khi không tìm thấy user, sai password hoặc tài khoản bị khóa để bảo mật tuyệt đối.
 
-**SC-03 – Quản lý tài khoản**
+#### SC-03 & SC-04 – Quản lý & Chi tiết Hộ gia đình (`HouseholdsPage.jsx`, `HouseholdDetailPage.jsx`)
+* **Người dùng:** BQT, Kế toán, Cơ quan chức năng.
+* **Chức năng:**
+  * Danh sách: Xem bảng hộ gia đình, lọc theo tầng, số phòng, trạng thái hoạt động; nút "Thêm hộ mới" mở modal khai báo số căn hộ, diện tích và thông tin chủ hộ ban đầu.
+  * Chi tiết: Xem thông tin căn hộ (số phòng, tầng, diện tích), thông tin chủ hộ, danh sách toàn bộ nhân khẩu trong hộ, lịch sử các khoản công nợ của hộ; nút "Đổi chủ hộ" (chỉ BQT) cho phép chọn một nhân khẩu thường trú khác làm chủ hộ mới.
 
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Admin|
-|Chức năng|Xem danh sách tài khoản, tạo mới, sửa, khoá/mở khoá, đặt lại mật khẩu; duyệt tài khoản cư dân đăng ký (gán đúng `household\\\_id` theo `requested\\\_apartment\\\_code`)|
-|Dữ liệu nhập|Username, họ tên, email, SĐT, role, hộ gắn (nếu là cư dân)|
-|Kết quả|Bảng danh sách tài khoản; thông báo thao tác|
+#### SC-05 – Hộ gia đình của tôi (`MyHouseholdPage.jsx`)
+* **Người dùng:** Cư dân (RESIDENT).
+* **Chức năng:** Cung cấp cổng thông tin riêng biệt cho cư dân xem thông tin hộ gia đình mình đang sinh sống, danh sách thành viên trong gia đình, lịch sử công nợ các kỳ thu phí; cung cấp các nút thao tác nhanh: "Yêu cầu sửa thông tin", "Khai báo tạm vắng", "Khai báo tạm trú cho khách".
 
-**SC-04 – Quản lý căn hộ**
+#### SC-06 & SC-07 – Quản lý & Chi tiết Nhân khẩu (`ResidentsPage.jsx`, `ResidentDetailPage.jsx`)
+* **Người dùng:** BQT, Cơ quan chức năng.
+* **Chức năng:**
+  * Danh sách: Xem danh sách nhân khẩu toàn tòa nhà, lọc theo tình trạng cư trú (`RESIDING`, `TEMPORARILY_ABSENT`, `TEMPORARY_RESIDENCE`, `MOVED_OUT`), tìm kiếm theo họ tên, CCCD/CMND; nút "Tiếp nhận nhân khẩu" mở form thêm cư dân mới vào hộ.
+  * Chi tiết: Xem hồ sơ cá nhân hoàn chỉnh, lịch sử toàn bộ các lần biến động cư trú (chuyển đến, tạm vắng, tạm trú, chuyển đi); nút "Ghi nhận biến động" (dành riêng cho BQT) để cập nhật trạng thái cư trú.
 
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Admin|
-|Chức năng|- Xem danh sách căn hộ<br>- Tìm kiếm/lọc căn hộ theo số căn hộ, tầng, trạng thái, tên chủ hộ<br>- Xem chi tiết căn hộ<br>- Chỉnh sửa thông tin căn hộ như diện tích, trạng thái, ghi chú<br>- Xem hộ dân/hộ khẩu đang ở trong căn hộ (Household ACTIVE)<br>- Cập nhật thông tin hộ dân trong căn hộ (gán hộ vào căn hộ trống, chuyển hộ ra khỏi căn hộ ⇒ đặt `Household.status = MOVED\\\_OUT`)<br>- **Không có** chức năng thêm/xoá căn hộ vì số căn hộ trong chung cư là cố định|
-|Dữ liệu nhập|- Số căn hộ, tầng, diện tích, trạng thái, ghi chú (khi chỉnh sửa thông tin căn hộ)<br>- Thông tin hộ dân/chủ hộ (khi cập nhật hộ trong căn hộ)|
-|Kết quả|- Bảng danh sách căn hộ (có lọc, phân trang)<br>- Trang chi tiết căn hộ gồm: thông tin căn hộ, hộ dân đang ở, danh sách nhân khẩu|
+#### SC-08 & SC-09 – Danh sách & Chi tiết Yêu cầu cư dân (`ResidentRequestsPage.jsx`, `ResidentRequestDetailPage.jsx`)
+* **Người dùng:** BQT, Cư dân (RESIDENT).
+* **Chức năng:**
+  * Cư dân: Nộp yêu cầu thay đổi thông tin cá nhân, tạm trú, tạm vắng; theo dõi trạng thái đề nghị (`PENDING`, `APPROVED`, `REJECTED`); có thể hủy yêu cầu khi đang ở trạng thái `PENDING`.
+  * Ban quản trị: Tiếp nhận hàng đợi đề nghị cư trú; mở trang chi tiết xem giao diện so sánh đối chiếu (Diff Viewer) dữ liệu trước và sau thay đổi; thực hiện "Phê duyệt" (hệ thống tự động cập nhật vào hồ sơ nhân khẩu và sinh biến động cư trú) hoặc "Từ chối" (bắt buộc nhập lý do từ chối để phản hồi cư dân).
 
-**SC-05 – Quản lý nhân khẩu**
+#### SC-10 – Danh mục Khoản thu (`FeesPage.jsx`)
+* **Người dùng:** BQT, Kế toán (ACCOUNTANT).
+* **Chức năng:** Xem danh sách các khoản thu bắt buộc và quỹ tự nguyện; nút "Tạo khoản thu mới" mở modal nhập mã, tên, loại khoản thu (`MANDATORY`/`VOLUNTARY`), phương thức tính (`PER_AREA`, `FIXED`, `MANUAL`), đơn giá, ngày đến hạn; bật/tắt trạng thái hoạt động; chặn sửa phương thức tính hoặc loại phí nếu khoản thu đã phát sinh dữ liệu trong kỳ thu phí.
 
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Admin|
-|Chức năng|Thêm/sửa nhân khẩu, đăng ký tạm trú, tạm vắng; chuyển nhân khẩu khỏi hộ bằng cách đặt `Resident.status = MOVED\\\_OUT` (không xoá vật lý)|
-|Dữ liệu nhập|Họ tên, CCCD, ngày sinh, giới tính, quan hệ với chủ hộ, hộ thuộc về, trạng thái cư trú|
-|Kết quả|Bảng nhân khẩu, có thể lọc theo hộ, trạng thái cư trú và `status` (ACTIVE/MOVED\_OUT)|
+#### SC-11 & SC-12 – Quản lý Kỳ thu phí & Lập công nợ (`PeriodsPage.jsx`, `PeriodDetailPage.jsx`)
+* **Người dùng:** BQT, Kế toán (ACCOUNTANT).
+* **Chức năng:**
+  * Danh sách: Xem các đợt phát động thu phí theo tháng/năm, trạng thái `OPEN` hoặc `CLOSED`.
+  * Chi tiết & Lập công nợ: Xem thống kê tổng nợ, danh sách chi tiết từng hộ gia đình; nút "Xem trước" (Dry-run) mở modal `FeeCalculationPreviewModal` hiển thị bảng tổng hợp dự kiến số tiền, số hộ nộp và cảnh báo các hộ bị bỏ qua (vd: thiếu diện tích); nút "Lập danh sách" chính thức khóa dòng CSDL và sinh hàng loạt bản ghi công nợ vào bảng `receivable`; nút "Đóng sổ" (dành riêng cho BQT) khi kỳ đã hoàn tất.
 
-**SC-06 – Quản lý khoản thu**
+#### SC-13 – Tra cứu tổng hợp (`SearchPage.jsx`)
+* **Người dùng:** BQT, Kế toán, Cơ quan chức năng.
+* **Chức năng:** Ô tìm kiếm tức thời hỗ trợ tiếng Việt có dấu/không dấu; cho phép tìm kiếm linh hoạt theo số căn hộ, mã hộ, tên cư dân, số CCCD/CMND; hiển thị kết quả phân tách rõ ràng theo nhóm Hộ gia đình và nhóm Nhân khẩu kèm liên kết điều hướng trực tiếp tới trang chi tiết.
 
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Admin|
-|Chức năng|Tạo, sửa, xoá/ngừng sử dụng khoản thu (bắt buộc / đóng góp tự nguyện)|
-|Dữ liệu nhập|Tên, loại, đơn giá, đơn vị tính, mô tả|
-|Kết quả|Bảng khoản thu kèm nút "Lập đợt thu"; khoản thu đã phát sinh dữ liệu chỉ được ngừng sử dụng (`active = FALSE`), không xoá vật lý|
+#### SC-14 – Quản lý Tài khoản & Phân quyền (`UsersPage.jsx`)
+* **Người dùng:** Ban quản trị (BQT), Cơ quan chức năng (chỉ xem).
+* **Chức năng:** Xem bảng tài khoản người dùng, lọc theo vai trò (`BQT`, `ACCOUNTANT`, `AUTHORITY`, `RESIDENT`), tìm kiếm theo username, họ tên, email; chức năng "Tạo tài khoản" gán vai trò tương ứng; thao tác "Khóa/Kích hoạt tài khoản"; chức năng "Đặt lại mật khẩu" cấp mật khẩu mặc định và bật cờ `mustChangePassword = true`.
 
-**SC-07 – Lập đợt thu / Thu phí**
+#### SC-15 – Hồ sơ cá nhân & Đổi mật khẩu (`ProfilePage.jsx`)
+* **Người dùng:** Mọi người dùng đã đăng nhập.
+* **Chức năng:** Xem thông tin tài khoản hiện tại, vai trò, thông tin nhân khẩu liên kết; form "Đổi mật khẩu" yêu cầu nhập mật khẩu hiện tại, mật khẩu mới (tối thiểu 6 ký tự) và xác nhận mật khẩu; sau khi đổi thành công tự động cập nhật token và tắt cờ `mustChangePassword`.
 
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Admin|
-|Chức năng|Lập đợt thu mới; xem danh sách hộ trong đợt; xác nhận từng hộ đã nộp đủ tiền mặt bằng thao tác tích/nút "Đã nộp tiền mặt"; xem hộ chưa nộp|
-|Dữ liệu nhập|Khoản thu, tên đợt, ngày bắt đầu/kết thúc; với từng hộ: tích/nút "Đã nộp tiền mặt" và có thể nhập ghi chú. Admin không  nộp; hệ thống tự lấy `amount\\\_due` làm số tiền đã nộp.|
-|Kết quả|Bảng tình trạng nộp của từng hộ trong đợt; nếu Admin xác nhận tiền mặt thì cột "Phương thức" hiển thị "CASH"; nếu hộ thanh toán online thì hiển thị "ONLINE" kèm mã giao dịch|
 
-**SC-08 – Quản lý phí gửi xe**
+---
 
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Admin|
-|Chức năng|Đăng ký xe cho hộ, huỷ đăng ký, quản lý chỗ gửi (trống/đã dùng/cho thuê), cho thuê chỗ thừa; sinh phí gửi xe theo tháng từ các đăng ký đang ACTIVE (`POST /api/admin/parking-fees/generate`)|
-|Dữ liệu nhập|Biển số, loại xe, hộ; với cho thuê: tên người thuê, SĐT, thời gian, giá; với sinh phí: tháng/năm|
-|Kết quả|Bảng danh sách xe và bảng tình trạng chỗ gửi; phí gửi xe theo tháng được tạo thành phiếu nộp tương ứng|
+## 9. ACTIVITY DIAGRAM
 
-**SC-09 – Quản lý phí điện/nước/internet**
+Phần này mô tả chi tiết luồng hoạt động (Activity Diagrams) cho 19 ca sử dụng và nghiệp vụ trọng yếu của hệ thống BlueMoon (Sprint 1), được mô hình hóa bằng Mermaid Flowchart.
+Mỗi sơ đồ thể hiện rõ luồng chính, các nhánh kiểm tra điều kiện tại giao diện và máy chủ, luồng ngoại lệ và mã trạng thái HTTP trả về.
 
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Admin|
-|Chức năng|Nhập hoá đơn theo từng hộ và từng tháng; nhập hàng loạt từ file Excel (`POST /api/utility-bills/import`, có template tải sẵn `GET /api/utility-bills/import-template`); sinh hoá đơn điện/nước/internet theo tháng từ đơn giá cấu hình (`POST /api/admin/utility-fees/generate`); xác nhận hoá đơn đã nộp đủ tiền mặt bằng thao tác "Đã nộp tiền mặt"; tra cứu hoá đơn; xem trạng thái hoá đơn đã được thanh toán online qua VNPay nếu có|
-|Dữ liệu nhập|Hộ, loại hoá đơn, tháng/năm, số tiền; hoặc file Excel hoá đơn; hoặc tháng/năm để sinh hàng loạt|
-|Kết quả|Bảng hoá đơn lọc theo hộ/tháng; có cột "Trạng thái" PAID/UNPAID, "Phương thức" CASH/ONLINE, mã giao dịch online nếu thanh toán qua VNPay|
+### 9.1 Đăng nhập và khởi tạo phiên
 
-**SC-10 – Thống kê và xuất file**
+*Mã nguồn:* LoginPage.jsx · AuthContext.login() · AuthController.login() · AuthService.login() · JwtService.generateToken() · UserService.getMe()
 
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Admin|
-|Chức năng|Chọn loại báo cáo và phạm vi, xem kết quả thống kê, xuất Excel/PDF|
-|Dữ liệu nhập|Loại báo cáo, khoảng thời gian, định dạng (Excel/PDF)|
-|Kết quả|Bảng thống kê hiển thị trên màn hình + nút tải file|
-
-**SC-11 – Gửi/Xử lý khiếu nại**
-
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Cư dân (gửi), Admin (xử lý)|
-|Chức năng|Cư dân: gửi khiếu nại, xem trạng thái và chi tiết khiếu nại của mình; Admin: xem danh sách, phản hồi, đổi trạng thái|
-|Dữ liệu nhập|Tiêu đề, loại, nội dung; với Admin: nội dung phản hồi, trạng thái mới|
-|Kết quả|Bảng khiếu nại + cửa sổ chi tiết hội thoại|
-
-**SC-12 – Gửi/Xem thông báo**
-
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Admin (gửi), Cư dân (xem), Admin (xem)|
-|Chức năng|Soạn thông báo, chọn phạm vi; xem danh sách thông báo nhận được, đánh dấu đã đọc|
-|Dữ liệu nhập|Tiêu đề, nội dung, phạm vi (toàn chung cư / tầng / hộ)|
-|Kết quả|Danh sách thông báo theo thời gian, thông báo mới hiển thị nổi bật|
-
-**SC-13 – Hồ sơ cá nhân + đổi mật khẩu**
-
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Tất cả|
-|Chức năng|Xem/sửa thông tin cá nhân (email, SĐT), đổi mật khẩu|
-|Dữ liệu nhập|Email, SĐT, mật khẩu cũ, mật khẩu mới, xác nhận mật khẩu mới|
-|Kết quả|Thông báo cập nhật thành công|
-
-**SC-14 – Trang chính của cư dân**
-
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Cư dân|
-|Chức năng|Xem khoản phí phải nộp/đã nộp của hộ; xem hoá đơn điện/nước/internet; xem thông báo; có nút "Thanh toán online" cho mỗi khoản chưa nộp ⇒ sang SC-17|
-|Dữ liệu nhập|Không có|
-|Kết quả|Bảng các khoản phí + bảng hoá đơn + danh sách thông báo gần đây|
-
-**SC-15 – Đăng ký tài khoản + xác thực OTP email**
-
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Cư dân (chưa đăng nhập)|
-|Chức năng|Nhập thông tin đăng ký, gửi OTP về email, nhập OTP để xác thực; tài khoản tạo ra có `email\\\_verified = true` và trạng thái chờ Admin duyệt (gán `household\\\_id` theo `requested\\\_apartment\\\_code`)|
-|Dữ liệu nhập|Username, mật khẩu, họ tên, email, SĐT, mã căn hộ yêu cầu (`requested\\\_apartment\\\_code`), OTP 6 số|
-|Kết quả|Thông báo "Đăng ký thành công, chờ Admin duyệt" và chuyển về SC-01|
-
-**SC-16 – Quên mật khẩu + đặt lại mật khẩu qua OTP**
-
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Cư dân (chưa đăng nhập)|
-|Chức năng|Nhập email đã đăng ký → nhận OTP qua email → nhập OTP + mật khẩu mới để đặt lại|
-|Dữ liệu nhập|Email, OTP 6 số, mật khẩu mới, xác nhận mật khẩu mới|
-|Kết quả|Thông báo đặt lại mật khẩu thành công và chuyển về SC-01. Nếu email không tồn tại, hệ thống vẫn hiển thị "OTP đã được gửi nếu email tồn tại" để tránh dò email.|
-
-**SC-17 – Thanh toán phí của hộ (khởi tạo VNPay)**
-
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Cư dân|
-|Chức năng|Hiển thị danh sách khoản phí/hoá đơn chưa thanh toán của hộ (lấy theo `household\\\_id` trong JWT); chọn **một hoặc nhiều** khoản → nhấn "Thanh toán qua VNPay" → backend tạo `payment\\\_transactions` (PENDING; khi chọn nhiều khoản dùng `FEE\\\_PAYMENT\\\_BATCH`/`MIXED\\\_PAYMENT\\\_BATCH`) và URL chuyển hướng → cư dân được redirect sang trang VNPay Sandbox|
-|Dữ liệu nhập|Chọn một hoặc nhiều khoản phí/hoá đơn cần thanh toán (thanh toán gộp)|
-|Kết quả|Redirect sang VNPay Sandbox để hoàn tất thanh toán|
-
-**SC-18 – Trang trả về sau khi thanh toán VNPay (Return URL)**
-
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Cư dân|
-|Chức năng|Hiển thị kết quả thanh toán dựa trên trạng thái giao dịch trong CSDL. Trạng thái này thường do IPN URL cập nhật; nếu IPN chưa tới và giao dịch còn `PENDING`, backend chốt trạng thái dự phòng ngay tại Return URL (sau khi verify chữ ký + khớp số tiền)|
-|Dữ liệu nhập|Tham số truy vấn từ VNPay (`vnp\\\_TxnRef`, `vnp\\\_ResponseCode`, `vnp\\\_SecureHash`, …)|
-|Kết quả|Thông báo SUCCESS / FAILED / CANCELLED kèm mã giao dịch; nút "Xem lịch sử thanh toán" sang SC-19|
-
-**SC-19 – Lịch sử thanh toán của cư dân** (khu vực "Lịch sử thanh toán VNPay" nằm trong màn hình MyFees, không có menu điều hướng riêng)
-
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Cư dân|
-|Chức năng|Xem danh sách giao dịch thanh toán online của hộ mình; lọc theo trạng thái, khoảng thời gian; xem chi tiết một giao dịch|
-|Dữ liệu nhập|Bộ lọc trạng thái (PENDING/SUCCESS/FAILED/CANCELLED), thời gian|
-|Kết quả|Bảng giao dịch gồm: mã giao dịch, loại khoản phí, số tiền, trạng thái, thời gian; chi tiết hiển thị thêm `paid\\\_at`, phương thức|
-
-**SC-20 – Tra cứu giao dịch thanh toán (Admin)** (chức năng "Giao dịch online" trong màn hình Thống kê \& Báo cáo – Statistics, không có menu điều hướng riêng)
-
-|Mục|Nội dung|
-|-|-|
-|Người dùng|Admin|
-|Chức năng|Tra cứu tất cả giao dịch thanh toán online theo nhiều tiêu chí; đối soát với khoản phí/hoá đơn thực tế|
-|Dữ liệu nhập|Mã giao dịch, mã căn hộ/hộ, trạng thái, khoảng thời gian|
-|Kết quả|Bảng giao dịch + tổng số tiền theo trạng thái; nút "Xem chi tiết" mở dialog hiển thị toàn bộ trường của `payment\\\_transactions` (trừ chữ ký)|
-
-\---
-
-## 9\. ACTIVITY DIAGRAM
-
-Phần này mô tả luồng hoạt động (activity) của các chức năng chính bằng Mermaid.
-
-### 9.1 Đăng nhập
+Ba trường hợp sai (không có user, tài khoản bị khóa, sai mật khẩu) đều trả cùng một lỗi INVALID_CREDENTIALS để không lộ thông tin tài khoản. Token chỉ nằm trong sessionStorage của trình duyệt, backend không lưu phiên (STATELESS).
 
 ```mermaid
 flowchart TD
-    Start(\\\[Bắt đầu]) --> Input\\\[Người dùng nhập<br/>username và mật khẩu]
-    Input --> Check{Username<br/>tồn tại?}
-    Check -- Không --> Err1\\\[Báo lỗi<br/>tài khoản không tồn tại]
-    Err1 --> End1(\\\[Kết thúc])
-    Check -- Có --> Locked{Tài khoản<br/>bị khoá?}
-    Locked -- Có --> Err2\\\[Báo lỗi<br/>tài khoản bị khoá]
-    Err2 --> End1
-    Locked -- Không --> Verify{Mật khẩu<br/>đúng?}
-    Verify -- Không --> Err3\\\[Báo lỗi<br/>mật khẩu sai]
-    Err3 --> End1
-    Verify -- Đúng --> GenJWT\\\[AuthService sinh JWT<br/>chứa userId + role]
-    GenJWT --> Save\\\[Frontend lưu JWT]
-    Save --> Redirect\\\[Chuyển sang dashboard<br/>theo role]
-    Redirect --> End2(\\\[Kết thúc])
+    S((" ")):::start --> A1["Người dùng nhập tên đăng nhập, mật khẩu<br/>và bấm Đăng nhập"]:::user
+    A1 --> D1{"Đã nhập đủ<br/>cả hai trường?"}
+    D1 -- "Thiếu" --> X1("LoginPage báo thiếu thông tin<br/>(không gọi API)"):::err
+    D1 -- "Đủ" --> A2["AuthContext.login gọi<br/>POST /auth/login (không kèm token)"]:::fe
+    A2 --> D2{"LoginRequest<br/>qua được @Valid?"}
+    D2 -- "Không" --> X2("400 VALIDATION_ERROR"):::err
+    D2 -- "Có" --> A3["AuthService tìm user theo username<br/>(không phân biệt hoa thường)"]:::be
+    A3 --> D3{"Tìm thấy user?"}
+    D3 -- "Không" --> X3("401 INVALID_CREDENTIALS<br/>Sai tài khoản hoặc mật khẩu"):::err
+    D3 -- "Có" --> D4{"Tài khoản<br/>đang active?"}
+    D4 -- "Không" --> X3
+    D4 -- "Có" --> D5{"BCrypt khớp<br/>mật khẩu?"}
+    D5 -- "Không" --> X3
+    D5 -- "Có" --> A4["Ghi lastLoginAt = thời điểm hiện tại"]:::be
+    A4 --> A5["JwtService.generateToken:<br/>sub = username, userId, roles, iat, exp = iat + 8 giờ"]:::be
+    A5 --> A6["200 LoginResponse:<br/>accessToken, tokenType, expiresIn, expiresAt, user"]:::be
+    A6 --> A7["Lưu accessToken và hạn dùng<br/>vào sessionStorage"]:::fe
+    A7 --> A8["Gọi GET /me (kèm Bearer token)<br/>để xác minh tài khoản"]:::fe
+    A8 --> D6{"Kết quả GET /me?"}
+    D6 -- "User hợp lệ, active" --> A9["Lưu user vào sessionStorage,<br/>cập nhật state token + user"]:::fe
+    D6 -- "404 NOT_FOUND" --> A9b["Dùng thông tin user<br/>trong LoginResponse"]:::fe
+    D6 -- "Lỗi khác" --> X4("signOut: xóa phiên,<br/>LoginPage hiển thị lỗi"):::err
+    A9b --> A9
+    A9 --> D7{"homeForRoles(roles)"}
+    D7 -- "BQT hoặc ACCOUNTANT" --> P1["Chuyển tới /ho-gia-dinh"]:::fe
+    D7 -- "RESIDENT" --> P2["Chuyển tới /ho-cua-toi"]:::fe
+    D7 -- "Vai trò khác" --> P3["Chuyển tới /ho-so"]:::fe
+    P1 --> E(((" "))):::stop
+    P2 --> E
+    P3 --> E
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
 ```
 
-### 9.1b Cư dân đăng ký tài khoản (kèm xác thực OTP email)
+### 9.2 Xác thực JWT và phân quyền cho mỗi request
+
+*Mã nguồn:* api/http.js request() · JwtAuthenticationFilter.doFilterInternal() · SecurityConfig.securityFilterChain() · GlobalExceptionHandler · AuthContext (sự kiện bluemoon:session-expired)
+
+Đây là luồng dùng chung: mọi sơ đồ còn lại đều giả định request đã đi qua luồng này. Vai trò được đọc lại từ DB ở mỗi request nên việc khóa tài khoản, đổi vai trò hay đổi mật khẩu có hiệu lực ngay, không cần chờ token hết hạn.
 
 ```mermaid
 flowchart TD
-    Start(\\\[Bắt đầu]) --> Open\\\[Cư dân mở trang Đăng ký]
-    Open --> Fill\\\[Nhập username, mật khẩu,<br/>họ tên, email, SĐT,<br/>requested\\\_apartment\\\_code]
-    Fill --> Submit\\\[Bấm Gửi OTP]
-    Submit --> Valid{Dữ liệu<br/>hợp lệ?}
-    Valid -- Không --> ShowErr\\\[Báo lỗi tại<br/>trường tương ứng]
-    ShowErr --> Fill
-    Valid -- Có --> DupUser{Username hoặc<br/>email đã tồn tại?}
-    DupUser -- Có --> ErrDup\\\[Báo lỗi<br/>username/email đã dùng]
-    ErrDup --> Fill
-    DupUser -- Không --> CheckApt{Mã căn hộ<br/>tồn tại?}
-    CheckApt -- Không --> ErrApt\\\[Báo lỗi<br/>mã căn hộ không hợp lệ]
-    ErrApt --> Fill
-    CheckApt -- Có --> Rate{Vượt rate limit<br/>5 lần / 15 phút?}
-    Rate -- Có --> ErrRate\\\[Báo lỗi quá số lần<br/>gửi OTP cho phép]
-    ErrRate --> End1(\\\[Kết thúc])
-    Rate -- Không --> GenOTP\\\[OtpService sinh OTP 6 số<br/>+ băm BCrypt]
-    GenOTP --> SaveOTP\\\[(Lưu email\\\_otps:<br/>purpose=REGISTER,<br/>expired\\\_at=now+5ph,<br/>used=FALSE)]
-    SaveOTP --> SendMail\\\[EmailService gửi OTP<br/>qua SMTP]
-    SendMail --> InputOTP\\\[Cư dân nhập OTP 6 số]
-    InputOTP --> Verify{OTP đúng,<br/>chưa hết hạn,<br/>chưa dùng?}
-    Verify -- Không --> AttemptInc\\\[Tăng attempts]
-    AttemptInc --> AttemptCheck{attempts >= 5?}
-    AttemptCheck -- Có --> Lock\\\[Vô hiệu OTP<br/>used=TRUE]
-    Lock --> ErrAtt\\\[Báo lỗi:<br/>vui lòng gửi lại OTP]
-    ErrAtt --> End1
-    AttemptCheck -- Không --> ErrOtp\\\[Báo lỗi OTP sai]
-    ErrOtp --> InputOTP
-    Verify -- Đúng --> MarkUsed\\\[(Đánh dấu OTP used=TRUE)]
-    MarkUsed --> Hash\\\[Băm mật khẩu BCrypt]
-    Hash --> Save\\\[(Lưu users:<br/>role=RESIDENT, active=FALSE,<br/>email\\\_verified=TRUE,<br/>household\\\_id=NULL,<br/>requested\\\_apartment\\\_code=mã căn hộ)]
-    Save --> Notify\\\[Hiển thị: Đăng ký thành công,<br/>chờ Ban quản trị duyệt]
-    Notify --> End(\\\[Kết thúc])
+    S((" ")):::start --> A1["api.request: gắn header<br/>Authorization: Bearer token (nếu có token)"]:::fe
+    A1 --> D0{"Request có header<br/>Bearer?"}
+    D0 -- "Không" --> Z1
+    D0 -- "Có" --> D1{"Token đúng chữ ký<br/>và còn hạn?"}
+    D1 -- "Không" --> X1["401 TOKEN_INVALID"]:::err
+    D1 -- "Có" --> A2["Lấy username và iat từ token,<br/>tìm AppUser trong DB"]:::be
+    A2 --> D2{"User tồn tại<br/>và đang active?"}
+    D2 -- "Không" --> X1
+    D2 -- "Có" --> D3{"iat của token trước<br/>passwordChangedAt?"}
+    D3 -- "Có" --> X1
+    D3 -- "Không" --> A3["Nạp vai trò mới nhất từ DB thành ROLE_x,<br/>đặt AppUser vào SecurityContext"]:::be
+    A3 --> Z1{"SecurityConfig:<br/>endpoint yêu cầu gì?"}
+    Z1 -- "permitAll: /auth/login, OPTIONS" --> C1
+    Z1 -- "Cần đăng nhập hoặc vai trò" --> D4{"Đã xác thực?"}
+    D4 -- "Chưa" --> X2["401 UNAUTHORIZED<br/>(authenticationEntryPoint)"]:::err
+    D4 -- "Rồi" --> D5{"Có vai trò<br/>được phép?"}
+    D5 -- "Không" --> X3("403 FORBIDDEN (accessDeniedHandler)<br/>FE hiển thị không có quyền"):::err
+    D5 -- "Có" --> C1["Controller nhận request,<br/>gọi Service xử lý nghiệp vụ"]:::be
+    C1 --> D6{"Service ném<br/>exception?"}
+    D6 -- "Có" --> X4("GlobalExceptionHandler trả ApiErrorResponse:<br/>success=false, code, message, errors, details"):::err
+    D6 -- "Không" --> R1["Trả ApiResponse:<br/>success=true, message, data"]:::be
+    R1 --> R2["api.request trả payload.data<br/>cho trang gọi"]:::fe
+    R2 --> E(((" "))):::stop
+    X1 --> F1["api.request phát sự kiện<br/>bluemoon:session-expired"]:::fe
+    X2 --> F1
+    F1 --> F2["AuthContext.signOut: xóa sessionStorage,<br/>Protected chuyển về /dang-nhap"]:::fe
+    F2 --> E
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
 ```
 
-### 9.2 Tạo khoản thu
+### 9.3 Tạo tài khoản người dùng
+
+*Mã nguồn:* UserForm.jsx · UserController.createUser() · UserService.createUser() — chỉ vai trò BQT
+
+Tài khoản mới luôn có active = true và mustChangePassword = true. Tài khoản có vai trò RESIDENT bắt buộc gắn với một nhân khẩu đang cư trú và mỗi nhân khẩu chỉ có tối đa một tài khoản.
 
 ```mermaid
 flowchart TD
-    Start(\\\[Bắt đầu]) --> Open\\\[Admin mở màn hình<br/>Quản lý khoản thu]
-    Open --> Click\\\[Bấm Tạo khoản thu mới]
-    Click --> Fill\\\[Nhập tên, loại,<br/>đơn giá DECIMAL, đơn vị, mô tả]
-    Fill --> Submit\\\[Bấm Lưu]
-    Submit --> Valid{Dữ liệu<br/>hợp lệ?}
-    Valid -- Không --> ShowErr\\\[Hiển thị lỗi tại<br/>trường tương ứng]
-    ShowErr --> Fill
-    Valid -- Có --> Dup{Tên khoản thu<br/>đã tồn tại?}
-    Dup -- Có --> ErrDup\\\[Báo lỗi<br/>tên trùng]
-    ErrDup --> Fill
-    Dup -- Không --> SaveDB\\\[(Lưu vào CSDL)]
-    SaveDB --> Notify\\\[Hiển thị<br/>thông báo thành công]
-    Notify --> End(\\\[Kết thúc])
+    S((" ")):::start --> A1["BQT mở form Tạo tài khoản, nhập thông tin,<br/>chọn vai trò (và nhân khẩu nếu là RESIDENT)"]:::user
+    A1 --> D1{"validateUser<br/>ở FE đạt?"}
+    D1 -- "Không" --> X1("Hiển thị lỗi từng trường<br/>(không gọi API)"):::err
+    D1 -- "Đạt" --> A2["POST /users"]:::fe
+    A2 --> D2{"CreateUserRequest<br/>qua được @Valid?"}
+    D2 -- "Không" --> X2("400 VALIDATION_ERROR"):::err
+    D2 -- "Có" --> D3{"Username<br/>đã tồn tại?"}
+    D3 -- "Có" --> X3("409 DUPLICATE (username)"):::err
+    D3 -- "Chưa" --> D4{"Có email và email<br/>đã tồn tại?"}
+    D4 -- "Có" --> X4("409 DUPLICATE (email)"):::err
+    D4 -- "Không" --> D5{"Password trùng<br/>username?"}
+    D5 -- "Có" --> X5("400 VALIDATION_ERROR"):::err
+    D5 -- "Không" --> D6{"Có vai trò RESIDENT<br/>mà thiếu residentId?"}
+    D6 -- "Có" --> X6("422 RESIDENT_LINK_REQUIRED"):::err
+    D6 -- "Không" --> D7{"Có residentId?"}
+    D7 -- "Không" --> A3
+    D7 -- "Có" --> D8{"Nhân khẩu tồn tại<br/>và đang RESIDING?"}
+    D8 -- "Không" --> X7("400 VALIDATION_ERROR<br/>Nhân khẩu không tồn tại / phải đang cư trú"):::err
+    D8 -- "Có" --> D9{"Nhân khẩu đã có<br/>tài khoản?"}
+    D9 -- "Có" --> X8("409 DUPLICATE (residentId)"):::err
+    D9 -- "Chưa" --> A3["Tra AppRole theo từng mã vai trò"]:::be
+    A3 --> A4["Tạo AppUser: mật khẩu băm BCrypt,<br/>active = true, mustChangePassword = true"]:::be
+    A4 --> A5["Lưu app_user và user_role"]:::be
+    A5 --> A6["201 UserResponse"]:::be
+    A6 --> A7["Đóng form, tải lại danh sách tài khoản"]:::fe
+    A7 --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
 ```
 
-### 9.3 Xác nhận hộ đã nộp đủ tiền mặt
+### 9.4 Quản trị tài khoản: đổi vai trò, khóa / mở khóa, đặt lại mật khẩu
+
+*Mã nguồn:* UsersPage.jsx · UserController · UserService.updateUserRoles() / updateUserStatus() / resetPassword() — chỉ vai trò BQT
+
 
 ```mermaid
 flowchart TD
-    Start(\\\[Bắt đầu]) --> Open\\\[Admin mở đợt thu phí]
-    Open --> Pick\\\[Chọn hộ hoặc phiếu nộp cần xác nhận]
-    Pick --> Show\\\[Hệ thống hiển thị<br/>số tiền phải nộp]
-    Show --> Check{Phiếu nộp<br/>đã PAID?}
-    Check -- Có --> Err1\\\[Báo lỗi:<br/>phiếu nộp đã được xác nhận]
-    Err1 --> End1(\\\[Kết thúc])
-    Check -- Không --> Click\\\[Admin tích/bấm<br/>Đã nộp tiền mặt]
-    Click --> Confirm{Xác nhận hộ đã<br/>nộp đủ tiền mặt?}
-    Confirm -- Huỷ --> End2(\\\[Không thay đổi dữ liệu])
-    Confirm -- Xác nhận --> Update\\\[(Cập nhật payments:<br/>amount\\\_paid = amount\\\_due,<br/>status = PAID,<br/>payment\\\_method = CASH,<br/>paid\\\_date = hôm nay,<br/>paid\\\_at = hiện tại,<br/>collected\\\_by = Admin)]
-    Update --> NotifyOK\\\[Báo thành công]
-    NotifyOK --> End(\\\[Kết thúc])
+    S((" ")):::start --> A1["BQT chọn một tài khoản<br/>trong danh sách"]:::user
+    A1 --> D0{"Thao tác?"}
+    D0 -- "Đổi vai trò" --> R1["PUT /users/{id}/roles"]:::fe
+    D0 -- "Khóa / mở khóa" --> T1["PATCH /users/{id}/status"]:::fe
+    D0 -- "Đặt lại mật khẩu" --> P1["POST /users/{id}/password-reset"]:::fe
+
+    R1 --> R2{"Tìm thấy<br/>tài khoản?"}
+    R2 -- "Không" --> XN1("404 NOT_FOUND"):::err
+    R2 -- "Có" --> R3{"Danh sách vai trò<br/>có phần tử trùng?"}
+    R3 -- "Có" --> XR1("400 VALIDATION_ERROR"):::err
+    R3 -- "Không" --> R4{"Thêm RESIDENT nhưng tài khoản<br/>chưa gắn nhân khẩu?"}
+    R4 -- "Có" --> XR2("422 RESIDENT_LINK_REQUIRED"):::err
+    R4 -- "Không" --> R5{"BQT tự gỡ vai trò BQT<br/>của chính mình?"}
+    R5 -- "Có" --> XL1("422 SELF_LOCKOUT"):::err
+    R5 -- "Không" --> R6["Thay toàn bộ tập vai trò, lưu"]:::be
+    R6 --> OK1["200 UserResponse"]:::be
+
+    T1 --> T2{"Tìm thấy<br/>tài khoản?"}
+    T2 -- "Không" --> XN2("404 NOT_FOUND"):::err
+    T2 -- "Có" --> T3{"Tự khóa<br/>chính mình?"}
+    T3 -- "Có" --> XL2("422 SELF_LOCKOUT"):::err
+    T3 -- "Không" --> T4["Đặt active theo yêu cầu, lưu"]:::be
+    T4 --> OK1
+
+    P1 --> P2{"Tìm thấy<br/>tài khoản?"}
+    P2 -- "Không" --> XN3("404 NOT_FOUND"):::err
+    P2 -- "Có" --> P3{"Đặt lại mật khẩu<br/>của chính mình?"}
+    P3 -- "Có" --> XP1("422 SELF_RESET_NOT_ALLOWED"):::err
+    P3 -- "Không" --> P4{"Có gửi<br/>newPassword?"}
+    P4 -- "Không" --> P5["Sinh mật khẩu tạm 10 ký tự<br/>bằng SecureRandom"]:::be
+    P4 -- "Có" --> P6
+    P5 --> P6{"Mật khẩu trùng<br/>username?"}
+    P6 -- "Có" --> XP2("400 VALIDATION_ERROR"):::err
+    P6 -- "Không" --> P7["Băm BCrypt, mustChangePassword = true,<br/>passwordChangedAt = now (vô hiệu token cũ), lưu"]:::be
+    P7 --> P8["200 PasswordResetResponse<br/>kèm mật khẩu tạm"]:::be
+    P8 --> P9["Hiển thị mật khẩu tạm một lần<br/>để BQT chuyển cho người dùng"]:::fe
+
+    OK1 --> F1["Tải lại danh sách tài khoản"]:::fe
+    F1 --> E(((" "))):::stop
+    P9 --> E
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
 ```
 
-Ghi chú: Luồng tiền mặt không có nhánh nộp thiếu. Hệ thống mặc định cư dân đã nộp đúng và đủ số tiền phải nộp khi Admin xác nhận.
+### 9.5 Đổi mật khẩu
 
+*Mã nguồn:* ProfilePage.jsx · MeController.changePassword() · MeService.changePassword()
 
-
-### 9.4 Cư dân gửi khiếu nại
+Sau khi đổi, passwordChangedAt được cập nhật nên mọi token phát hành trước đó bị JwtAuthenticationFilter từ chối. FE chủ động đăng xuất để người dùng đăng nhập lại bằng mật khẩu mới.
 
 ```mermaid
 flowchart TD
-    Start(\\\[Bắt đầu]) --> Login{Đã đăng nhập?}
-    Login -- Chưa --> ToLogin\\\[Chuyển trang Đăng nhập]
-    ToLogin --> End1(\\\[Kết thúc])
-    Login -- Rồi --> Open\\\[Mở Khiếu nại của tôi]
-    Open --> New\\\[Bấm Gửi khiếu nại mới]
-    New --> Fill\\\[Nhập tiêu đề, loại, nội dung]
-    Fill --> Submit\\\[Bấm Gửi]
-    Submit --> Valid{Tiêu đề và<br/>nội dung hợp lệ?}
-    Valid -- Không --> Err\\\[Báo lỗi]
-    Err --> Fill
-    Valid -- Có --> Save\\\[(Lưu khiếu nại,<br/>sender\\\_user\\\_id=JWT.userId,<br/>household\\\_id=JWT.householdId,<br/>status = NEW)]
-    Save --> Notify\\\[Hiển thị mã khiếu nại<br/>và thông báo thành công]
-    Notify --> End(\\\[Kết thúc])
+    S((" ")):::start --> A1["Người dùng nhập mật khẩu cũ,<br/>mật khẩu mới và xác nhận"]:::user
+    A1 --> D1{"validatePassword<br/>ở FE đạt?"}
+    D1 -- "Không" --> X1("Hiển thị lỗi từng trường<br/>(không gọi API)"):::err
+    D1 -- "Đạt" --> A2["PATCH /me/password"]:::fe
+    A2 --> D2{"@Valid: đủ 3 trường,<br/>mật khẩu mới 8–128 ký tự?"}
+    D2 -- "Không" --> X2("400 VALIDATION_ERROR"):::err
+    D2 -- "Có" --> A3["MeService lấy user hiện tại<br/>từ SecurityContext"]:::be
+    A3 --> D3{"Mật khẩu cũ<br/>khớp BCrypt?"}
+    D3 -- "Không" --> X3("400 VALIDATION_ERROR<br/>oldPassword: Mật khẩu cũ không đúng"):::err
+    D3 -- "Có" --> D4{"Mật khẩu mới trùng<br/>mật khẩu hiện tại?"}
+    D4 -- "Có" --> X4("400 VALIDATION_ERROR<br/>newPassword: phải khác mật khẩu cũ"):::err
+    D4 -- "Không" --> D5{"Mật khẩu mới<br/>trùng username?"}
+    D5 -- "Có" --> X5("400 VALIDATION_ERROR<br/>newPassword: không được trùng username"):::err
+    D5 -- "Không" --> D6{"confirmPassword khớp<br/>newPassword?"}
+    D6 -- "Không" --> X6("400 VALIDATION_ERROR<br/>confirmPassword: không khớp"):::err
+    D6 -- "Có" --> A4["Băm BCrypt mật khẩu mới,<br/>mustChangePassword = false,<br/>passwordChangedAt = now, lưu"]:::be
+    A4 --> A5["204 No Content"]:::be
+    A5 --> A6["signOut kèm thông báo:<br/>đổi mật khẩu thành công, hãy đăng nhập lại"]:::fe
+    A6 --> A7["Chuyển về /dang-nhap"]:::fe
+    A7 --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
 ```
 
-### 9.5 Admin gửi thông báo
+### 9.6 Tạo hộ gia đình kèm chủ hộ
+
+*Mã nguồn:* HouseholdForm.jsx · HouseholdController.createHousehold() · HouseholdService.createHousehold() — chỉ vai trò BQT
+
+Ba bản ghi (household, resident chủ hộ, resident_movement MOVE_IN ban đầu) được tạo trong cùng một transaction: lỗi ở bất kỳ bước nào sẽ rollback toàn bộ.
 
 ```mermaid
 flowchart TD
-    Start(\\\[Bắt đầu]) --> Open\\\[Admin vào màn hình<br/>Thông báo]
-    Open --> New\\\[Bấm Soạn thông báo]
-    New --> Fill\\\[Nhập tiêu đề, nội dung]
-    Fill --> Scope\\\[Chọn phạm vi:<br/>ALL / BY\\\_FLOOR / BY\\\_HOUSEHOLD]
-    Scope --> Pick{Đã chọn<br/>người nhận?}
-    Pick -- Chưa --> Err\\\[Báo lỗi: chọn người nhận]
-    Err --> Scope
-    Pick -- Rồi --> Send\\\[Bấm Gửi]
-    Send --> SaveNoti\\\[(Lưu Notification)]
-    SaveNoti --> GenRec\\\[(Sinh các<br/>NotificationRecipient<br/>cho từng người nhận)]
-    GenRec --> Done\\\[Hiển thị thành công]
-    Done --> End(\\\[Kết thúc])
+    S((" ")):::start --> A1["BQT nhập mã hộ, số căn hộ, tầng, diện tích<br/>và thông tin chủ hộ"]:::user
+    A1 --> D1{"validateHousehold<br/>ở FE đạt?"}
+    D1 -- "Không" --> X1("Hiển thị lỗi từng trường<br/>(không gọi API)"):::err
+    D1 -- "Đạt" --> A2["POST /households"]:::fe
+    A2 --> D2{"CreateHouseholdRequest<br/>qua được @Valid?"}
+    D2 -- "Không" --> X2("400 VALIDATION_ERROR"):::err
+    D2 -- "Có" --> A3["Chuẩn hóa: trim + IN HOA mã hộ và số căn hộ,<br/>CCCD / SĐT rỗng thành null"]:::be
+    A3 --> D3{"Ngày sinh chủ hộ<br/>trước 01/01/1900?"}
+    D3 -- "Có" --> X3("400 VALIDATION_ERROR"):::err
+    D3 -- "Không" --> A4["Kiểm tra trùng và gom lỗi:<br/>householdCode, apartmentNo, head.identityNumber"]:::be
+    A4 --> D4{"Có trường<br/>bị trùng?"}
+    D4 -- "Có" --> X4("409 DUPLICATE<br/>kèm errors theo từng trường"):::err
+    D4 -- "Không" --> A5["Tạo Household: status = ACTIVE<br/>(saveAndFlush)"]:::be
+    A5 --> A6["Tạo Resident chủ hộ: head = true,<br/>status = RESIDING, moveInDate = hôm nay"]:::be
+    A6 --> A7["Tạo ResidentMovement MOVE_IN:<br/>isInitial = true, recordedBy = BQT hiện tại"]:::be
+    A7 --> A8["201 HouseholdResponse<br/>residentCount = 1, presentCount = 1"]:::be
+    A8 --> A9["Chuyển tới trang chi tiết hộ vừa tạo<br/>/ho-gia-dinh/{id}"]:::fe
+    A9 --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
 ```
 
-### 9.6 Xuất báo cáo
+### 9.7 Đổi chủ hộ
+
+*Mã nguồn:* HouseholdDetailPage.jsx · HouseholdController.changeHouseholdHead() · HouseholdService.changeHouseholdHead() — chỉ vai trò BQT
+
+Chủ hộ cũ được bỏ cờ head và flush trước khi gán chủ hộ mới để không vi phạm ràng buộc "mỗi hộ một chủ hộ" trong DB.
 
 ```mermaid
 flowchart TD
-    Start(\\\[Bắt đầu]) --> Open\\\[Mở Thống kê và xuất file]
-    Open --> Pick\\\[Chọn loại báo cáo<br/>và phạm vi thời gian]
-    Pick --> Format\\\[Chọn định dạng<br/>Excel hoặc PDF]
-    Format --> Click\\\[Bấm Xuất file]
-    Click --> Query\\\[(Backend truy vấn dữ liệu)]
-    Query --> Gen{Định dạng?}
-    Gen -- Excel --> POI\\\[Dùng Apache POI<br/>sinh file .xlsx]
-    Gen -- PDF --> PDF\\\[Dùng OpenPDF<br/>sinh file .pdf]
-    POI --> Return\\\[Trả file về frontend]
-    PDF --> Return
-    Return --> Download\\\[Trình duyệt tải file]
-    Download --> End(\\\[Kết thúc])
+    S((" ")):::start --> A1["BQT chọn một thành viên trong hộ<br/>làm chủ hộ mới"]:::user
+    A1 --> A2["PUT /households/{id}/head<br/>body: residentId"]:::fe
+    A2 --> D1{"Tìm thấy hộ<br/>(chưa xóa mềm)?"}
+    D1 -- "Không" --> X1("404 NOT_FOUND"):::err
+    D1 -- "Có" --> D2{"Hộ đang<br/>ACTIVE?"}
+    D2 -- "Không" --> X2("422 HOUSEHOLD_INACTIVE"):::err
+    D2 -- "Có" --> D3{"Tìm thấy nhân khẩu<br/>được chọn?"}
+    D3 -- "Không" --> X3("422 INVALID_NEW_HEAD<br/>reason: NOT_FOUND"):::err
+    D3 -- "Có" --> D4{"Nhân khẩu<br/>thuộc hộ này?"}
+    D4 -- "Không" --> X4("422 INVALID_NEW_HEAD<br/>reason: NOT_IN_HOUSEHOLD"):::err
+    D4 -- "Có" --> D5{"Trạng thái<br/>RESIDING?"}
+    D5 -- "Không" --> X5("422 INVALID_NEW_HEAD<br/>reason: NOT_RESIDING"):::err
+    D5 -- "Có" --> D6{"Đã là chủ hộ?"}
+    D6 -- "Có" --> X6("422 INVALID_NEW_HEAD<br/>reason: ALREADY_HEAD"):::err
+    D6 -- "Chưa" --> D7{"Hộ đang có<br/>chủ hộ?"}
+    D7 -- "Có" --> A3["Chủ hộ cũ: head = false<br/>(saveAndFlush)"]:::be
+    D7 -- "Không" --> A4
+    A3 --> A4["Chủ hộ mới: head = true<br/>(saveAndFlush)"]:::be
+    A4 --> A5["200 HouseholdResponse"]:::be
+    A5 --> A6["Tải lại chi tiết hộ,<br/>thông báo đổi chủ hộ thành công"]:::fe
+    A6 --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
 ```
 
-### 9.7 Quên mật khẩu – gửi và xác thực OTP email
+### 9.8 Thêm nhân khẩu vào hộ
+
+*Mã nguồn:* ResidentForm.jsx · ResidentController.createResident() · ResidentService.createResident() — chỉ vai trò BQT
+
+Endpoint này không bao giờ tạo chủ hộ (head luôn = false). Hình thức EXISTING dùng để nhập người đã ở sẵn nên không sinh bản ghi biến động.
 
 ```mermaid
 flowchart TD
-    Start(\\\[Bắt đầu]) --> Open\\\[Cư dân mở trang Quên mật khẩu]
-    Open --> InEmail\\\[Nhập email đã đăng ký]
-    InEmail --> Submit\\\[Bấm Gửi OTP]
-    Submit --> Rate{Vượt rate limit<br/>5 lần / 15 phút<br/>cho email?}
-    Rate -- Có --> ErrRate\\\[Báo lỗi quá số lần<br/>gửi OTP cho phép]
-    ErrRate --> End1(\\\[Kết thúc])
-    Rate -- Không --> Find{Email tồn tại<br/>trong users?}
-    Find -- Không --> Pretend\\\[Trả response giống<br/>trường hợp tồn tại<br/>tránh dò email]
-    Pretend --> End1
-    Find -- Có --> GenOTP\\\[OtpService sinh OTP 6 số<br/>+ băm BCrypt]
-    GenOTP --> SaveOTP\\\[(Lưu email\\\_otps:<br/>purpose=FORGOT\\\_PASSWORD,<br/>expired\\\_at=now+5ph,<br/>used=FALSE)]
-    SaveOTP --> SendMail\\\[EmailService gửi OTP<br/>qua SMTP]
-    SendMail --> InOTP\\\[Cư dân nhập OTP +<br/>mật khẩu mới]
-    InOTP --> Verify{OTP đúng,<br/>chưa hết hạn,<br/>chưa dùng?}
-    Verify -- Không --> Inc\\\[Tăng attempts]
-    Inc --> AC{attempts >= 5?}
-    AC -- Có --> Lock\\\[Vô hiệu OTP<br/>used=TRUE]
-    Lock --> ErrLock\\\[Báo lỗi:<br/>vui lòng gửi lại OTP]
-    ErrLock --> End1
-    AC -- Không --> ErrOtp\\\[Báo lỗi OTP sai]
-    ErrOtp --> InOTP
-    Verify -- Đúng --> MarkUsed\\\[(Đánh dấu OTP used=TRUE)]
-    MarkUsed --> Hash\\\[Băm mật khẩu mới<br/>bằng BCrypt]
-    Hash --> Update\\\[(Cập nhật users.password\\\_hash)]
-    Update --> Notify\\\[Hiển thị: Đặt lại mật khẩu<br/>thành công]
-    Notify --> End(\\\[Kết thúc])
+    S((" ")):::start --> A1["BQT nhập thông tin nhân khẩu,<br/>quan hệ với chủ hộ và hình thức vào hộ"]:::user
+    A1 --> D1{"validateResident<br/>ở FE đạt?"}
+    D1 -- "Không" --> X1("Hiển thị lỗi từng trường<br/>(không gọi API)"):::err
+    D1 -- "Đạt" --> A2["POST /households/{id}/residents"]:::fe
+    A2 --> D2{"CreateResidentRequest qua được<br/>@Valid và các @AssertTrue?"}
+    D2 -- "Không" --> X2("400 VALIDATION_ERROR"):::err
+    D2 -- "Có" --> D3{"Tìm thấy hộ?"}
+    D3 -- "Không" --> X3("404 NOT_FOUND"):::err
+    D3 -- "Có" --> D4{"Hộ đang<br/>ACTIVE?"}
+    D4 -- "Không" --> X4("422 HOUSEHOLD_INACTIVE"):::err
+    D4 -- "Có" --> D5{"Có CCCD/CMND và<br/>đã tồn tại?"}
+    D5 -- "Có" --> X5("409 DUPLICATE (identityNumber)"):::err
+    D5 -- "Không" --> A3["Mặc định: entryType = MOVE_IN,<br/>entryDate = hôm nay (giờ Việt Nam)"]:::be
+    A3 --> D6{"entryType là<br/>TEMPORARY_RESIDENCE?"}
+    D6 -- "Có" --> A4["status = TEMPORARY_RESIDENCE,<br/>statusUntil = endDate, moveInDate = startDate"]:::be
+    D6 -- "Không" --> A5["status = RESIDING,<br/>moveInDate = entryDate"]:::be
+    A4 --> A6["Lưu Resident (head = false)"]:::be
+    A5 --> A6
+    A6 --> D7{"entryType là<br/>EXISTING?"}
+    D7 -- "Có" --> A8
+    D7 -- "Không" --> A7["Lưu ResidentMovement ban đầu (isInitial = true):<br/>MOVE_IN, BIRTH hoặc TEMPORARY_RESIDENCE"]:::be
+    A7 --> A8["201 ResidentResponse"]:::be
+    A8 --> A9["Đóng form, tải lại danh sách nhân khẩu"]:::fe
+    A9 --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
 ```
 
-### 9.8 Thanh toán phí của hộ qua VNPay Sandbox
+### 9.9 Xóa nhân khẩu (xóa mềm)
+
+*Mã nguồn:* ResidentDetailPage.jsx · ResidentController.deleteResident() · ResidentService.deleteResident() — chỉ vai trò BQT
+
+Chỉ xóa được nhân khẩu nhập nhầm: chưa là chủ hộ, chưa có tài khoản và chưa có biến động nào ngoài bản ghi ban đầu. Các trường hợp khác phải ghi nhận biến động (chuyển đi, qua đời).
 
 ```mermaid
 flowchart TD
-    Start(\\\[Bắt đầu]) --> Open\\\[Cư dân mở trang<br/>Thanh toán của hộ]
-    Open --> Pick\\\[Chọn khoản phí/hoá đơn<br/>cần thanh toán]
-    Pick --> Submit\\\[Bấm Thanh toán qua VNPay]
-    Submit --> Own{household\\\_id của khoản phí<br/>= JWT.household\\\_id?}
-    Own -- Không --> Err403\\\[403 Forbidden]
-    Err403 --> End1(\\\[Kết thúc])
-    Own -- Có --> Paid{Khoản phí đã<br/>thanh toán hết?}
-    Paid -- Có --> ErrPaid\\\[Báo lỗi: khoản đã thanh toán]
-    ErrPaid --> End1
-    Paid -- Chưa --> GenRef\\\[PaymentService sinh<br/>transaction\\\_code duy nhất]
-    GenRef --> SaveTx\\\[(Lưu payment\\\_transactions:<br/>status=PENDING,<br/>target\\\_type, target\\\_id,<br/>amount DECIMAL15\\\_2)]
-    SaveTx --> BuildURL\\\[VnpayService dựng URL<br/>+ vnp\\\_SecureHash HMAC-SHA512]
-    BuildURL --> Redirect\\\[Backend trả URL,<br/>FE redirect cư dân sang VNPay]
-    Redirect --> Pay\\\[Cư dân thanh toán<br/>trên VNPay Sandbox]
-    Pay --> IPN\\\[VNPay gọi IPN URL<br/>GET /api/payments/vnpay/ipn]
-    IPN --> VerifySig{vnp\\\_SecureHash<br/>hợp lệ?}
-    VerifySig -- Không --> RejIPN\\\[Trả vnp\\\_ResponseCode=97<br/>không cập nhật]
-    RejIPN --> End2(\\\[Kết thúc IPN])
-    VerifySig -- Có --> FindTx\\\[(Tìm payment\\\_transactions<br/>theo transaction\\\_code)]
-    FindTx --> CheckIdem{Đã ở trạng thái<br/>cuối SUCCESS/FAILED/CANCELLED?}
-    CheckIdem -- Có --> AckOk\\\[Trả vnp\\\_ResponseCode=00<br/>không cập nhật lại]
-    AckOk --> End2
-    CheckIdem -- Không --> CheckResp{vnp\\\_ResponseCode}
-    CheckResp -- 00 --> UpdSucc\\\[(payment\\\_transactions.status=SUCCESS,<br/>paid\\\_at=now)]
-    UpdSucc --> TargetType{target\\\_type?}
-    TargetType -- FEE\\\_PAYMENT --> UpdatePayment\\\[(Cập nhật payments:<br/>payment\\\_method=ONLINE,<br/>transaction\\\_code,<br/>paid\\\_at,<br/>paid\\\_date,<br/>status=PAID)]
-    TargetType -- UTILITY\\\_BILL --> UpdateUtility\\\[(Cập nhật utility\\\_bills:<br/>payment\\\_method=ONLINE,<br/>transaction\\\_code,<br/>paid\\\_at,<br/>paid\\\_date,<br/>status=PAID)]
-    UpdatePayment --> AckOk
-    UpdateUtility --> AckOk
-    CheckResp -- 24 --> UpdCancel\\\[(payment\\\_transactions.status=CANCELLED)]
-    UpdCancel --> AckOk
-    CheckResp -- khác --> UpdFail\\\[(payment\\\_transactions.status=FAILED)]
-    UpdFail --> AckOk
-    Redirect -.song song.-> Return\\\[VNPay redirect trình duyệt về<br/>Return URL của backend]
-    Return --> VerifyReturn{Return URL<br/>chữ ký hợp lệ?}
-    VerifyReturn -- Không --> ShowErr\\\[Redirect FE kết quả lỗi]
-    VerifyReturn -- Có --> CheckPending{Giao dịch<br/>còn PENDING?}
-    CheckPending -- Không --> ReadTx\\\[(Backend đọc trạng thái<br/>payment\\\_transactions)]
-    CheckPending -- Có --> Fallback\\\[Chốt trạng thái dự phòng:<br/>khớp số tiền, cập nhật tx<br/>+ khoản phí/hoá đơn]
-    Fallback --> ReadTx
-    ReadTx --> ShowResult\\\[Backend redirect FE<br/>SC-18 hiển thị kết quả]
-    ShowErr --> End3(\\\[Kết thúc])
-    ShowResult --> End3
+    S((" ")):::start --> A1["BQT bấm Xóa và xác nhận<br/>trên trang chi tiết nhân khẩu"]:::user
+    A1 --> A2["DELETE /residents/{id}"]:::fe
+    A2 --> D1{"Tìm thấy nhân khẩu<br/>(chưa xóa mềm)?"}
+    D1 -- "Không" --> X1("404 NOT_FOUND"):::err
+    D1 -- "Có" --> D2{"Đang là<br/>chủ hộ?"}
+    D2 -- "Có" --> X2("422 INVALID_NEW_HEAD<br/>Hãy đổi chủ hộ trước khi xóa"):::err
+    D2 -- "Không" --> D3{"Đang gắn với<br/>tài khoản đăng nhập?"}
+    D3 -- "Có" --> X3("409 HAS_ACCOUNT"):::err
+    D3 -- "Không" --> D4{"Có biến động khác<br/>bản ghi ban đầu?"}
+    D4 -- "Có" --> X4("409 HAS_HISTORY<br/>suggestedAction: RECORD_MOVEMENT"):::err
+    D4 -- "Không" --> A3["Đặt deletedAt = now, lưu<br/>(không xóa vật lý)"]:::be
+    A3 --> A4["204 No Content"]:::be
+    A4 --> A5["Chuyển về trang chi tiết hộ<br/>/ho-gia-dinh/{householdId}"]:::fe
+    A5 --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
 ```
 
-\---
+### 9.10a Ghi nhận biến động nhân khẩu — phần 1: kiểm tra hợp lệ
 
-## 10\. SEQUENCE DIAGRAM
+*Mã nguồn:* MovementPanel.jsx (MovementForm) · utils/supplement.js · ResidentController.recordMovement() · ResidentService.recordMovement() bước 1–7 — chỉ vai trò BQT
 
-Phần này mô tả thứ tự gọi giữa các thành phần cho các luồng quan trọng.
+Bảng chuyển trạng thái hợp lệ: MOVE_OUT và DEATH từ RESIDING / TEMPORARILY_ABSENT / TEMPORARY_RESIDENCE · TRANSFER từ RESIDING / TEMPORARY_RESIDENCE · MOVE_IN từ MOVED_OUT · TEMPORARY_ABSENCE và TEMPORARY_RESIDENCE từ RESIDING · RETURN từ TEMPORARILY_ABSENT. BIRTH chỉ được ghi khi thêm nhân khẩu.
 
-### 10.1 Đăng nhập
+```mermaid
+flowchart TD
+    S((" ")):::start --> A1["BQT mở form Ghi nhận biến động, chọn loại<br/>(FE chỉ liệt kê loại hợp với trạng thái hiện tại)"]:::user
+    A1 --> D1{"validateMovement<br/>ở FE đạt?"}
+    D1 -- "Không" --> X1("Hiển thị lỗi từng trường<br/>(không gọi API)"):::err
+    D1 -- "Đạt" --> A2["POST /residents/{id}/movements"]:::fe
+    A2 --> A3["Khóa dòng resident<br/>(SELECT ... FOR UPDATE)"]:::be
+    A3 --> D2{"Tìm thấy<br/>nhân khẩu?"}
+    D2 -- "Không" --> X2("404 NOT_FOUND"):::err
+    D2 -- "Có" --> D3{"movementType có giá trị, khác BIRTH<br/>và note không quá 500 ký tự?"}
+    D3 -- "Không" --> X3("400 VALIDATION_ERROR"):::err
+    D3 -- "Có" --> D4{{"Đủ trường bắt buộc theo loại?<br/>effectiveDate · newHouseholdId + relationshipToHead<br/>· startDate, endDate không trước startDate"}}
+    D4 -- "Không" --> X4("400 VALIDATION_ERROR<br/>kèm errors theo từng trường"):::err
+    D4 -- "Có" --> D5{"Đang MOVED_OUT hoặc DECEASED<br/>mà loại khác MOVE_IN?"}
+    D5 -- "Có" --> X5("422 RESIDENT_NOT_RESIDING"):::err
+    D5 -- "Không" --> D6{"Trạng thái hiện tại nằm trong<br/>allowedFrom của loại biến động?"}
+    D6 -- "Không" --> X6("422 INVALID_TRANSITION<br/>kèm danh sách allowedFrom"):::err
+    D6 -- "Có" --> D7{{"Ngày hiệu lực hợp lệ?<br/>không ở tương lai · không trước ngày sinh<br/>· không trước moveInDate (MOVE_OUT, DEATH)"}}
+    D7 -- "Không" --> X7("400 VALIDATION_ERROR"):::err
+    D7 -- "Có" --> D8{"Ngày hiệu lực trước ngày<br/>của biến động gần nhất?"}
+    D8 -- "Có" --> X8("400 VALIDATION_ERROR"):::err
+    D8 -- "Không" --> D9{"Loại là TRANSFER<br/>hoặc MOVE_IN?"}
+    D9 -- "Không" --> NEXT["Sang phần 2:<br/>xử lý chủ hộ và ghi dữ liệu"]:::be
+    D9 -- "Có" --> D10{"TRANSFER tới chính<br/>hộ hiện tại?"}
+    D10 -- "Có" --> X9("400 VALIDATION_ERROR<br/>Hộ đích phải khác hộ hiện tại"):::err
+    D10 -- "Không" --> D11{"Tìm thấy<br/>hộ đích?"}
+    D11 -- "Không" --> X10("404 NOT_FOUND"):::err
+    D11 -- "Có" --> D12{"Hộ đích<br/>đang ACTIVE?"}
+    D12 -- "Không" --> X11("422 HOUSEHOLD_INACTIVE"):::err
+    D12 -- "Có" --> NEXT
+    NEXT --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
+```
+
+### 9.10b Ghi nhận biến động nhân khẩu — phần 2: xử lý chủ hộ và ghi dữ liệu
+
+*Mã nguồn:* ResidentService.recordMovement() bước 8–11 · MovementPanel.jsx (xử lý HEAD_REQUIRED)
+
+Toàn bộ nằm trong một transaction với dòng resident đã bị khóa. Bản ghi resident_movement chỉ thêm mới (append-only), không sửa hay xóa.
+
+```mermaid
+flowchart TD
+    S((" ")):::start --> D1{"Nhân khẩu là chủ hộ và loại là<br/>MOVE_OUT, DEATH hoặc TRANSFER?"}
+    D1 -- "Không" --> U0
+    D1 -- "Có" --> A1["Tìm ứng viên chủ hộ mới: thành viên khác<br/>trong hộ đang RESIDING"]:::be
+    A1 --> D2{"Có ứng viên?"}
+    D2 -- "Không" --> D3{"Request có gửi<br/>newHeadResidentId?"}
+    D3 -- "Có" --> X1("422 INVALID_NEW_HEAD<br/>reason: NOT_FOUND"):::err
+    D3 -- "Không" --> A2["Bỏ cờ head của người rời hộ<br/>(hộ tạm thời không có chủ hộ)"]:::be
+    A2 --> U0
+    D2 -- "Có" --> D4{"Request có gửi<br/>newHeadResidentId?"}
+    D4 -- "Không" --> X2["422 HEAD_REQUIRED<br/>kèm danh sách candidates"]:::err
+    X2 --> F1["Form hiển thị danh sách ứng viên,<br/>BQT chọn chủ hộ mới và gửi lại"]:::fe
+    F1 --> E2(((" "))):::stop
+    D4 -- "Có" --> D5{{"Chủ hộ mới hợp lệ?<br/>khác người rời hộ · tồn tại · cùng hộ<br/>· chưa là chủ hộ · đang RESIDING"}}
+    D5 -- "Không" --> X3("422 INVALID_NEW_HEAD<br/>reason: SAME_PERSON, NOT_FOUND, NOT_IN_HOUSEHOLD,<br/>ALREADY_HEAD hoặc NOT_RESIDING"):::err
+    D5 -- "Có" --> A3["Chủ hộ cũ: head = false (saveAndFlush)<br/>rồi chủ hộ mới: head = true (saveAndFlush)"]:::be
+    A3 --> U0{"Loại biến động?"}
+    U0 -- "MOVE_OUT" --> U1["status = MOVED_OUT,<br/>moveOutDate = ngày hiệu lực"]:::be
+    U0 -- "DEATH" --> U2["status = DECEASED,<br/>moveOutDate = ngày hiệu lực"]:::be
+    U0 -- "TRANSFER / MOVE_IN" --> U3["status = RESIDING, household = hộ đích,<br/>moveInDate = ngày hiệu lực, moveOutDate = null,<br/>cập nhật relationshipToHead"]:::be
+    U0 -- "TEMPORARY_ABSENCE" --> U4["status = TEMPORARILY_ABSENT,<br/>statusUntil = endDate"]:::be
+    U0 -- "TEMPORARY_RESIDENCE" --> U5["status = TEMPORARY_RESIDENCE,<br/>statusUntil = endDate"]:::be
+    U0 -- "RETURN" --> U6["status = RESIDING,<br/>statusUntil = null"]:::be
+    U1 --> SV["Lưu Resident (saveAndFlush)"]:::be
+    U2 --> SV
+    U3 --> SV
+    U4 --> SV
+    U5 --> SV
+    U6 --> SV
+    SV --> D6{"Loại là MOVE_OUT<br/>hoặc DEATH?"}
+    D6 -- "Có" --> A4["Nếu nhân khẩu có tài khoản liên kết:<br/>đặt active = false (khóa đăng nhập)"]:::be
+    D6 -- "Không" --> A5
+    A4 --> A5["Thêm ResidentMovement: isInitial = false,<br/>oldHousehold / newHousehold theo loại,<br/>recordedBy = BQT hiện tại"]:::be
+    A5 --> A6["201 RecordMovementResponse:<br/>movement + resident sau cập nhật"]:::be
+    A6 --> A7["Cập nhật thông tin nhân khẩu trên trang,<br/>tải lại lịch sử biến động"]:::fe
+    A7 --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
+```
+
+### 9.11 Tìm kiếm nhanh hộ gia đình và nhân khẩu
+
+*Mã nguồn:* SearchPage.jsx · SearchController.search() · SearchService.search() — vai trò BQT, ACCOUNTANT
+
+FE chờ 300 ms sau lần gõ cuối và hủy request cũ bằng AbortController. Mỗi nhóm trả tối đa limit kết quả kèm tổng số để FE biết còn kết quả hay không (hasMore).
+
+```mermaid
+flowchart TD
+    S((" ")):::start --> A1["Người dùng gõ từ khóa,<br/>chọn loại (ALL / HOUSEHOLD / RESIDENT)"]:::user
+    A1 --> D1{"Từ khóa dài<br/>2–100 ký tự?"}
+    D1 -- "Không" --> X0("Không gọi API,<br/>chờ người dùng nhập tiếp"):::err
+    D1 -- "Có" --> A2["Chờ 300 ms (debounce), hủy request trước đó"]:::fe
+    A2 --> A3["GET /search?keyword&type&limit"]:::fe
+    A3 --> D2{"keyword 2–100 ký tự, type hợp lệ,<br/>limit trong 1–50?"}
+    D2 -- "Không" --> X1("400 VALIDATION_ERROR<br/>kèm errors theo tham số"):::err
+    D2 -- "Có" --> A4["Escape ký tự đặc biệt của LIKE:<br/>dấu gạch chéo ngược, %, _"]:::be
+    A4 --> D3{"type là ALL<br/>hoặc HOUSEHOLD?"}
+    D3 -- "Có" --> A5["quickSearchHouseholds(keyword, limit)<br/>và countQuickSearchHouseholds"]:::be
+    D3 -- "Không" --> A6["households = danh sách rỗng"]:::be
+    A5 --> D4{"type là ALL<br/>hoặc RESIDENT?"}
+    A6 --> D4
+    D4 -- "Có" --> A7["quickSearchResidents(keyword, limit)<br/>và countQuickSearchResidents"]:::be
+    D4 -- "Không" --> A8["residents = danh sách rỗng"]:::be
+    A7 --> A9["Tính statusExpired cho người tạm vắng / tạm trú<br/>có statusUntil trước hôm nay"]:::be
+    A9 --> A10["Tổng hợp: empty, totals, hasMore"]:::be
+    A8 --> A10
+    A10 --> A11["200 SearchResponse"]:::be
+    A11 --> A12["Hiển thị hai nhóm kết quả,<br/>hoặc trạng thái không tìm thấy"]:::fe
+    A12 --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
+```
+
+### 9.12 Cư dân gửi đề nghị (cập nhật hồ sơ, tạm vắng, tạm trú)
+
+*Mã nguồn:* MyHouseholdPage.jsx · ResidentRequestForm.jsx · ResidentRequestController.submitRequest() · ResidentRequestService.submit() — chỉ vai trò RESIDENT
+
+Gửi đề nghị không làm thay đổi dữ liệu nhân khẩu: chỉ tạo bản ghi resident_request ở trạng thái PENDING. Với PROFILE_UPDATE, hệ thống chụp lại giá trị hiện tại (beforeValues) để phát hiện dữ liệu đã đổi khi BQT duyệt.
+
+```mermaid
+flowchart TD
+    S((" ")):::start --> A0["Cư dân mở Hộ của tôi (GET /me/household),<br/>chọn loại đề nghị và điền form"]:::user
+    A0 --> D0{"validateRequest<br/>ở FE đạt?"}
+    D0 -- "Không" --> X0("Hiển thị lỗi từng trường<br/>(không gọi API)"):::err
+    D0 -- "Đạt" --> A1["POST /me/resident-requests"]:::fe
+    A1 --> D1{"Tài khoản gắn với<br/>nhân khẩu còn tồn tại?"}
+    D1 -- "Không" --> X1("422 RESIDENT_LINK_REQUIRED"):::err
+    D1 -- "Có" --> D2{"Body có type?"}
+    D2 -- "Không" --> X2("400 VALIDATION_ERROR"):::err
+    D2 -- "Có" --> D3{"Hộ của người gửi<br/>đang ACTIVE?"}
+    D3 -- "Không" --> X3("422 HOUSEHOLD_INACTIVE"):::err
+    D3 -- "Có" --> T{"Loại đề nghị?"}
+
+    T -- "PROFILE_UPDATE" --> P1{"residentId thuộc<br/>hộ của người gửi?"}
+    P1 -- "Không" --> XP1("403 RESIDENT_NOT_IN_HOUSEHOLD<br/>(thiếu residentId: 400)"):::err
+    P1 -- "Có" --> P2{"Trường hồ sơ và note<br/>hợp lệ?"}
+    P2 -- "Không" --> XP2("400 VALIDATION_ERROR"):::err
+    P2 -- "Có" --> P3{"Nhân khẩu MOVED_OUT<br/>hoặc DECEASED?"}
+    P3 -- "Có" --> XP3("422 RESIDENT_NOT_RESIDING"):::err
+    P3 -- "Không" --> P4{"Có khác biệt so với<br/>dữ liệu hiện tại?"}
+    P4 -- "Không" --> XP4("422 NO_CHANGES"):::err
+    P4 -- "Có" --> P5{"CCCD mới trùng<br/>người khác?"}
+    P5 -- "Có" --> XP5("409 DUPLICATE"):::err
+    P5 -- "Không" --> P6{"Đã có PROFILE_UPDATE đang<br/>PENDING cho nhân khẩu này?"}
+    P6 -- "Có" --> XP6("409 PENDING_REQUEST_EXISTS"):::err
+    P6 -- "Không" --> P7["proposed = hồ sơ đề nghị,<br/>beforeValues = hồ sơ hiện tại"]:::be
+
+    T -- "TEMPORARY_ABSENCE" --> B1{"residentId thuộc<br/>hộ của người gửi?"}
+    B1 -- "Không" --> XB1("403 RESIDENT_NOT_IN_HOUSEHOLD<br/>(thiếu residentId: 400)"):::err
+    B1 -- "Có" --> B2{{"startDate, endDate, note hợp lệ?<br/>(không ở tương lai, không trước ngày sinh<br/>và biến động gần nhất)"}}
+    B2 -- "Không" --> XB2("400 VALIDATION_ERROR"):::err
+    B2 -- "Có" --> B3{"Nhân khẩu đang<br/>RESIDING?"}
+    B3 -- "Không" --> XB3("422 RESIDENT_NOT_RESIDING<br/>hoặc INVALID_TRANSITION"):::err
+    B3 -- "Có" --> B4{"Đã có TEMPORARY_ABSENCE đang<br/>PENDING cho nhân khẩu này?"}
+    B4 -- "Có" --> XB4("409 PENDING_REQUEST_EXISTS"):::err
+    B4 -- "Không" --> B5["proposed = startDate, endDate"]:::be
+
+    T -- "TEMPORARY_RESIDENCE" --> G1{"Ngày, thông tin khách<br/>và note hợp lệ?"}
+    G1 -- "Không" --> XG1("400 VALIDATION_ERROR"):::err
+    G1 -- "Có" --> G2{"CCCD của khách đã có<br/>trong bảng resident?"}
+    G2 -- "Có" --> XG2("409 DUPLICATE"):::err
+    G2 -- "Không" --> G3{"Đã có đề nghị tạm trú PENDING<br/>cùng CCCD?"}
+    G3 -- "Có" --> XG3("409 PENDING_REQUEST_EXISTS"):::err
+    G3 -- "Không" --> G4["proposed = startDate, endDate, person"]:::be
+
+    P7 --> SV["Lưu ResidentRequest: status = PENDING,<br/>submittedBy, submittedAt (saveAndFlush)"]:::be
+    B5 --> SV
+    G4 --> SV
+    SV --> D9{"DB báo vi phạm ràng buộc<br/>(hai request gửi đồng thời)?"}
+    D9 -- "Có" --> X9("409 PENDING_REQUEST_EXISTS"):::err
+    D9 -- "Không" --> OK["201 ResidentRequestResponse"]:::be
+    OK --> F1["Chuyển tới /de-nghi/{id}, thông báo<br/>đã gửi và đang chờ Ban quản trị duyệt"]:::fe
+    F1 --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
+```
+
+### 9.13 Ban quản trị duyệt đề nghị
+
+*Mã nguồn:* ResidentRequestDetailPage.jsx · ResidentRequestController.approveRequest() · ResidentRequestService.approve() · ResidentService.recordMovement() / createResident() — chỉ vai trò BQT
+
+Việc duyệt và việc áp dụng thay đổi chạy trong cùng một transaction: nếu ghi nhận tạm vắng hoặc tạo nhân khẩu tạm trú thất bại thì đề nghị vẫn giữ trạng thái PENDING.
+
+```mermaid
+flowchart TD
+    S((" ")):::start --> A1["BQT mở chi tiết đề nghị, nhập ghi chú<br/>(không bắt buộc) và xác nhận Duyệt"]:::user
+    A1 --> A2["POST /resident-requests/{id}/approve"]:::fe
+    A2 --> A3["Khóa dòng đề nghị<br/>(SELECT ... FOR UPDATE)"]:::be
+    A3 --> D1{"Tìm thấy<br/>đề nghị?"}
+    D1 -- "Không" --> X1("404 NOT_FOUND"):::err
+    D1 -- "Có" --> D2{"Trạng thái<br/>là PENDING?"}
+    D2 -- "Không" --> X2("409 REQUEST_NOT_PENDING<br/>FE tải lại trạng thái mới nhất"):::err
+    D2 -- "Có" --> D3{"Hộ của đề nghị<br/>đang ACTIVE?"}
+    D3 -- "Không" --> X3("422 HOUSEHOLD_INACTIVE"):::err
+    D3 -- "Có" --> T{"Loại đề nghị?"}
+
+    T -- "PROFILE_UPDATE" --> P1["Khóa dòng resident<br/>(SELECT ... FOR UPDATE)"]:::be
+    P1 --> P2{"Nhân khẩu<br/>còn tồn tại?"}
+    P2 -- "Không" --> XP1("409 REQUEST_OUTDATED"):::err
+    P2 -- "Có" --> P3{"Các trường đề nghị đổi còn giống<br/>beforeValues lúc gửi?"}
+    P3 -- "Không" --> XP2("409 REQUEST_OUTDATED<br/>kèm danh sách trường đã đổi"):::err
+    P3 -- "Có" --> P4{"Đổi CCCD và CCCD mới<br/>trùng người khác?"}
+    P4 -- "Có" --> XP3("409 DUPLICATE"):::err
+    P4 -- "Không" --> P5["Áp các trường thay đổi vào Resident, lưu<br/>resultResidentId = id nhân khẩu"]:::be
+
+    T -- "TEMPORARY_ABSENCE" --> B1["Dựng CreateMovementRequest TEMPORARY_ABSENCE<br/>note: Theo khai báo số {id}"]:::be
+    B1 --> B2["Gọi ResidentService.recordMovement<br/>(toàn bộ kiểm tra của luồng biến động)"]:::be
+    B2 --> B3{"Ghi nhận<br/>thành công?"}
+    B3 -- "Không" --> XB1("Lỗi của luồng biến động: 400 / 422<br/>đề nghị vẫn PENDING"):::err
+    B3 -- "Có" --> B4["resultMovementId = id biến động,<br/>resultResidentId = id nhân khẩu"]:::be
+
+    T -- "TEMPORARY_RESIDENCE" --> G1{"CCCD của khách đã có<br/>trong bảng resident?"}
+    G1 -- "Có" --> XG1("409 DUPLICATE"):::err
+    G1 -- "Không" --> G2["Gọi ResidentService.createResident<br/>entryType = TEMPORARY_RESIDENCE"]:::be
+    G2 --> G3["resultResidentId = id nhân khẩu vừa tạo"]:::be
+
+    P5 --> F["Cập nhật đề nghị: status = APPROVED, decidedBy,<br/>decidedAt, decisionNote, kết quả; lưu"]:::be
+    B4 --> F
+    G3 --> F
+    F --> OK["200 ResidentRequestResponse"]:::be
+    OK --> U["Hiển thị trạng thái Đã duyệt,<br/>cập nhật số đề nghị chờ xử lý"]:::fe
+    U --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
+```
+
+### 9.14 Từ chối đề nghị (BQT) và hủy đề nghị (cư dân)
+
+*Mã nguồn:* ResidentRequestDetailPage.jsx · ResidentRequestService.reject() / cancel()
+
+Cả hai thao tác đều khóa dòng đề nghị trước khi kiểm tra trạng thái, nên khi BQT duyệt và cư dân hủy cùng lúc thì chỉ một bên thành công, bên còn lại nhận REQUEST_NOT_PENDING. Cư dân truy cập đề nghị của người khác nhận 404 thay vì 403 để không lộ sự tồn tại của đề nghị.
+
+```mermaid
+flowchart TD
+    S((" ")):::start --> D0{"Ai thao tác?"}
+    D0 -- "BQT từ chối" --> R1["BQT nhập lý do từ chối và xác nhận"]:::user
+    R1 --> R2["POST /resident-requests/{id}/reject"]:::fe
+    R2 --> R3{"reason không rỗng,<br/>tối đa 500 ký tự?"}
+    R3 -- "Không" --> XR1("400 VALIDATION_ERROR"):::err
+    R3 -- "Có" --> R4["Khóa dòng đề nghị (FOR UPDATE)"]:::be
+    R4 --> R5{"Tìm thấy<br/>đề nghị?"}
+    R5 -- "Không" --> XR2("404 NOT_FOUND"):::err
+    R5 -- "Có" --> R6{"Trạng thái<br/>là PENDING?"}
+    R6 -- "Không" --> XR3("409 REQUEST_NOT_PENDING"):::err
+    R6 -- "Có" --> R7["status = REJECTED, decidedBy = BQT,<br/>decidedAt = now, decisionReason; lưu"]:::be
+
+    D0 -- "Cư dân hủy" --> C1["Cư dân bấm Hủy đề nghị và xác nhận"]:::user
+    C1 --> C2["POST /me/resident-requests/{id}/cancel"]:::fe
+    C2 --> C3["Khóa dòng đề nghị (FOR UPDATE)"]:::be
+    C3 --> C4{"Tìm thấy và do chính<br/>người này gửi?"}
+    C4 -- "Không" --> XC1("404 NOT_FOUND"):::err
+    C4 -- "Có" --> C5{"Trạng thái<br/>là PENDING?"}
+    C5 -- "Không" --> XC2("409 REQUEST_NOT_PENDING"):::err
+    C5 -- "Có" --> C6["status = CANCELLED, decidedBy = người gửi,<br/>decidedAt = now; lưu"]:::be
+
+    R7 --> OK["200 ResidentRequestResponse"]:::be
+    C6 --> OK
+    OK --> U["Hiển thị trạng thái mới của đề nghị"]:::fe
+    U --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
+```
+
+### 9.15 Tạo và cập nhật khoản thu
+
+*Mã nguồn:* FeeForm.jsx · FeeCategoryController.create() / update() · FeeCategoryService.create() / update() — vai trò ACCOUNTANT, BQT
+
+Khoản bắt buộc (MANDATORY) chỉ tính theo diện tích (PER_AREA) hoặc cố định (FIXED) và phải có đơn giá, chu kỳ, hạn nộp. Khoản tự nguyện (VOLUNTARY) luôn là MANUAL, hệ thống tự đặt đơn giá = 0, chu kỳ ONE_TIME, không có hạn nộp. Khi tạo mới, kiểm tra trùng mã chạy ngay sau bước kiểm tra định dạng mã, trước khi trả các lỗi validation khác.
+
+```mermaid
+flowchart TD
+    S((" ")):::start --> A1["Kế toán / BQT nhập mã, tên, loại khoản thu,<br/>cách tính, đơn giá, chu kỳ, hạn nộp"]:::user
+    A1 --> D1{"validateFee<br/>ở FE đạt?"}
+    D1 -- "Không" --> X1("Hiển thị lỗi từng trường<br/>(không gọi API)"):::err
+    D1 -- "Đạt" --> D2{"Tạo mới hay<br/>cập nhật?"}
+    D2 -- "Tạo mới" --> C1["POST /fee-categories"]:::fe
+    D2 -- "Cập nhật" --> U1["PUT /fee-categories/{id}"]:::fe
+
+    C1 --> C2{"Mã (đã trim + IN HOA)<br/>đã tồn tại?"}
+    C2 -- "Có" --> XC1("409 DUPLICATE"):::err
+    C2 -- "Chưa" --> V
+
+    U1 --> U2{"Tìm thấy<br/>khoản thu?"}
+    U2 -- "Không" --> XU1("404 NOT_FOUND"):::err
+    U2 -- "Có" --> V
+
+    V{{"Kiểm tra chung đạt?<br/>tên không rỗng · mô tả tối đa 1000 ký tự<br/>· mã khớp [A-Z0-9_]{2,30} · có feeKind và calculationMethod"}}
+    V -- "Không" --> XV("400 VALIDATION_ERROR<br/>kèm errors theo từng trường"):::err
+    V -- "Có" --> K{"feeKind?"}
+    K -- "MANDATORY" --> M1{{"Cách tính PER_AREA hoặc FIXED,<br/>0 < đơn giá ≤ 1 tỷ (tối đa 2 số lẻ),<br/>có chu kỳ, hạn nộp 1–28?"}}
+    M1 -- "Không" --> XV
+    K -- "VOLUNTARY" --> M2{"Cách tính<br/>là MANUAL?"}
+    M2 -- "Không" --> XV
+    M2 -- "Có" --> M3["Chuẩn hóa: unitPrice = 0,<br/>billingCycle = ONE_TIME, dueDay = null"]:::be
+    M1 -- "Có" --> W{"Tạo mới hay<br/>cập nhật?"}
+    M3 --> W
+
+    W -- "Tạo mới" --> C3["Lưu FeeCategory, active = true"]:::be
+    C3 --> C4["201 FeeCategoryResponse"]:::be
+
+    W -- "Cập nhật" --> U3{"Mã trùng với<br/>khoản thu khác?"}
+    U3 -- "Có" --> XU2("409 DUPLICATE"):::err
+    U3 -- "Không" --> U4{"Khoản thu đã phát sinh công nợ và<br/>đổi mã, loại, cách tính hoặc chu kỳ?"}
+    U4 -- "Có" --> XU3("409 HAS_TRANSACTIONS<br/>suggestedAction: CREATE_NEW"):::err
+    U4 -- "Không" --> U5["Cập nhật các trường, lưu"]:::be
+    U5 --> U6["200 FeeCategoryResponse"]:::be
+
+    C4 --> F["Đóng form, tải lại danh mục khoản thu"]:::fe
+    U6 --> F
+    F --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
+```
+
+### 9.16 Tính thử phí cho một hộ
+
+*Mã nguồn:* FeePreview.jsx · FeeCalculationController.preview() · FeeCalculationService.preview() — vai trò ACCOUNTANT, BQT
+
+Chỉ tính và trả kết quả để xem trước, không ghi gì vào DB (transaction readOnly). Số tiền làm tròn tới đồng theo HALF_UP.
+
+```mermaid
+flowchart TD
+    S((" ")):::start --> A1["Người dùng mở Tính thử trên một khoản thu<br/>và chọn hộ gia đình"]:::user
+    A1 --> D1{"Đã chọn hộ?"}
+    D1 -- "Chưa" --> X1("Báo: Chọn hộ cần tính phí<br/>(không gọi API)"):::err
+    D1 -- "Rồi" --> A2["POST /fee-calculation/preview<br/>body: householdId, feeCategoryId"]:::fe
+    A2 --> D2{"Hai id có giá trị<br/>và lớn hơn 0?"}
+    D2 -- "Không" --> X2("400 VALIDATION_ERROR"):::err
+    D2 -- "Có" --> D3{"Tìm thấy hộ?"}
+    D3 -- "Không" --> X3("404 NOT_FOUND"):::err
+    D3 -- "Có" --> D4{"Hộ đang<br/>ACTIVE?"}
+    D4 -- "Không" --> X4("422 HOUSEHOLD_INACTIVE"):::err
+    D4 -- "Có" --> D5{"Tìm thấy<br/>khoản thu?"}
+    D5 -- "Không" --> X5("404 NOT_FOUND"):::err
+    D5 -- "Có" --> D6{"Khoản thu<br/>đang active?"}
+    D6 -- "Không" --> X6("422 FEE_INACTIVE"):::err
+    D6 -- "Có" --> D7{"Là khoản<br/>VOLUNTARY?"}
+    D7 -- "Có" --> X7("422 FEE_NOT_BILLABLE"):::err
+    D7 -- "Không" --> D8{"Cách tính?"}
+    D8 -- "PER_AREA" --> D9{"Hộ có<br/>diện tích?"}
+    D9 -- "Không" --> X8("422 MISSING_AREA"):::err
+    D9 -- "Có" --> A3["amount = làm tròn(area × unitPrice)<br/>formula = area x unitPrice"]:::be
+    D8 -- "FIXED" --> A4["amount = làm tròn(unitPrice)<br/>formula = unitPrice"]:::be
+    D8 -- "MANUAL" --> X9("422 FEE_NOT_BILLABLE"):::err
+    A3 --> A5["200 FeeCalculationPreviewResponse:<br/>hộ, khoản thu, area, unitPrice, amount, formula"]:::be
+    A4 --> A5
+    A5 --> A6["Hiển thị công thức và số tiền tính thử"]:::fe
+    A6 --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
+```
+
+### 9.17 Quản lý kỳ thu: tạo, sửa, xóa
+
+*Mã nguồn:* PeriodForm.jsx · PeriodDetailPage.jsx · BillingPeriodController · BillingPeriodService.create() / update() / delete() — vai trò ACCOUNTANT, BQT
+
+Kỳ thu mới luôn ở trạng thái OPEN và chưa lập danh sách. Sau khi đã lập danh sách khoản phải thu (generatedAt khác null) thì không được sửa hay xóa kỳ nữa.
+
+```mermaid
+flowchart TD
+    S((" ")):::start --> D0{"Thao tác?"}
+    D0 -- "Tạo" --> C0["Nhập mã, tên, ngày bắt đầu, ngày kết thúc"]:::user
+    C0 --> C1["POST /billing-periods"]:::fe
+    C1 --> C2{"@Valid đạt và endDate<br/>không trước startDate?"}
+    C2 -- "Không" --> XC1("400 VALIDATION_ERROR"):::err
+    C2 -- "Có" --> C3{"Mã kỳ thu<br/>đã tồn tại?"}
+    C3 -- "Có" --> XC2("409 DUPLICATE (code)"):::err
+    C3 -- "Chưa" --> C4{"Khoảng ngày chồng lấn<br/>kỳ thu khác?"}
+    C4 -- "Có" --> XC3("422 PERIOD_OVERLAP<br/>kèm id và mã kỳ bị chồng"):::err
+    C4 -- "Không" --> C5["Lưu BillingPeriod: status = OPEN,<br/>generatedAt = null, closedAt = null"]:::be
+    C5 --> C6["201 BillingPeriodResponse"]:::be
+    C6 --> C7["Chuyển tới /ky-thu/{id}"]:::fe
+
+    D0 -- "Sửa" --> U0["Sửa mã, tên hoặc khoảng ngày"]:::user
+    U0 --> U1["PUT /billing-periods/{id}"]:::fe
+    U1 --> U2["Khóa dòng kỳ thu (FOR UPDATE)"]:::be
+    U2 --> U3{"Tìm thấy<br/>kỳ thu?"}
+    U3 -- "Không" --> XU1("404 NOT_FOUND"):::err
+    U3 -- "Có" --> U4{"Kỳ đã lập<br/>danh sách?"}
+    U4 -- "Có" --> XU2("409 ALREADY_GENERATED"):::err
+    U4 -- "Chưa" --> U5{"Khoảng ngày hợp lệ, mã không trùng,<br/>không chồng lấn kỳ khác?"}
+    U5 -- "Không" --> XU3("400 VALIDATION_ERROR, 409 DUPLICATE<br/>hoặc 422 PERIOD_OVERLAP"):::err
+    U5 -- "Có" --> U6["Cập nhật code, name, startDate, endDate<br/>(giữ nguyên status và các mốc lập / đóng)"]:::be
+    U6 --> U7["200 BillingPeriodResponse"]:::be
+    U7 --> U8["Tải lại chi tiết kỳ thu"]:::fe
+
+    D0 -- "Xóa" --> R0["Bấm Xóa kỳ thu và xác nhận"]:::user
+    R0 --> R1["DELETE /billing-periods/{id}"]:::fe
+    R1 --> R2["Khóa dòng kỳ thu (FOR UPDATE)"]:::be
+    R2 --> R3{"Tìm thấy<br/>kỳ thu?"}
+    R3 -- "Không" --> XR1("404 NOT_FOUND"):::err
+    R3 -- "Có" --> R4{"Kỳ đã lập<br/>danh sách?"}
+    R4 -- "Có" --> XR2("409 ALREADY_GENERATED"):::err
+    R4 -- "Chưa" --> R5["Xóa bản ghi kỳ thu"]:::be
+    R5 --> R6["204 No Content"]:::be
+    R6 --> R7["Chuyển về /ky-thu"]:::fe
+
+    C7 --> E(((" "))):::stop
+    U8 --> E
+    R7 --> E
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
+```
+
+### 9.18 Lập danh sách khoản phải thu cho kỳ thu
+
+*Mã nguồn:* PeriodDetailPage.jsx perform() · BillingGenerationController.generate() · BillingGenerationService.generate() · ReceivableRepository — vai trò ACCOUNTANT, BQT
+
+Khoản thu đủ điều kiện: MANDATORY, đang active, chu kỳ MONTHLY hoặc ONE_TIME chưa từng phát sinh công nợ. Mỗi hộ ACTIVE nhận một khoản phải thu cho mỗi khoản thu đủ điều kiện; khoản PER_AREA bị bỏ qua với hộ chưa có diện tích (MISSING_AREA). Xem trước (dryRun) và lập thật dùng chung một đường xử lý, chỉ khác ở bước ghi.
+
+```mermaid
+flowchart TD
+    S((" ")):::start --> A1["Người dùng bấm Xem trước<br/>trên trang chi tiết kỳ thu"]:::user
+    A1 --> A2["POST /billing-periods/{id}/generate?dryRun=true"]:::fe
+    A2 --> B0
+    B0["BillingGenerationService.generate:<br/>khóa dòng kỳ thu (FOR UPDATE)"]:::be --> D1{"Tìm thấy<br/>kỳ thu?"}
+    D1 -- "Không" --> X1("404 NOT_FOUND"):::err
+    D1 -- "Có" --> D2{"Kỳ đã<br/>CLOSED?"}
+    D2 -- "Có" --> X2("422 PERIOD_CLOSED"):::err
+    D2 -- "Không" --> D3{"Kỳ đã lập<br/>danh sách?"}
+    D3 -- "Có" --> X3("409 ALREADY_GENERATED"):::err
+    D3 -- "Chưa" --> B1["Khóa các khoản thu MANDATORY đang active<br/>(FOR UPDATE)"]:::be
+    B1 --> D4{"Có khoản thu<br/>đủ điều kiện?"}
+    D4 -- "Không" --> X4("422 NO_ACTIVE_FEE"):::err
+    D4 -- "Có" --> B2["Tính theo từng khoản thu: số khoản phải thu, tổng tiền<br/>và danh sách bị bỏ qua vì thiếu diện tích"]:::be
+    B2 --> D5{"Số khoản phải thu<br/>sinh được = 0?"}
+    D5 -- "Có" --> X5("422 NOTHING_TO_GENERATE<br/>kèm danh sách skipped"):::err
+    D5 -- "Không" --> B3["Đếm số hộ được lập, số hộ INACTIVE,<br/>cộng tổng tiền"]:::be
+    B3 --> D6{"dryRun?"}
+    D6 -- "false" --> B4["INSERT ... SELECT hàng loạt vào receivable:<br/>amount_due, due_date = ngày due_day của tháng bắt đầu kỳ"]:::be
+    B4 --> D7{"Số dòng INSERT khớp<br/>số đã tính?"}
+    D7 -- "Không" --> X6("500 IllegalStateException<br/>rollback toàn bộ"):::err
+    D7 -- "Có" --> B5["Đánh dấu kỳ: generatedAt = now,<br/>generatedBy = người dùng; lưu"]:::be
+    D6 -- "true" --> P1["200 BillingGenerationResponse (dryRun = true)<br/>không ghi dữ liệu"]:::be
+    P1 --> P2["Hiển thị bản xem trước: số khoản, số hộ, tổng tiền,<br/>theo từng khoản thu, các hộ bị bỏ qua"]:::fe
+    P2 --> D8{"Người dùng<br/>xác nhận lập?"}
+    D8 -- "Hủy" --> E(((" "))):::stop
+    D8 -- "Xác nhận" --> P3["POST /billing-periods/{id}/generate"]:::fe
+    P3 -. "chạy lại toàn bộ kiểm tra" .-> B0
+    B5 --> G1["200 BillingGenerationResponse (dryRun = false)"]:::be
+    G1 --> G2["Thông báo đã lập danh sách,<br/>GET /billing-periods/{id} để tải lại tổng hợp"]:::fe
+    G2 --> E
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
+```
+
+### 9.19 Đóng sổ và mở lại kỳ thu
+
+*Mã nguồn:* PeriodDetailPage.jsx · BillingPeriodController.updateStatus() · BillingPeriodService.updateStatus() — chỉ vai trò BQT
+
+Thao tác có tính idempotent: gửi lại trạng thái đang có sẽ trả 200 mà không thay đổi gì. Kỳ đã CLOSED thì không lập danh sách được nữa (PERIOD_CLOSED).
+
+```mermaid
+flowchart TD
+    S((" ")):::start --> A1["BQT bấm Đóng sổ hoặc Mở lại<br/>và xác nhận"]:::user
+    A1 --> A2["PATCH /billing-periods/{id}/status<br/>body: status = CLOSED hoặc OPEN"]:::fe
+    A2 --> A3["Khóa dòng kỳ thu (FOR UPDATE)"]:::be
+    A3 --> D1{"Tìm thấy<br/>kỳ thu?"}
+    D1 -- "Không" --> X1("404 NOT_FOUND"):::err
+    D1 -- "Có" --> D2{"Trạng thái yêu cầu trùng<br/>trạng thái hiện tại?"}
+    D2 -- "Có" --> OK
+    D2 -- "Không" --> D3{"Trạng thái<br/>yêu cầu?"}
+    D3 -- "CLOSED" --> D4{"Kỳ đã lập<br/>danh sách?"}
+    D4 -- "Chưa" --> X2("422 PERIOD_NOT_GENERATED"):::err
+    D4 -- "Rồi" --> A4["status = CLOSED, closedAt = now,<br/>closedBy = BQT hiện tại"]:::be
+    D3 -- "OPEN" --> A5["status = OPEN,<br/>closedAt = null, closedBy = null"]:::be
+    A4 --> OK["200 BillingPeriodResponse"]:::be
+    A5 --> OK
+    OK --> A6["GET /billing-periods/{id},<br/>hiển thị trạng thái mới"]:::fe
+    A6 --> E(((" "))):::stop
+    classDef start fill:#1f2937,stroke:#1f2937,color:#ffffff
+    classDef stop fill:#ffffff,stroke:#1f2937,stroke-width:3px
+    classDef user fill:#e8f0fe,stroke:#3b6fd4,color:#12284d
+    classDef fe fill:#e7f6ee,stroke:#2f8f5b,color:#103b25
+    classDef be fill:#fff6dd,stroke:#b7791f,color:#4a3204
+    classDef err fill:#fdeceb,stroke:#c0392b,color:#6e1710
+```
+
+---
+
+## 10. SEQUENCE DIAGRAM
+
+Phần này mô tả thứ tự trao đổi thông điệp (Sequence Diagrams) giữa Người dùng, Tầng Giao diện (React components/Context), Tầng Điều khiển (REST Controllers), Tầng Nghiệp vụ (Services), Tầng Bảo mật (Spring Security / JWT / PasswordEncoder) và Tầng Cơ sở dữ liệu (Spring Data JPA / PostgreSQL) cho 19 luồng nghiệp vụ trọng yếu của hệ thống BlueMoon (Sprint 1).
+
+### 10.1 Đăng nhập và khởi tạo phiên
+
+*Mã nguồn:* LoginPage.jsx · AuthContext.login() · AuthController.login() · AuthService.login() · JwtService.generateToken() · MeController.getMe() · UserService.getMe()
+
+POST /auth/login là endpoint duy nhất permitAll. Sau khi nhận token, FE gọi thêm GET /me để lấy hồ sơ đầy đủ (kèm householdId) trước khi coi là đăng nhập thành công.
 
 ```mermaid
 sequenceDiagram
-    actor User as Người dùng
-    participant FE as React FE
-    participant Ctrl as AuthController
-    participant Svc as AuthService
-    participant Repo as UserRepository
-    participant DB as MySQL
-    participant JWT as JwtUtil
-
-    User->>FE: Nhập username + mật khẩu
-    FE->>Ctrl: POST /api/auth/login
-    Ctrl->>Svc: login(username, password)
-    Svc->>Repo: findByUsername(username)
-    Repo->>DB: SELECT \\\* FROM users
-    DB-->>Repo: User
-    Repo-->>Svc: User
-    Svc->>Svc: BCrypt.matches(password)
-    alt Mật khẩu đúng và tài khoản active
-        Svc->>JWT: generateToken(userId, role)
-        JWT-->>Svc: token
-        Svc-->>Ctrl: LoginResponse(token, user)
-        Ctrl-->>FE: 200 OK + JWT
-        FE-->>User: Vào dashboard
-    else Sai
-        Svc-->>Ctrl: Lỗi
-        Ctrl-->>FE: 401 Unauthorized
-        FE-->>User: Hiển thị lỗi
+    autonumber
+    actor U as Người dùng
+    box rgb(231,246,238) Frontend · React
+        participant LP as LoginPage
+        participant AC as AuthContext
     end
-```
-
-### 10.2 Tạo khoản thu
-
-```mermaid
-sequenceDiagram
-    actor Adm as Admin
-    participant FE as React FE
-    participant Ctrl as FeeController
-    participant Svc as FeeService
-    participant Repo as FeeRepository
-    participant DB as MySQL
-
-    Adm->>FE: Điền form + bấm Lưu
-    FE->>Ctrl: POST /api/fees (JWT, FeeDTO)
-    Ctrl->>Ctrl: Kiểm tra JWT + role ADMIN
-    Ctrl->>Svc: createFee(dto)
-    Svc->>Repo: existsByName(name)
-    Repo->>DB: SELECT COUNT
-    DB-->>Repo: 0 hoặc 1
-    Repo-->>Svc: false/true
-    alt Tên chưa tồn tại
-        Svc->>Repo: save(fee)
-        Repo->>DB: INSERT INTO fees
-        DB-->>Repo: id
-        Repo-->>Svc: Fee
-        Svc-->>Ctrl: FeeDTO
-        Ctrl-->>FE: 201 Created
-        FE-->>Adm: Báo thành công
-    else Tên trùng
-        Svc-->>Ctrl: Lỗi
-        Ctrl-->>FE: 400 Bad Request
-        FE-->>Adm: Báo lỗi
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as AuthController
+        participant S as AuthService
+        participant PE as PasswordEncoder<br/>(BCrypt)
+        participant J as JwtService
+        participant GEH as Global<br/>ExceptionHandler
+        participant MC as MeController
+        participant US as UserService
     end
-```
-
-### 10.3 Xác nhận đã nộp tiền mặt
-
-```mermaid
-sequenceDiagram
-    actor Adm as Admin
-    participant FE as React FE
-    participant Ctrl as PaymentController
-    participant Svc as PaymentService
-    participant Repo as PaymentRepository
-    participant DB as MySQL
-
-    Adm->>FE: Chọn phiếu nộp + bấm "Đã nộp tiền mặt"
-    FE->>Adm: Hiển thị hộp xác nhận đã nộp đủ
-    Adm->>FE: Bấm "Xác nhận"
-    FE->>Ctrl: PUT /api/admin/payments/{id}/confirm-cash (JWT)
-    Ctrl->>Ctrl: Kiểm tra role ADMIN
-    Ctrl->>Svc: confirmCashPayment(paymentId, currentAdmin)
-    Svc->>Repo: findById(id)
-    Repo->>DB: SELECT
-    DB-->>Repo: Payment
-    Repo-->>Svc: Payment
-    alt Payment đã PAID
-        Svc-->>Ctrl: Lỗi: phiếu nộp đã được xác nhận
-        Ctrl-->>FE: 400 Bad Request
-        FE-->>Adm: Hiển thị lỗi
-    else Payment đang UNPAID
-        Svc->>Svc: amount\\\_paid = amount\\\_due<br/>status = PAID<br/>payment\\\_method = CASH<br/>paid\\\_date = hôm nay<br/>paid\\\_at = hiện tại<br/>collected\\\_by = currentAdmin
-        Svc->>Repo: save(payment)
-        Repo->>DB: UPDATE payments
-        DB-->>Repo: OK
-        Repo-->>Svc: Payment
-        Svc-->>Ctrl: PaymentDTO
-        Ctrl-->>FE: 200 OK
-        FE-->>Adm: Cập nhật trạng thái PAID
-    end
-```
-
-
-
-### 10.4 Cư dân gửi khiếu nại
-
-```mermaid
-sequenceDiagram
-    actor Res as Cư dân
-    participant FE as React FE
-    participant Ctrl as ComplaintController
-    participant Svc as ComplaintService
-    participant Repo as ComplaintRepository
-    participant DB as MySQL
-
-    Res->>FE: Điền form khiếu nại
-    FE->>Ctrl: POST /api/complaints (JWT, ComplaintDTO)
-    Ctrl->>Ctrl: Kiểm tra JWT + role RESIDENT
-    Ctrl->>Svc: createComplaint(dto, currentUser)
-    Svc->>Svc: Lấy currentUser từ JWT
-    Svc->>Svc: Lấy householdId của currentUser
-    Svc->>Repo: save(complaint, sender\\\_user\\\_id=currentUser.id, household\\\_id=currentUser.householdId, status=NEW)
-    Repo->>DB: INSERT INTO complaints
-    DB-->>Repo: id
-    Repo-->>Svc: Complaint
-    Svc-->>Ctrl: ComplaintDTO
-    Ctrl-->>FE: 201 Created
-    FE-->>Res: Hiển thị mã khiếu nại
-```
-
-### 10.5 Admin gửi thông báo
-
-```mermaid
-sequenceDiagram
-    actor Adm as Admin
-    participant FE as React FE
-    participant Ctrl as NotificationController
-    participant Svc as NotificationService
-    participant URepo as UserRepository
-    participant NRepo as NotificationRepository
-    participant DB as MySQL
-
-    Adm->>FE: Soạn nội dung + chọn phạm vi
-    FE->>Ctrl: POST /api/notifications (JWT, dto)
-    Ctrl->>Svc: sendNotification(dto)
-    Svc->>NRepo: save(notification)
-    NRepo->>DB: INSERT INTO notifications
-    DB-->>NRepo: id
-    Svc->>URepo: findRecipients(scope, params)
-    URepo->>DB: SELECT users
-    DB-->>URepo: List<User>
-    URepo-->>Svc: recipients
-    Svc->>NRepo: saveAllRecipients(notiId, recipients)
-    NRepo->>DB: INSERT INTO notification\\\_recipients
-    DB-->>NRepo: OK
-    Svc-->>Ctrl: NotificationDTO
-    Ctrl-->>FE: 201 Created
-    FE-->>Adm: Báo thành công
-```
-
-### 10.6 Xuất báo cáo Excel
-
-```mermaid
-sequenceDiagram
-    actor User as Người dùng
-    participant FE as React FE
-    participant Ctrl as ReportController
-    participant Svc as ReportService
-    participant Repo as PaymentRepository
-    participant DB as MySQL
-
-    User->>FE: Chọn báo cáo + Excel + bấm Xuất
-    FE->>Ctrl: GET /api/reports/fee-periods/excel?...
-    Ctrl->>Svc: exportPaymentsToExcel(params)
-    Svc->>Repo: findPaymentsByPeriod(...)
-    Repo->>DB: SELECT
-    DB-->>Repo: List<Payment>
-    Repo-->>Svc: data
-    Svc->>Svc: Dùng Apache POI tạo Workbook
-    Svc-->>Ctrl: byte\\\[] file
-    Ctrl-->>FE: 200 OK<br/>Content-Disposition: attachment
-    FE-->>User: Trình duyệt tải file .xlsx
-```
-
-### 10.7 Cư dân đăng ký tài khoản với OTP email
-
-```mermaid
-sequenceDiagram
-    actor Res as Cư dân (chưa đăng nhập)
-    participant FE as React FE
-    participant ACtrl as AuthController
-    participant ASvc as AuthService
-    participant OSvc as OtpService
-    participant ESvc as EmailService
-    participant ORepo as EmailOtpRepository
-    participant URepo as UserRepository
-    participant SMTP as SMTP Server
-    participant DB as MySQL
-
-    Res->>FE: Nhập username, mật khẩu, email,<br/>requested\\\_apartment\\\_code, ...
-    FE->>ACtrl: POST /api/auth/send-otp<br/>{email, purpose=REGISTER}
-    ACtrl->>OSvc: sendOtp(email, REGISTER)
-    OSvc->>ORepo: countByEmailAndCreatedAtAfter(email, now-15ph)
-    ORepo->>DB: SELECT COUNT
-    DB-->>ORepo: n
-    ORepo-->>OSvc: n
-    alt n >= 5
-        OSvc-->>ACtrl: Quá rate limit
-        ACtrl-->>FE: 429 Too Many Requests
-    else n < 5
-        OSvc->>OSvc: Sinh OTP 6 số ngẫu nhiên
-        OSvc->>OSvc: BCrypt(OTP) → otp\\\_hash
-        OSvc->>ORepo: save(email\\\_otps:<br/>email, otp\\\_hash, purpose=REGISTER,<br/>expired\\\_at=now+5ph, used=FALSE)
-        ORepo->>DB: INSERT INTO email\\\_otps
-        DB-->>ORepo: id
-        OSvc->>ESvc: sendOtpMail(email, otp)
-        ESvc->>SMTP: SEND mail
-        SMTP-->>ESvc: ACK
-        OSvc-->>ACtrl: OK
-        ACtrl-->>FE: 200 OK
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant UR as AppUserRepository
     end
 
-    Res->>FE: Nhập OTP 6 số + xác nhận
-    FE->>ACtrl: POST /api/auth/register<br/>{username, password, email, otp,<br/>requested\\\_apartment\\\_code, ...}
-    ACtrl->>OSvc: verifyOtp(email, otp, REGISTER)
-    OSvc->>ORepo: findLatestValid(email, REGISTER)
-    ORepo->>DB: SELECT
-    DB-->>ORepo: EmailOtp
-    ORepo-->>OSvc: EmailOtp
-    OSvc->>OSvc: BCrypt.matches(otp, otp\\\_hash)<br/>và expired\\\_at > now và used = FALSE
-    alt OTP hợp lệ
-        OSvc->>ORepo: markUsed(otpId)
-        ORepo->>DB: UPDATE email\\\_otps SET used=TRUE
-        OSvc-->>ACtrl: OK
-        ACtrl->>ASvc: register(dto, email\\\_verified=TRUE)
-        ASvc->>URepo: save(user: role=RESIDENT,<br/>active=FALSE, email\\\_verified=TRUE,<br/>requested\\\_apartment\\\_code)
-        URepo->>DB: INSERT INTO users
-        DB-->>URepo: id
-        ASvc-->>ACtrl: User
-        ACtrl-->>FE: 201 Created
-        FE-->>Res: Hiển thị "chờ Admin duyệt"
-    else OTP sai/hết hạn
-        OSvc->>ORepo: increment(attempts)
-        OSvc-->>ACtrl: Lỗi
-        ACtrl-->>FE: 400 Bad Request
-        FE-->>Res: Báo lỗi OTP
+    U->>LP: Nhập username, password và bấm Đăng nhập
+    LP->>LP: Kiểm tra đã nhập đủ hai trường
+    LP->>+AC: login(credentials)
+    AC->>+C: POST /auth/login (skipAuth, không gửi token)
+    Note over C: @Valid LoginRequest, sai thì 400 VALIDATION_ERROR
+    C->>+S: login(request)
+    S->>UR: findByUsernameIgnoreCase(username)
+    UR-->>S: Optional AppUser
+    break Không có user hoặc user.active = false
+        S--xGEH: throw InvalidCredentialsException
+        GEH-->>AC: 401 INVALID_CREDENTIALS
+        AC-->>LP: throw ApiError
+        LP-->>U: Sai tài khoản hoặc mật khẩu
     end
+    S->>PE: matches(password, user.passwordHash)
+    PE-->>S: true / false
+    break Mật khẩu không khớp
+        S--xGEH: throw InvalidCredentialsException
+        GEH-->>AC: 401 INVALID_CREDENTIALS
+        AC-->>LP: throw ApiError
+        LP-->>U: Sai tài khoản hoặc mật khẩu
+    end
+    S->>S: user.setLastLoginAt(now)
+    S->>J: generateToken(user)
+    J-->>S: JWT (sub = username, userId, roles, iat, exp = iat + 28800 s)
+    S-->>-C: LoginResponse(accessToken, Bearer, expiresIn, expiresAt, user)
+    Note over S,UR: Kết thúc @Transactional: UPDATE app_user SET last_login_at
+    C-->>-AC: 200 ApiResponse(data = LoginResponse)
+    AC->>AC: sessionStorage: bluemoon_access_token, bluemoon_expires_at
+    AC->>+MC: GET /me (Authorization: Bearer token)
+    Note over AC,MC: Đi qua JwtAuthenticationFilter (xem SD-02)
+    MC->>+US: getMe()
+    US->>UR: findByUsernameIgnoreCase(principal.username)
+    UR-->>US: AppUser
+    US-->>-MC: UserResponse (kèm roles, residentId, householdId)
+    MC-->>-AC: 200 ApiResponse(data = UserResponse)
+    AC->>AC: Kiểm tra id, roles, active rồi lưu bluemoon_user, setUser, setToken
+    AC-->>-LP: user
+    LP->>LP: navigate(homeForRoles(user.roles))
+    LP-->>U: Trang chủ theo vai trò
 ```
 
-### 10.8 Thanh toán phí qua VNPay Sandbox (gồm Return URL và IPN URL)
+### 10.2 Xác thực JWT và phân quyền cho mỗi request
+
+*Mã nguồn:* api/http.js request() · JwtAuthenticationFilter · JwtService · SecurityConfig · GlobalExceptionHandler · AuthContext
+
+Sơ đồ dùng chung cho mọi API cần đăng nhập. Các sơ đồ sau chỉ ghi chú "xem SD-02" thay vì vẽ lại đoạn này.
 
 ```mermaid
 sequenceDiagram
-    actor Res as Cư dân
-    participant FE as React FE
-    participant PCtrl as PaymentController
-    participant PSvc as PaymentService
-    participant VSvc as VnpayService
-    participant TxRepo as PaymentTransactionRepository
-    participant PRepo as PaymentRepository
-    participant UBRepo as UtilityBillRepository
-    participant DB as MySQL
-    participant VNPay as VNPay Sandbox
-
-    Note over Res,VNPay: 1) Khởi tạo giao dịch
-
-    Res->>FE: Chọn khoản phí/hoá đơn<br/>+ bấm Thanh toán VNPay
-    FE->>PCtrl: POST /api/payments/vnpay/create-url<br/>(JWT, {target\\\_type, target\\\_id})
-    PCtrl->>PCtrl: Kiểm tra JWT + role RESIDENT
-    PCtrl->>PSvc: createVnpayTransaction(currentUser, dto)
-    PSvc->>PSvc: Kiểm tra target.household\\\_id<br/>== currentUser.householdId
-    alt Không khớp
-        PSvc-->>PCtrl: Forbidden
-        PCtrl-->>FE: 403
-    else Khớp
-        PSvc->>PSvc: Lấy số tiền BigDecimal từ target
-        PSvc->>PSvc: Sinh transaction\\\_code duy nhất
-        PSvc->>TxRepo: save(payment\\\_transactions:<br/>status=PENDING, amount,<br/>target\\\_type, target\\\_id,<br/>user\\\_id, household\\\_id)
-        TxRepo->>DB: INSERT
-        DB-->>TxRepo: id
-        PSvc->>VSvc: buildPaymentUrl(transaction\\\_code, amount, ipAddr)
-        VSvc->>VSvc: Dựng query params<br/>+ HMAC-SHA512(vnp\\\_HashSecret)
-        VSvc-->>PSvc: paymentUrl
-        PSvc-->>PCtrl: paymentUrl
-        PCtrl-->>FE: 200 OK + paymentUrl
-        FE->>Res: window.location = paymentUrl
-        Res->>VNPay: Thanh toán trên Sandbox
+    autonumber
+    box rgb(231,246,238) Frontend · React
+        participant P as Trang / Component
+        participant H as api/http.js
+        participant AC as AuthContext
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant F as JwtAuthentication<br/>Filter
+        participant J as JwtService
+        participant SC as SecurityFilterChain<br/>(SecurityConfig)
+        participant C as Controller
+        participant S as Service
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant UR as AppUserRepository
     end
 
-    Note over Res,VNPay: 2) IPN URL (nguồn xác nhận chính)
+    P->>+H: api.get / post / put / patch / delete(path, body)
+    H->>H: Đọc token từ sessionStorage, gắn Authorization: Bearer
+    H->>F: HTTP request (timeout 15 s)
+    alt Không có header Bearer
+        F->>SC: filterChain.doFilter (chưa xác thực)
+    else Có Bearer token
+        F->>J: isTokenValid(token)
+        J-->>F: true / false (chữ ký HMAC, hạn dùng)
+        break Token sai chữ ký hoặc hết hạn
+            F-->>H: 401 TOKEN_INVALID
+        end
+        F->>J: extractUsername(token), extractIssuedAt(token)
+        J-->>F: username, iat
+        F->>UR: findByUsernameIgnoreCase(username)
+        UR-->>F: AppUser kèm roles (EAGER)
+        break Không có user, user bị khóa, hoặc iat trước passwordChangedAt
+            F-->>H: 401 TOKEN_INVALID
+        end
+        F->>F: SecurityContext.setAuthentication(principal = AppUser, ROLE_x)
+        F->>SC: filterChain.doFilter (đã xác thực)
+    end
+    SC->>SC: Đối chiếu authorizeHttpRequests theo method + path
+    break Endpoint cần đăng nhập nhưng chưa xác thực
+        SC-->>H: 401 UNAUTHORIZED (authenticationEntryPoint)
+    end
+    break Không có vai trò được phép
+        SC-->>H: 403 FORBIDDEN (accessDeniedHandler)
+    end
+    SC->>C: Gọi handler (@Valid body, @AuthenticationPrincipal AppUser)
+    C->>S: Gọi nghiệp vụ (@Transactional)
+    alt Xử lý thành công
+        S-->>C: DTO kết quả
+        C-->>H: 2xx ApiResponse(success = true, message, data)
+        H-->>P: payload.data
+    else Service ném exception
+        S--xGEH: exception nghiệp vụ / validation
+        GEH-->>H: 4xx ApiErrorResponse(code, message, errors, details)
+        H-->>P: throw ApiError(code, status, fields, details)
+    end
+    opt Phản hồi 401 và token gửi đi vẫn là token hiện tại
+        H->>AC: dispatchEvent(bluemoon:session-expired)
+        AC->>AC: signOut: xóa token, hạn dùng, user khỏi sessionStorage
+        AC-->>P: Protected chuyển hướng về /dang-nhap
+    end
+    deactivate H
+```
 
-    VNPay->>PCtrl: GET /api/payments/vnpay/ipn<br/>(vnp\\\_TxnRef, vnp\\\_ResponseCode,<br/>vnp\\\_SecureHash, ...)
-    PCtrl->>VSvc: verifySignature(params)
-    VSvc->>VSvc: Tính lại HMAC-SHA512<br/>so sánh với vnp\\\_SecureHash
-    alt Chữ ký không hợp lệ
-        VSvc-->>PCtrl: false
-        PCtrl-->>VNPay: vnp\\\_ResponseCode=97<br/>Invalid signature
-    else Hợp lệ
-        PCtrl->>PSvc: handleVnpayIpn(params)
-        PSvc->>TxRepo: findByTransactionCode(vnp\\\_TxnRef)
-        TxRepo->>DB: SELECT
-        DB-->>TxRepo: PaymentTransaction
-        TxRepo-->>PSvc: tx
-        alt tx.status đã là SUCCESS/FAILED/CANCELLED
-            PSvc-->>PCtrl: idempotent ack
-            PCtrl-->>VNPay: vnp\\\_ResponseCode=00
-        else tx.status = PENDING
-            alt vnp\\\_ResponseCode = "00"
-                PSvc->>TxRepo: update(status=SUCCESS,<br/>paid\\\_at=now,<br/>response\\\_code, response\\\_message)
-                TxRepo->>DB: UPDATE
-                alt target\\\_type = FEE\\\_PAYMENT
-                    PSvc->>PRepo: findById(target\\\_id)
-                    PRepo->>DB: SELECT
-                    PSvc->>PRepo: update(amount\\\_paid=amount\\\_due,<br/>payment\\\_method=ONLINE,<br/>transaction\\\_code=vnp\\\_TxnRef,<br/>paid\\\_at, paid\\\_date, status=PAID)
-                    PRepo->>DB: UPDATE
-                else target\\\_type = UTILITY\\\_BILL
-                    PSvc->>UBRepo: findById(target\\\_id)
-                    UBRepo->>DB: SELECT
-                    PSvc->>UBRepo: update(payment\\\_method=ONLINE,<br/>transaction\\\_code=vnp\\\_TxnRef,<br/>paid\\\_at, paid\\\_date, status=PAID)
-                    UBRepo->>DB: UPDATE
-                end
-            else vnp\\\_ResponseCode = "24"
-                PSvc->>TxRepo: update(status=CANCELLED,<br/>response\\\_code, response\\\_message)
-                TxRepo->>DB: UPDATE
-            else các mã khác
-                PSvc->>TxRepo: update(status=FAILED,<br/>response\\\_code, response\\\_message)
-                TxRepo->>DB: UPDATE
+### 10.3 Tạo tài khoản người dùng
+
+*Mã nguồn:* UserForm.jsx · UserController.createUser() · UserService.createUser() — chỉ vai trò BQT
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Ban quản trị
+    box rgb(231,246,238) Frontend · React
+        participant FE as UserForm<br/>(UsersPage)
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant RC as ResidentController
+        participant C as UserController
+        participant S as UserService
+        participant PE as PasswordEncoder
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant UR as AppUserRepository
+        participant RR as ResidentRepository
+        participant RoR as AppRoleRepository
+    end
+
+    U->>FE: Nhập username, mật khẩu, họ tên, chọn vai trò
+    opt Có chọn vai trò RESIDENT
+        U->>FE: Gõ tên nhân khẩu cần liên kết
+        FE->>RC: GET /residents?keyword&status=RESIDING&size=10 (debounce 300 ms)
+        RC-->>FE: Danh sách nhân khẩu đang cư trú
+        U->>FE: Chọn nhân khẩu (residentId)
+    end
+    U->>FE: Bấm Lưu
+    FE->>FE: validateUser(form)
+    FE->>+C: POST /users
+    Note over FE,C: Bearer JWT, hasRole(BQT) — xem SD-02. @Valid CreateUserRequest, sai thì 400
+    C->>+S: createUser(request)
+    S->>UR: existsByUsernameIgnoreCase(username)
+    UR-->>S: boolean
+    break Username đã tồn tại
+        S--xGEH: throw DuplicateException(username)
+        GEH-->>FE: 409 DUPLICATE
+    end
+    opt Có email
+        S->>UR: existsByEmailIgnoreCase(email)
+        UR-->>S: boolean
+    end
+    break Email đã tồn tại
+        S--xGEH: throw DuplicateException(email)
+        GEH-->>FE: 409 DUPLICATE
+    end
+    break Password trùng username
+        S--xGEH: throw IllegalArgumentException
+        GEH-->>FE: 400 VALIDATION_ERROR
+    end
+    break Có vai trò RESIDENT nhưng residentId = null
+        S--xGEH: throw ResidentLinkRequiredException
+        GEH-->>FE: 422 RESIDENT_LINK_REQUIRED
+    end
+    opt Có residentId
+        S->>RR: findById(residentId)
+        RR-->>S: Optional Resident
+        break Không tồn tại hoặc status khác RESIDING
+            S--xGEH: throw IllegalArgumentException
+            GEH-->>FE: 400 VALIDATION_ERROR
+        end
+        S->>UR: existsByResidentId(residentId)
+        UR-->>S: boolean
+        break Nhân khẩu đã có tài khoản
+            S--xGEH: throw DuplicateException(residentId)
+            GEH-->>FE: 409 DUPLICATE
+        end
+    end
+    loop Với mỗi mã vai trò
+        S->>RoR: findByCode(roleCode)
+        RoR-->>S: AppRole
+    end
+    S->>PE: encode(password)
+    PE-->>S: passwordHash
+    S->>UR: save(AppUser: active = true, mustChangePassword = true)
+    UR-->>S: AppUser đã có id
+    S-->>-C: UserResponse
+    C-->>-FE: 201 ApiResponse (Tạo tài khoản thành công)
+    FE-->>U: Đóng form, tải lại danh sách tài khoản
+```
+
+### 10.4 Quản trị tài khoản: đổi vai trò, khóa / mở khóa, đặt lại mật khẩu
+
+*Mã nguồn:* UsersPage.jsx · UserController · UserService.updateUserRoles() / updateUserStatus() / resetPassword() — chỉ vai trò BQT
+
+Cả ba thao tác đều bắt đầu bằng findById (không có thì 404 NOT_FOUND). Tài khoản bị khóa hoặc bị đặt lại mật khẩu sẽ bị từ chối ngay ở request kế tiếp nhờ kiểm tra trong JwtAuthenticationFilter.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Ban quản trị
+    box rgb(231,246,238) Frontend · React
+        participant FE as UsersPage
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as UserController
+        participant S as UserService
+        participant PE as PasswordEncoder
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant UR as AppUserRepository
+        participant RoR as AppRoleRepository
+    end
+
+    Note over FE,C: Bearer JWT, hasRole(BQT) — xem SD-02
+    alt Đổi vai trò
+        U->>FE: Chọn lại vai trò và lưu
+        FE->>FE: canAssignRoles(current, target, roles)
+        FE->>+C: PUT /users/{id}/roles
+        C->>+S: updateUserRoles(id, request)
+        S->>UR: findById(id)
+        UR-->>S: AppUser
+        break Vai trò bị lặp trong danh sách
+            S--xGEH: throw IllegalArgumentException
+            GEH-->>FE: 400 VALIDATION_ERROR
+        end
+        break Có RESIDENT nhưng user.residentId = null
+            S--xGEH: throw ResidentLinkRequiredException
+            GEH-->>FE: 422 RESIDENT_LINK_REQUIRED
+        end
+        break BQT tự gỡ vai trò BQT của chính mình
+            S--xGEH: throw SelfLockoutException
+            GEH-->>FE: 422 SELF_LOCKOUT
+        end
+        loop Với mỗi mã vai trò
+            S->>RoR: findByCode(roleCode)
+            RoR-->>S: AppRole
+        end
+        S->>UR: save(user với tập vai trò mới)
+        S-->>-C: UserResponse
+        C-->>-FE: 200 ApiResponse (Cập nhật vai trò thành công)
+    else Khóa / mở khóa
+        U->>FE: Bấm Khóa hoặc Mở khóa và xác nhận
+        FE->>+C: PATCH /users/{id}/status (active)
+        C->>+S: updateUserStatus(id, request)
+        S->>UR: findById(id)
+        UR-->>S: AppUser
+        break Tự khóa chính mình
+            S--xGEH: throw SelfLockoutException
+            GEH-->>FE: 422 SELF_LOCKOUT
+        end
+        S->>UR: save(user.active = request.active)
+        S-->>-C: UserResponse
+        C-->>-FE: 200 ApiResponse (Cập nhật trạng thái tài khoản thành công)
+    else Đặt lại mật khẩu
+        U->>FE: Bấm Đặt lại mật khẩu và xác nhận
+        FE->>+C: POST /users/{id}/password-reset (body rỗng)
+        C->>+S: resetPassword(id, request)
+        S->>UR: findById(id)
+        UR-->>S: AppUser
+        break Đặt lại mật khẩu của chính mình
+            S--xGEH: throw SelfResetNotAllowedException
+            GEH-->>FE: 422 SELF_RESET_NOT_ALLOWED
+        end
+        opt newPassword = null
+            S->>S: generateTemporaryPassword(): 10 ký tự, SecureRandom
+        end
+        break Mật khẩu trùng username
+            S--xGEH: throw IllegalArgumentException
+            GEH-->>FE: 400 VALIDATION_ERROR
+        end
+        S->>PE: encode(newPassword)
+        PE-->>S: passwordHash
+        S->>UR: save(passwordHash, mustChangePassword = true, passwordChangedAt = now)
+        S-->>-C: PasswordResetResponse(id, username, mật khẩu tạm)
+        C-->>-FE: 200 ApiResponse (Đã đặt lại mật khẩu)
+        FE-->>U: Hiển thị mật khẩu tạm một lần
+    end
+    FE-->>U: Tải lại danh sách, thông báo kết quả
+```
+
+### 10.5 Đổi mật khẩu
+
+*Mã nguồn:* ProfilePage.jsx · MeController.changePassword() · MeService.changePassword()
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Người dùng
+    box rgb(231,246,238) Frontend · React
+        participant FE as ProfilePage
+        participant AC as AuthContext
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as MeController
+        participant S as MeService
+        participant PE as PasswordEncoder
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant UR as AppUserRepository
+    end
+
+    U->>FE: Nhập mật khẩu cũ, mật khẩu mới, xác nhận
+    FE->>FE: validatePassword(form, username)
+    FE->>+C: PATCH /me/password
+    Note over FE,C: Bearer JWT, authenticated — xem SD-02. @Valid: newPassword 8–128 ký tự, sai thì 400
+    C->>+S: changePassword(request)
+    S->>UR: findByUsernameIgnoreCase(username từ SecurityContext)
+    UR-->>S: AppUser
+    S->>PE: matches(oldPassword, passwordHash)
+    PE-->>S: true / false
+    break Mật khẩu cũ không đúng
+        S--xGEH: throw PasswordValidationException(oldPassword)
+        GEH-->>FE: 400 VALIDATION_ERROR (errors.oldPassword)
+    end
+    S->>PE: matches(newPassword, passwordHash)
+    PE-->>S: true / false
+    break Mật khẩu mới trùng mật khẩu hiện tại
+        S--xGEH: throw PasswordValidationException(newPassword)
+        GEH-->>FE: 400 VALIDATION_ERROR (errors.newPassword)
+    end
+    break Mật khẩu mới trùng username
+        S--xGEH: throw PasswordValidationException(newPassword)
+        GEH-->>FE: 400 VALIDATION_ERROR (errors.newPassword)
+    end
+    break confirmPassword khác newPassword
+        S--xGEH: throw PasswordValidationException(confirmPassword)
+        GEH-->>FE: 400 VALIDATION_ERROR (errors.confirmPassword)
+    end
+    S->>PE: encode(newPassword)
+    PE-->>S: passwordHash mới
+    S->>UR: save(passwordHash, mustChangePassword = false, passwordChangedAt = now)
+    S-->>-C: void
+    C-->>-FE: 204 No Content
+    FE->>AC: signOut(Đổi mật khẩu thành công, vui lòng đăng nhập lại)
+    AC->>AC: Xóa token và user khỏi sessionStorage
+    AC-->>U: Chuyển về /dang-nhap kèm thông báo
+    Note over AC,UR: Token cũ có iat trước passwordChangedAt nên không còn dùng được
+```
+
+### 10.6 Tạo hộ gia đình kèm chủ hộ
+
+*Mã nguồn:* HouseholdForm.jsx · HouseholdController.createHousehold() · HouseholdService.createHousehold() — chỉ vai trò BQT
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Ban quản trị
+    box rgb(231,246,238) Frontend · React
+        participant FE as HouseholdForm<br/>(HouseholdsPage)
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as HouseholdController
+        participant S as HouseholdService
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant HR as HouseholdRepository
+        participant RR as ResidentRepository
+        participant MR as ResidentMovement<br/>Repository
+    end
+
+    U->>FE: Nhập thông tin hộ và chủ hộ, bấm Lưu
+    FE->>FE: validateHousehold(form, creating = true)
+    FE->>+C: POST /households
+    Note over FE,C: Bearer JWT, hasRole(BQT) — xem SD-02. @Valid CreateHouseholdRequest, sai thì 400
+    C->>+S: createHousehold(request, currentUser)
+    S->>S: Chuẩn hóa: trim + IN HOA householdCode, apartmentNo
+    break Ngày sinh chủ hộ trước 01/01/1900
+        S--xGEH: throw IllegalArgumentException
+        GEH-->>FE: 400 VALIDATION_ERROR
+    end
+    S->>HR: existsByHouseholdCodeAndDeletedAtIsNull(code)
+    HR-->>S: boolean
+    S->>HR: existsByApartmentNoAndDeletedAtIsNull(apartmentNo)
+    HR-->>S: boolean
+    opt Chủ hộ có CCCD/CMND
+        S->>RR: existsByIdentityNumberAndDeletedAtIsNull(identityNumber)
+        RR-->>S: boolean
+    end
+    break Có ít nhất một trường bị trùng
+        S--xGEH: throw HouseholdDuplicateException(errors)
+        GEH-->>FE: 409 DUPLICATE (errors theo từng trường)
+        FE-->>U: Đánh dấu lỗi tại các trường bị trùng
+    end
+    rect rgb(248,250,252)
+        Note over S,MR: Cùng một @Transactional — lỗi ở bước nào cũng rollback cả ba bản ghi
+        S->>HR: saveAndFlush(Household: status = ACTIVE)
+        HR-->>S: Household đã có id
+        S->>RR: saveAndFlush(Resident: head = true, RESIDING, moveInDate = hôm nay)
+        RR-->>S: Resident đã có id
+        S->>MR: save(ResidentMovement: MOVE_IN, isInitial = true, recordedBy = currentUser)
+        MR-->>S: ResidentMovement
+    end
+    S-->>-C: HouseholdResponse(head, residentCount = 1, presentCount = 1)
+    C-->>-FE: 201 ApiResponse (Tạo hộ gia đình thành công)
+    FE-->>U: Chuyển tới /ho-gia-dinh/{id}
+```
+
+### 10.7 Đổi chủ hộ
+
+*Mã nguồn:* HouseholdDetailPage.jsx · HouseholdController.changeHouseholdHead() · HouseholdService.changeHouseholdHead() — chỉ vai trò BQT
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Ban quản trị
+    box rgb(231,246,238) Frontend · React
+        participant FE as HouseholdDetailPage
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as HouseholdController
+        participant S as HouseholdService
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant HR as HouseholdRepository
+        participant RR as ResidentRepository
+    end
+
+    U->>FE: Chọn thành viên làm chủ hộ mới, bấm Đổi chủ hộ
+    FE->>+C: PUT /households/{id}/head (residentId)
+    Note over FE,C: Bearer JWT, hasRole(BQT) — xem SD-02
+    C->>+S: changeHouseholdHead(householdId, residentId)
+    S->>HR: findByIdAndDeletedAtIsNull(householdId)
+    HR-->>S: Optional Household
+    break Không tìm thấy hộ
+        S--xGEH: throw ResourceNotFoundException
+        GEH-->>FE: 404 NOT_FOUND
+    end
+    break Hộ không ở trạng thái ACTIVE
+        S--xGEH: throw HouseholdInactiveException
+        GEH-->>FE: 422 HOUSEHOLD_INACTIVE
+    end
+    S->>RR: findByIdAndDeletedAtIsNull(residentId)
+    RR-->>S: Optional Resident (chủ hộ mới)
+    break Không tồn tại, khác hộ, không RESIDING, hoặc đã là chủ hộ
+        S--xGEH: throw InvalidNewHeadException(reason)
+        GEH-->>FE: 422 INVALID_NEW_HEAD (NOT_FOUND, NOT_IN_HOUSEHOLD, NOT_RESIDING, ALREADY_HEAD)
+    end
+    S->>RR: findByHouseholdIdAndHeadTrueAndDeletedAtIsNull(householdId)
+    RR-->>S: Optional Resident (chủ hộ hiện tại)
+    opt Hộ đang có chủ hộ
+        S->>RR: saveAndFlush(currentHead.head = false)
+    end
+    S->>RR: saveAndFlush(newHead.head = true)
+    S-->>-C: HouseholdResponse (head mới, residentCount, presentCount)
+    C-->>-FE: 200 ApiResponse (Thay đổi chủ hộ thành công)
+    FE->>C: GET /households/{id} và GET /households/{id}/residents
+    C-->>FE: Chi tiết hộ và danh sách nhân khẩu
+    FE-->>U: Đã đổi chủ hộ thành công
+```
+
+### 10.8 Thêm nhân khẩu vào hộ
+
+*Mã nguồn:* ResidentForm.jsx · ResidentController.createResident() · ResidentService.createResident() — chỉ vai trò BQT
+
+Cũng chính phương thức createResident này được ResidentRequestService.approve gọi lại khi BQT duyệt đề nghị tạm trú (xem SD-13).
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Ban quản trị
+    box rgb(231,246,238) Frontend · React
+        participant FE as ResidentForm<br/>(HouseholdDetailPage)
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as ResidentController
+        participant S as ResidentService
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant HR as HouseholdRepository
+        participant RR as ResidentRepository
+        participant MR as ResidentMovement<br/>Repository
+    end
+
+    U->>FE: Nhập thông tin nhân khẩu, hình thức vào hộ, bấm Lưu
+    FE->>FE: validateResident(form, creating = true)
+    FE->>+C: POST /households/{id}/residents
+    Note over FE,C: Bearer JWT, hasRole(BQT) — xem SD-02. @Valid + @AssertTrue của CreateResidentRequest, sai thì 400
+    C->>+S: createResident(householdId, request, currentUser)
+    S->>HR: findByIdAndDeletedAtIsNull(householdId)
+    HR-->>S: Optional Household
+    break Không tìm thấy hộ
+        S--xGEH: throw ResourceNotFoundException
+        GEH-->>FE: 404 NOT_FOUND
+    end
+    break Hộ không ở trạng thái ACTIVE
+        S--xGEH: throw HouseholdInactiveException
+        GEH-->>FE: 422 HOUSEHOLD_INACTIVE
+    end
+    opt Có CCCD/CMND
+        S->>RR: existsByIdentityNumberAndDeletedAtIsNull(identityNumber)
+        RR-->>S: boolean
+    end
+    break CCCD/CMND đã tồn tại
+        S--xGEH: throw DuplicateException(identityNumber)
+        GEH-->>FE: 409 DUPLICATE
+    end
+    S->>S: Mặc định entryType = MOVE_IN, entryDate = hôm nay
+    alt entryType = TEMPORARY_RESIDENCE
+        S->>S: status = TEMPORARY_RESIDENCE, statusUntil = endDate, moveInDate = startDate
+    else MOVE_IN, BIRTH, EXISTING
+        S->>S: status = RESIDING, moveInDate = entryDate
+    end
+    S->>RR: save(Resident: head = false)
+    RR-->>S: Resident đã có id
+    opt entryType khác EXISTING
+        S->>MR: save(ResidentMovement: loại theo entryType, isInitial = true, recordedBy)
+        MR-->>S: ResidentMovement
+    end
+    S-->>-C: ResidentResponse
+    C-->>-FE: 201 ApiResponse (Thêm nhân khẩu thành công)
+    FE-->>U: Đóng form, tải lại danh sách nhân khẩu
+```
+
+### 10.9 Xóa nhân khẩu (xóa mềm)
+
+*Mã nguồn:* ResidentDetailPage.jsx · ResidentController.deleteResident() · ResidentService.deleteResident() — chỉ vai trò BQT
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Ban quản trị
+    box rgb(231,246,238) Frontend · React
+        participant FE as ResidentDetailPage
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as ResidentController
+        participant S as ResidentService
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant RR as ResidentRepository
+        participant UR as AppUserRepository
+        participant MR as ResidentMovement<br/>Repository
+    end
+
+    U->>FE: Bấm Xóa nhân khẩu và xác nhận
+    FE->>+C: DELETE /residents/{id}
+    Note over FE,C: Bearer JWT, hasRole(BQT) — xem SD-02
+    C->>+S: deleteResident(id)
+    S->>RR: findByIdAndDeletedAtIsNull(id)
+    RR-->>S: Optional Resident
+    break Không tìm thấy nhân khẩu
+        S--xGEH: throw ResourceNotFoundException
+        GEH-->>FE: 404 NOT_FOUND
+    end
+    break Nhân khẩu đang là chủ hộ
+        S--xGEH: throw ResidentDeleteException(INVALID_NEW_HEAD)
+        GEH-->>FE: 422 INVALID_NEW_HEAD (hãy đổi chủ hộ trước khi xóa)
+    end
+    S->>UR: existsByResidentId(id)
+    UR-->>S: boolean
+    break Nhân khẩu đang gắn với tài khoản đăng nhập
+        S--xGEH: throw ResidentDeleteException(HAS_ACCOUNT)
+        GEH-->>FE: 409 HAS_ACCOUNT
+    end
+    S->>MR: countByResident_IdAndIsInitialFalse(id)
+    MR-->>S: movementCount
+    break movementCount lớn hơn 0
+        S--xGEH: throw ResidentDeleteException(HAS_HISTORY)
+        GEH-->>FE: 409 HAS_HISTORY (suggestedAction = RECORD_MOVEMENT)
+        FE-->>U: Gợi ý ghi nhận biến động thay vì xóa
+    end
+    S->>RR: save(resident.deletedAt = now)
+    S-->>-C: void
+    C-->>-FE: 204 No Content
+    FE-->>U: Chuyển về /ho-gia-dinh/{householdId}
+```
+
+### 10.10 Ghi nhận biến động nhân khẩu
+
+*Mã nguồn:* MovementPanel.jsx (MovementForm) · ResidentController.recordMovement() · ResidentService.recordMovement() — chỉ vai trò BQT
+
+Dòng resident bị khóa bằng SELECT ... FOR UPDATE suốt transaction nên hai biến động đồng thời trên cùng một người sẽ được xử lý tuần tự. Khi chủ hộ rời hộ mà chưa chọn người thay, API trả HEAD_REQUIRED kèm danh sách ứng viên để form hiển thị và gửi lại.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Ban quản trị
+    box rgb(231,246,238) Frontend · React
+        participant FE as MovementForm<br/>(MovementPanel)
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as ResidentController
+        participant S as ResidentService
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant RR as ResidentRepository
+        participant MR as ResidentMovement<br/>Repository
+        participant HR as HouseholdRepository
+        participant UR as AppUserRepository
+    end
+
+    U->>FE: Chọn loại biến động, nhập ngày và thông tin liên quan
+    FE->>FE: validateMovement(form, resident, history)
+    FE->>+C: POST /residents/{id}/movements
+    Note over FE,C: Bearer JWT, hasRole(BQT) — xem SD-02
+    C->>+S: recordMovement(id, request, currentUser)
+    S->>RR: findByIdForUpdate(id) — SELECT ... FOR UPDATE
+    RR-->>S: Optional Resident (đã khóa dòng)
+    break Không tìm thấy nhân khẩu
+        S--xGEH: throw ResourceNotFoundException
+        GEH-->>FE: 404 NOT_FOUND
+    end
+    break Thiếu loại, loại là BIRTH, note quá 500 ký tự, hoặc thiếu trường bắt buộc theo loại
+        S--xGEH: throw AppValidationException(errors)
+        GEH-->>FE: 400 VALIDATION_ERROR (errors theo từng trường)
+    end
+    break Đang MOVED_OUT hoặc DECEASED mà loại khác MOVE_IN
+        S--xGEH: throw ResidentNotResidingException
+        GEH-->>FE: 422 RESIDENT_NOT_RESIDING
+    end
+    break Trạng thái hiện tại không thuộc allowedFrom của loại biến động
+        S--xGEH: throw InvalidTransitionException(allowedFrom)
+        GEH-->>FE: 422 INVALID_TRANSITION
+        FE->>C: GET /residents/{id} để lấy trạng thái mới nhất
+    end
+    break Ngày ở tương lai, trước ngày sinh, hoặc trước moveInDate
+        S--xGEH: throw AppValidationException(errors)
+        GEH-->>FE: 400 VALIDATION_ERROR
+    end
+    S->>MR: findFirstByResident_IdOrderByEffectiveDateDesc...(id)
+    MR-->>S: Optional ResidentMovement (biến động gần nhất)
+    break Ngày hiệu lực trước ngày của biến động gần nhất
+        S--xGEH: throw AppValidationException
+        GEH-->>FE: 400 VALIDATION_ERROR
+    end
+    opt Loại là TRANSFER hoặc MOVE_IN
+        break TRANSFER tới chính hộ hiện tại
+            S--xGEH: throw AppValidationException(newHouseholdId)
+            GEH-->>FE: 400 VALIDATION_ERROR
+        end
+        S->>HR: findByIdAndDeletedAtIsNull(newHouseholdId)
+        HR-->>S: Optional Household (hộ đích)
+        break Không tìm thấy hộ đích hoặc hộ đích không ACTIVE
+            S--xGEH: throw ResourceNotFoundException / HouseholdInactiveException
+            GEH-->>FE: 404 NOT_FOUND / 422 HOUSEHOLD_INACTIVE
+        end
+    end
+    opt Nhân khẩu là chủ hộ và loại là MOVE_OUT, DEATH hoặc TRANSFER
+        S->>RR: findCandidatesForNewHead(householdId, residentId)
+        RR-->>S: Danh sách thành viên khác đang RESIDING
+        alt Có ứng viên
+            break Request chưa có newHeadResidentId
+                S--xGEH: throw HeadRequiredException(candidates)
+                GEH-->>FE: 422 HEAD_REQUIRED (details.candidates)
+                FE-->>U: Hiển thị danh sách ứng viên để chọn chủ hộ mới và gửi lại
             end
-            PSvc-->>PCtrl: OK
-            PCtrl-->>VNPay: vnp\\\_ResponseCode=00
+            S->>RR: findByIdAndDeletedAtIsNull(newHeadResidentId)
+            RR-->>S: Optional Resident (chủ hộ mới)
+            break Trùng người rời hộ, không tồn tại, khác hộ, đã là chủ hộ, hoặc không RESIDING
+                S--xGEH: throw InvalidNewHeadException(reason)
+                GEH-->>FE: 422 INVALID_NEW_HEAD
+            end
+            S->>RR: saveAndFlush(resident.head = false)
+            S->>RR: saveAndFlush(newHead.head = true)
+        else Không có ứng viên
+            break Request vẫn gửi newHeadResidentId
+                S--xGEH: throw InvalidNewHeadException(NOT_FOUND)
+                GEH-->>FE: 422 INVALID_NEW_HEAD
+            end
+            S->>RR: saveAndFlush(resident.head = false)
         end
     end
-
-    Note over Res,VNPay: 3) Return URL (hiển thị kết quả + chốt trạng thái dự phòng nếu IPN chưa tới)
-
-    VNPay->>PCtrl: Redirect trình duyệt tới<br/>GET /api/payments/vnpay/return<br/>?vnp\\\_TxnRef=...
-    PCtrl->>VSvc: verifySignature(params)
-    VSvc-->>PCtrl: true/false
-    alt Chữ ký Return không hợp lệ
-        PCtrl-->>FE: 302 Redirect /payment-result?status=INVALID
-        FE-->>Res: SC-18 hiển thị lỗi xác thực
-    else Chữ ký Return hợp lệ
-        PCtrl->>TxRepo: findByTransactionCodeForUpdate(vnp\\\_TxnRef)
-        TxRepo->>DB: SELECT ... FOR UPDATE
-        DB-->>TxRepo: tx
-        TxRepo-->>PCtrl: tx
-        alt Giao dịch còn PENDING (IPN chưa tới)
-            PCtrl->>PCtrl: Khớp số tiền, applyVnpayResult()
-            PCtrl->>TxRepo: cập nhật tx + khoản phí/hoá đơn
-            TxRepo->>DB: UPDATE
-        else Giao dịch đã ở trạng thái cuối
-            PCtrl->>PCtrl: Chỉ đọc trạng thái (không ghi đè)
+    S->>S: Cập nhật resident theo loại: status, household, statusUntil, moveInDate, moveOutDate
+    S->>RR: saveAndFlush(resident)
+    RR-->>S: Resident sau cập nhật
+    opt Loại là MOVE_OUT hoặc DEATH
+        S->>UR: findByResidentId(residentId)
+        UR-->>S: Optional AppUser
+        opt Có tài khoản liên kết
+            S->>UR: save(user.active = false)
         end
-        PCtrl-->>FE: 302 Redirect /payment-result?transactionCode=...\\\&status=...
-        FE-->>Res: SC-18 hiển thị kết quả theo trạng thái giao dịch
     end
+    S->>MR: save(ResidentMovement: loại, effectiveDate, old/newHousehold, isInitial = false, recordedBy)
+    MR-->>S: ResidentMovement
+    S-->>-C: RecordMovementResponse(movement, resident)
+    C-->>-FE: 201 ApiResponse (Ghi nhận biến động thành công)
+    FE-->>U: Cập nhật trạng thái nhân khẩu và lịch sử biến động
 ```
 
-\---
+### 10.11 Tìm kiếm nhanh hộ gia đình và nhân khẩu
 
-## 11\. THIẾT KẾ BẢO MẬT
-
-### 11.1 Tổng quan
-
-Hệ thống áp dụng các biện pháp bảo mật cơ bản:
-
-* **Mã hoá mật khẩu:** dùng **BCrypt** khi lưu mật khẩu vào CSDL. Không bao giờ lưu mật khẩu dạng plain text.
-* **Xác thực:** dùng **JWT (JSON Web Token)** – sau khi đăng nhập thành công, backend cấp một token. Frontend đính kèm token này trong header `Authorization: Bearer <token>` của mọi request tiếp theo.
-* **Phân quyền:** dùng **Role-Based Access Control (RBAC)** – mỗi tài khoản có một role (ADMIN / RESIDENT), mỗi API chỉ chấp nhận một số role nhất định.
-* **API kiểm tra token trước khi xử lý:** sử dụng filter của Spring Security để chặn request không hợp lệ.
-* **Cư dân chỉ xem dữ liệu của hộ mình:** kiểm tra ở tầng Service – mọi truy vấn của role RESIDENT đều thêm điều kiện `household\\\_id = currentUser.householdId`.
-* **Admin có toàn quyền:** không bị giới hạn theo `household\\\_id`.
-* **Xác thực OTP qua email:** dùng cho đăng ký, quên mật khẩu; OTP luôn lưu dạng băm, có thời gian sống ngắn và rate limit theo email.
-* **Cổng thanh toán VNPay Sandbox:** ký HMAC-SHA512 mọi yêu cầu, xác thực chữ ký mọi callback (Return URL + IPN URL); không lưu thẻ.
-
-### 11.2 Luồng xác thực JWT
+*Mã nguồn:* SearchPage.jsx · SearchController.search() · SearchService.search() — vai trò BQT, ACCOUNTANT
 
 ```mermaid
 sequenceDiagram
-    participant FE as React FE
-    participant Filter as JwtFilter
-    participant Ctrl as Controller
-    participant Svc as Service
+    autonumber
+    actor U as BQT / Kế toán
+    box rgb(231,246,238) Frontend · React
+        participant FE as SearchPage
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as SearchController
+        participant S as SearchService
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant HR as HouseholdRepository
+        participant RR as ResidentRepository
+    end
 
-    FE->>Filter: HTTP Request + JWT
-    Filter->>Filter: Kiểm tra JWT có hợp lệ?<br/>(chữ ký, hạn dùng)
-    alt JWT hợp lệ
-        Filter->>Filter: Đặt SecurityContext<br/>(userId, role)
-        Filter->>Ctrl: Cho qua
-        Ctrl->>Ctrl: Kiểm tra role có quyền API này?
-        alt Có quyền
-            Ctrl->>Svc: Xử lý nghiệp vụ
-            Svc-->>Ctrl: Kết quả
-            Ctrl-->>FE: 200 OK
-        else Không quyền
-            Ctrl-->>FE: 403 Forbidden
+    U->>FE: Gõ từ khóa, chọn loại tìm kiếm
+    FE->>FE: Bỏ qua nếu từ khóa ngắn hơn 2 hoặc dài hơn 100 ký tự
+    FE->>FE: Debounce 300 ms, abort request trước đó
+    FE->>+C: GET /search?keyword&type&limit
+    Note over FE,C: Bearer JWT, hasAnyRole(BQT, ACCOUNTANT) — xem SD-02
+    C->>+S: search(keyword, type, limit)
+    break keyword không dài 2–100 ký tự, type không hợp lệ, hoặc limit ngoài 1–50
+        S--xGEH: throw AppValidationException(errors)
+        GEH-->>FE: 400 VALIDATION_ERROR
+    end
+    S->>S: escapeSqlLike(keyword)
+    opt type = ALL hoặc HOUSEHOLD
+        S->>HR: quickSearchHouseholds(keyword, limit)
+        HR-->>S: Danh sách hộ (mã hộ, căn hộ, tầng, trạng thái, tên chủ hộ)
+        S->>HR: countQuickSearchHouseholds(keyword)
+        HR-->>S: totalHouseholds
+    end
+    opt type = ALL hoặc RESIDENT
+        S->>RR: quickSearchResidents(keyword, limit)
+        RR-->>S: Danh sách nhân khẩu kèm thông tin hộ
+        S->>RR: countQuickSearchResidents(keyword)
+        RR-->>S: totalResidents
+        S->>S: Tính statusExpired theo statusUntil và ngày hôm nay
+    end
+    S->>S: Tổng hợp empty, totals, hasMore
+    S-->>-C: SearchResponse(empty, households, residents, totals, hasMore)
+    C-->>-FE: 200 ApiResponse(data = SearchResponse)
+    FE-->>U: Hiển thị hai nhóm kết quả hoặc thông báo không tìm thấy
+```
+
+### 10.12 Cư dân gửi đề nghị (cập nhật hồ sơ, tạm vắng, tạm trú)
+
+*Mã nguồn:* MyHouseholdPage.jsx · ResidentRequestForm.jsx · MeController.getMyHousehold() · ResidentRequestController.submitRequest() · ResidentRequestService.getMyHousehold() / submit() — chỉ vai trò RESIDENT
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Cư dân
+    box rgb(231,246,238) Frontend · React
+        participant MP as MyHouseholdPage
+        participant FE as ResidentRequestForm
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant MC as MeController
+        participant C as ResidentRequest<br/>Controller
+        participant S as ResidentRequest<br/>Service
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant RR as ResidentRepository
+        participant MR as ResidentMovement<br/>Repository
+        participant QR as ResidentRequest<br/>Repository
+    end
+
+    U->>MP: Mở trang Hộ của tôi
+    MP->>MC: GET /me/household
+    Note over MP,MC: Bearer JWT, hasRole(RESIDENT) — xem SD-02
+    MC->>S: getMyHousehold(currentUser)
+    S->>RR: findByIdAndDeletedAtIsNull(currentUser.residentId)
+    RR-->>S: Resident và Household của người dùng
+    S->>RR: findByHousehold_IdAndDeletedAtIsNullAndStatusIn(3 trạng thái còn ở hộ)
+    RR-->>S: Danh sách thành viên
+    S->>QR: findByHousehold_IdAndStatus(householdId, PENDING)
+    QR-->>S: Các đề nghị đang chờ
+    S-->>MC: MyHouseholdResponse
+    MC-->>MP: 200 household, myResidentId, residents, pendingRequests
+    U->>MP: Chọn loại đề nghị (và nhân khẩu nếu cần)
+    MP->>FE: Mở form theo loại
+    U->>FE: Điền thông tin và bấm Gửi
+    FE->>FE: validateRequest(body, resident)
+    FE->>+C: POST /me/resident-requests
+    C->>+S: submit(currentUser, request)
+    S->>RR: findByIdAndDeletedAtIsNull(currentUser.residentId)
+    RR-->>S: Optional Resident (người gửi)
+    break Tài khoản chưa gắn nhân khẩu
+        S--xGEH: throw ResidentLinkRequiredException
+        GEH-->>FE: 422 RESIDENT_LINK_REQUIRED
+    end
+    break Body thiếu type
+        S--xGEH: throw AppValidationException
+        GEH-->>FE: 400 VALIDATION_ERROR
+    end
+    break Hộ của người gửi không ACTIVE
+        S--xGEH: throw HouseholdInactiveException
+        GEH-->>FE: 422 HOUSEHOLD_INACTIVE
+    end
+    alt type = PROFILE_UPDATE
+        S->>RR: findByIdAndDeletedAtIsNull(residentId)
+        RR-->>S: Optional Resident (đối tượng)
+        break Nhân khẩu không thuộc hộ của người gửi
+            S--xGEH: throw ResidentNotInHouseholdException
+            GEH-->>FE: 403 RESIDENT_NOT_IN_HOUSEHOLD
         end
-    else JWT sai hoặc hết hạn
-        Filter-->>FE: 401 Unauthorized
+        S->>S: validateProfileFields (Validator + ngày sinh), sai thì 400
+        break Nhân khẩu MOVED_OUT / DECEASED, hoặc không có thay đổi
+            S--xGEH: throw ResidentNotResidingException / NoChangesException
+            GEH-->>FE: 422 RESIDENT_NOT_RESIDING / NO_CHANGES
+        end
+        opt Có đổi CCCD/CMND
+            S->>RR: existsByIdentityNumberAndDeletedAtIsNullAndIdNot(CCCD mới, id)
+            RR-->>S: boolean
+            break CCCD mới trùng người khác
+                S--xGEH: throw DuplicateException
+                GEH-->>FE: 409 DUPLICATE
+            end
+        end
+        S->>QR: findFirstByResident_IdAndTypeAndStatus(id, PROFILE_UPDATE, PENDING)
+        QR-->>S: Optional ResidentRequest
+        S->>S: proposed = hồ sơ đề nghị, beforeValues = hồ sơ hiện tại
+    else type = TEMPORARY_ABSENCE
+        S->>RR: findByIdAndDeletedAtIsNull(residentId)
+        RR-->>S: Optional Resident (đối tượng)
+        break Nhân khẩu không thuộc hộ của người gửi
+            S--xGEH: throw ResidentNotInHouseholdException
+            GEH-->>FE: 403 RESIDENT_NOT_IN_HOUSEHOLD
+        end
+        S->>MR: findFirstByResident_IdOrderByEffectiveDateDesc...(id)
+        MR-->>S: Biến động gần nhất (để kiểm tra startDate)
+        S->>S: validateAbsenceDates, sai thì 400
+        break Nhân khẩu không ở trạng thái RESIDING
+            S--xGEH: throw ResidentNotResidingException / InvalidTransitionException
+            GEH-->>FE: 422 RESIDENT_NOT_RESIDING / INVALID_TRANSITION
+        end
+        S->>QR: findFirstByResident_IdAndTypeAndStatus(id, TEMPORARY_ABSENCE, PENDING)
+        QR-->>S: Optional ResidentRequest
+        S->>S: proposed = startDate, endDate
+    else type = TEMPORARY_RESIDENCE
+        S->>S: validateResidenceFields (ngày + thông tin khách), sai thì 400
+        S->>RR: existsByIdentityNumberAndDeletedAtIsNull(CCCD của khách)
+        RR-->>S: boolean
+        break CCCD của khách đã có trong hệ thống
+            S--xGEH: throw DuplicateException
+            GEH-->>FE: 409 DUPLICATE
+        end
+        S->>QR: findPendingTemporaryResidenceIdByIdentityNumber(CCCD)
+        QR-->>S: Optional id
+        S->>S: proposed = startDate, endDate, person
+    end
+    break Đã có đề nghị cùng loại đang PENDING
+        S--xGEH: throw PendingRequestExistsException(requestId)
+        GEH-->>FE: 409 PENDING_REQUEST_EXISTS
+        FE-->>U: Đưa liên kết tới đề nghị đang chờ
+    end
+    S->>QR: saveAndFlush(ResidentRequest: PENDING, submittedBy, submittedAt, proposed, beforeValues)
+    QR-->>S: ResidentRequest đã có id
+    Note over S,QR: Nếu DB báo DataIntegrityViolation (gửi đồng thời) thì cũng trả 409 PENDING_REQUEST_EXISTS
+    S-->>-C: ResidentRequestResponse
+    C-->>-FE: 201 ApiResponse (Đã gửi đề nghị, đang chờ Ban quản trị duyệt)
+    FE-->>U: Chuyển tới /de-nghi/{id}
+```
+
+### 10.13 Ban quản trị duyệt đề nghị
+
+*Mã nguồn:* ResidentRequestDetailPage.jsx · ResidentRequestController.approveRequest() · ResidentRequestService.approve() · ResidentService.recordMovement() / createResident() — chỉ vai trò BQT
+
+ResidentRequestService gọi lại ResidentService trong cùng transaction, nên việc duyệt tái sử dụng toàn bộ kiểm tra của luồng ghi nhận biến động (SD-10) và thêm nhân khẩu (SD-08).
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Ban quản trị
+    box rgb(231,246,238) Frontend · React
+        participant FE as ResidentRequest<br/>DetailPage
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as ResidentRequest<br/>Controller
+        participant S as ResidentRequest<br/>Service
+        participant RS as ResidentService
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant QR as ResidentRequest<br/>Repository
+        participant RR as ResidentRepository
+    end
+
+    U->>FE: Mở chi tiết đề nghị
+    FE->>C: GET /resident-requests/{id}
+    C-->>FE: 200 ResidentRequestResponse (proposed, before, changes)
+    U->>FE: Nhập ghi chú (tùy chọn) và xác nhận Duyệt
+    FE->>+C: POST /resident-requests/{id}/approve (note)
+    Note over FE,C: Bearer JWT, hasRole(BQT) — xem SD-02
+    C->>+S: approve(id, approveRequest, bqtUser)
+    S->>QR: findByIdForUpdate(id) — SELECT ... FOR UPDATE
+    QR-->>S: Optional ResidentRequest (đã khóa dòng)
+    break Không tìm thấy đề nghị
+        S--xGEH: throw ResourceNotFoundException
+        GEH-->>FE: 404 NOT_FOUND
+    end
+    break Trạng thái khác PENDING
+        S--xGEH: throw RequestNotPendingException(status)
+        GEH-->>FE: 409 REQUEST_NOT_PENDING
+        FE->>C: GET /resident-requests/{id} để tải trạng thái mới nhất
+    end
+    break Hộ của đề nghị không ACTIVE
+        S--xGEH: throw HouseholdInactiveException
+        GEH-->>FE: 422 HOUSEHOLD_INACTIVE
+    end
+    alt type = PROFILE_UPDATE
+        S->>RR: findByIdForUpdate(residentId) — SELECT ... FOR UPDATE
+        RR-->>S: Optional Resident (đã khóa dòng)
+        S->>S: calculateChanges(before, proposed), findOutdatedFields(resident, before, changes)
+        break Nhân khẩu không còn, hoặc trường cần đổi đã khác beforeValues
+            S--xGEH: throw RequestOutdatedException(outdatedFields)
+            GEH-->>FE: 409 REQUEST_OUTDATED
+            FE-->>U: Báo dữ liệu đã thay đổi, khóa nút Duyệt
+        end
+        opt Có đổi CCCD/CMND
+            S->>RR: existsByIdentityNumberAndDeletedAtIsNullAndIdNot(CCCD mới, id)
+            RR-->>S: boolean
+            break CCCD mới trùng người khác
+                S--xGEH: throw DuplicateException
+                GEH-->>FE: 409 DUPLICATE
+            end
+        end
+        S->>S: applyProfileChanges(resident, proposed, changes)
+        S->>RR: save(resident)
+    else type = TEMPORARY_ABSENCE
+        S->>S: Dựng CreateMovementRequest(TEMPORARY_ABSENCE, startDate, endDate, note)
+        S->>+RS: recordMovement(residentId, movementRequest, bqtUser)
+        Note over RS,RR: Chạy toàn bộ luồng SD-10: khóa resident, kiểm tra chuyển trạng thái và ngày, lưu biến động
+        break recordMovement ném lỗi 400 / 422
+            RS--xGEH: exception của luồng biến động
+            GEH-->>FE: Lỗi tương ứng, đề nghị vẫn PENDING (rollback)
+        end
+        RS-->>-S: RecordMovementResponse (movement.id)
+    else type = TEMPORARY_RESIDENCE
+        S->>RR: existsByIdentityNumberAndDeletedAtIsNull(CCCD của khách)
+        RR-->>S: boolean
+        break CCCD của khách đã có trong hệ thống
+            S--xGEH: throw DuplicateException
+            GEH-->>FE: 409 DUPLICATE
+        end
+        S->>+RS: createResident(householdId, CreateResidentRequest(TEMPORARY_RESIDENCE), bqtUser)
+        Note over RS,RR: Chạy luồng SD-08: tạo Resident TEMPORARY_RESIDENCE và biến động ban đầu
+        RS-->>-S: ResidentResponse (id nhân khẩu mới)
+    end
+    S->>QR: save(status = APPROVED, decidedBy, decidedAt, decisionNote, resultResidentId, resultMovementId)
+    QR-->>S: ResidentRequest
+    S-->>-C: ResidentRequestResponse (decision, result)
+    C-->>-FE: 200 ApiResponse (Đã duyệt đề nghị)
+    FE-->>U: Hiển thị trạng thái Đã duyệt
+```
+
+### 10.14 Từ chối đề nghị (BQT) và hủy đề nghị (cư dân)
+
+*Mã nguồn:* ResidentRequestDetailPage.jsx · ResidentRequestController.rejectRequest() / cancelMyRequest() · ResidentRequestService.reject() / cancel()
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as BQT / Cư dân
+    box rgb(231,246,238) Frontend · React
+        participant FE as ResidentRequest<br/>DetailPage
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as ResidentRequest<br/>Controller
+        participant S as ResidentRequest<br/>Service
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant QR as ResidentRequest<br/>Repository
+    end
+
+    alt BQT từ chối
+        U->>FE: Nhập lý do từ chối và xác nhận
+        FE->>+C: POST /resident-requests/{id}/reject (reason)
+        Note over FE,C: hasRole(BQT) — xem SD-02. @Valid RejectRequest: reason bắt buộc, tối đa 500 ký tự
+        C->>+S: reject(id, rejectRequest, bqtUser)
+        S->>QR: findByIdForUpdate(id) — SELECT ... FOR UPDATE
+        QR-->>S: Optional ResidentRequest
+        break Không tìm thấy đề nghị
+            S--xGEH: throw ResourceNotFoundException
+            GEH-->>FE: 404 NOT_FOUND
+        end
+        break Trạng thái khác PENDING
+            S--xGEH: throw RequestNotPendingException(status)
+            GEH-->>FE: 409 REQUEST_NOT_PENDING
+        end
+        S->>QR: save(status = REJECTED, decidedBy = bqtUser, decidedAt, decisionReason)
+        S-->>-C: ResidentRequestResponse
+        C-->>-FE: 200 ApiResponse (Đã từ chối đề nghị)
+    else Cư dân hủy
+        U->>FE: Bấm Hủy đề nghị và xác nhận
+        FE->>+C: POST /me/resident-requests/{id}/cancel
+        Note over FE,C: hasRole(RESIDENT) — xem SD-02
+        C->>+S: cancel(id, currentUser)
+        S->>QR: findByIdForUpdate(id) — SELECT ... FOR UPDATE
+        QR-->>S: Optional ResidentRequest
+        break Không tìm thấy, hoặc không phải do người này gửi
+            S--xGEH: throw ResourceNotFoundException
+            GEH-->>FE: 404 NOT_FOUND
+        end
+        break Trạng thái khác PENDING
+            S--xGEH: throw RequestNotPendingException(status)
+            GEH-->>FE: 409 REQUEST_NOT_PENDING
+        end
+        S->>QR: save(status = CANCELLED, decidedBy = currentUser, decidedAt)
+        S-->>-C: ResidentRequestResponse
+        C-->>-FE: 200 ApiResponse (Đã hủy đề nghị)
+    end
+    FE-->>U: Hiển thị trạng thái mới của đề nghị
+    opt Nhận 409 REQUEST_NOT_PENDING
+        FE->>C: GET lại chi tiết đề nghị
+        C-->>FE: Trạng thái do bên kia vừa quyết định
     end
 ```
 
-### 11.3 Cấu hình mật khẩu
+### 10.15 Tạo và cập nhật khoản thu
 
-* Hàm băm: `BCryptPasswordEncoder` của Spring Security.
-* Khi tạo tài khoản: `password = bcrypt(plainPassword)`.
-* Khi đăng nhập: `bcrypt.matches(plainPassword, hashedFromDB)`.
-* Quy ước mật khẩu mới: tối thiểu 8 ký tự (kiểm tra ở frontend trước khi gửi).
+*Mã nguồn:* FeeForm.jsx · FeeCategoryController.create() / update() · FeeCategoryService.create() / update() — vai trò ACCOUNTANT, BQT
 
-### 11.4 Cấu hình JWT
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Kế toán / BQT
+    box rgb(231,246,238) Frontend · React
+        participant FE as FeeForm<br/>(FeesPage)
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as FeeCategory<br/>Controller
+        participant S as FeeCategory<br/>Service
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant FR as FeeCategory<br/>Repository
+        participant VR as ReceivableRepository
+    end
 
-* Thư viện: **jjwt 0.12.5**, ký HMAC; khoá `app.jwt.secret`, TTL `app.jwt.expiration-milliseconds` (mặc định 86.400.000ms = 24 giờ) trong `application.properties` (không commit lên Git).
-* Payload chứa: `userId`, `username`, `role`, `iat`, `exp`. **`householdId` không nhúng trong token** — `JwtFilter` mỗi request **nạp lại User từ DB** theo `userId` (không tin claim) và kiểm tra `deleted`/`active` trước khi đặt `SecurityContext`.
-
-### 11.5 Cấu hình phân quyền API
-
-Spring Security cấu hình ở mức URL:
-
-```
-POST   /api/auth/register                       -> PUBLIC
-POST   /api/auth/login                          -> PUBLIC
-POST   /api/auth/send-otp                       -> PUBLIC
-POST   /api/auth/verify-otp                     -> PUBLIC
-POST   /api/auth/forgot-password/send-otp       -> PUBLIC
-POST   /api/auth/reset-password                 -> PUBLIC
-
-POST   /api/users                               -> ADMIN
-GET    /api/users                               -> ADMIN
-GET    /api/users/pending                       -> ADMIN
-PUT    /api/users/{id}                          -> ADMIN
-PUT    /api/users/{id}/approve                  -> ADMIN
-DELETE /api/users/{id}/reject                   -> ADMIN
-DELETE /api/users/{id}                          -> ADMIN
-POST   /api/users/grant-access                  -> ADMIN
-PUT    /api/users/{id}/lock                     -> ADMIN
-PUT    /api/users/{id}/unlock                   -> ADMIN
-
-GET    /api/apartments                          -> ADMIN
-GET    /api/apartments/{id}                     -> ADMIN
-GET    /api/apartments/search                   -> ADMIN
-PUT    /api/apartments/{id}                     -> ADMIN
-GET    /api/apartments/{id}/household           -> ADMIN
-PUT    /api/apartments/{id}/household           -> ADMIN
-POST   /api/apartments/{id}/household           -> ADMIN
-
-POST   /api/households/move-in                  -> ADMIN
-POST   /api/households/{id}/members             -> ADMIN
-POST   /api/households/{id}/move-out            -> ADMIN
-GET    /api/households/{id}/accounts            -> ADMIN
-
-GET    /api/me/profile                          -> ADMIN, RESIDENT
-PUT    /api/me/profile/update                   -> ADMIN, RESIDENT
-PUT    /api/me/password                         -> ADMIN, RESIDENT
-
-GET    /api/residents                           -> ADMIN
-POST   /api/residents                           -> ADMIN
-GET    /api/residents/{id}                      -> ADMIN
-PUT    /api/residents/{id}                      -> ADMIN
-PUT    /api/residents/{id}/move-out             -> ADMIN
-PUT    /api/residents/{id}/temporary-residence  -> ADMIN
-PUT    /api/residents/{id}/permanent-residence  -> ADMIN
-
-GET    /api/fees                                -> ADMIN
-GET    /api/fees/{id}                           -> ADMIN
-GET    /api/fees/search                         -> ADMIN
-POST   /api/fees                                -> ADMIN
-PUT    /api/fees/{id}                           -> ADMIN
-DELETE /api/fees/{id}                           -> ADMIN
-GET    /api/fee-periods                         -> ADMIN
-GET    /api/fee-periods/{id}                    -> ADMIN
-POST   /api/fee-periods                         -> ADMIN
-PUT    /api/fee-periods/{id}                    -> ADMIN
-PUT    /api/fee-periods/{id}/close              -> ADMIN
-GET    /api/admin/payments                      -> ADMIN
-PUT    /api/admin/payments/{id}/confirm-cash    -> ADMIN
-
-GET    /api/payments/my-household               -> RESIDENT
-
-POST   /api/vehicles                            -> ADMIN
-PUT    /api/vehicles/{id}                        -> ADMIN
-DELETE /api/vehicles/{id}                        -> ADMIN
-GET    /api/vehicles/household/{householdId}     -> ADMIN
-GET    /api/vehicles/my-household                -> RESIDENT
-GET    /api/parking-slots                        -> ADMIN
-GET    /api/parking-slots/summary                -> ADMIN
-POST   /api/parking-registrations                -> ADMIN
-PUT    /api/parking-registrations/{id}/end       -> ADMIN
-POST   /api/admin/parking-fees/generate          -> ADMIN
-GET    /api/parking-registrations/my-household   -> RESIDENT
-POST   /api/utility-bills                         -> ADMIN
-POST   /api/utility-bills/import                  -> ADMIN
-GET    /api/utility-bills/import-template         -> ADMIN
-POST   /api/admin/utility-fees/generate           -> ADMIN
-PUT    /api/utility-bills/{id}                     -> ADMIN
-DELETE /api/utility-bills/{id}                     -> ADMIN
-PUT    /api/admin/utility-bills/{id}/confirm-cash -> ADMIN
-GET    /api/utility-bills                          -> ADMIN
-GET    /api/utility-bills/{id}                      -> ADMIN
-GET    /api/utility-bills/my-household          -> RESIDENT
-
-POST   /api/complaints                          -> RESIDENT
-GET    /api/complaints/my                       -> RESIDENT
-GET    /api/complaints                          -> ADMIN
-GET    /api/complaints/{id}                     -> ADMIN hoặc RESIDENT là chủ khiếu nại
-PUT    /api/complaints/{id}/response            -> ADMIN
-
-POST   /api/notifications                       -> ADMIN
-GET    /api/notifications/my                    -> ADMIN, RESIDENT
-GET    /api/notifications/sent                   -> ADMIN
-PUT    /api/notifications/{id}/read             -> ADMIN, RESIDENT
-PUT    /api/notifications/{id}/unread            -> ADMIN, RESIDENT
-
-GET    /api/system-configs                       -> ADMIN, RESIDENT
-PUT    /api/system-configs/{key}                 -> ADMIN
-
-POST   /api/payments/vnpay/create-url            -> RESIDENT
-GET    /api/payments/vnpay/return               -> PUBLIC (xác thực bằng vnp\\\_SecureHash)
-GET    /api/payments/vnpay/ipn                  -> PUBLIC (xác thực bằng vnp\\\_SecureHash)
-GET    /api/payments/vnpay/my-history           -> RESIDENT
-GET    /api/admin/payment-transactions          -> ADMIN
-GET    /api/admin/payment-transactions/{id}     -> ADMIN
-
-GET    /api/reports/fee-periods/statistics       -> ADMIN
-GET    /api/reports/households/statistics        -> ADMIN
-GET    /api/reports/residents/statistics        -> ADMIN
-GET    /api/reports/fee-periods/excel|pdf        -> ADMIN
-GET    /api/reports/households/excel|pdf         -> ADMIN
-GET    /api/reports/residents/excel|pdf          -> ADMIN
-GET    /api/reports/payment-transactions/excel|pdf -> ADMIN
-
-GET    /api/admin/audit-logs                     -> ADMIN
+    U->>FE: Nhập thông tin khoản thu và bấm Lưu
+    FE->>FE: validateFee(form)
+    Note over FE,C: Bearer JWT, hasAnyRole(ACCOUNTANT, BQT) — xem SD-02
+    alt Tạo mới
+        FE->>+C: POST /fee-categories
+        C->>+S: create(request)
+        S->>S: Chuẩn hóa: code trim + IN HOA, name trim
+        S->>FR: existsByCode(code)
+        FR-->>S: boolean
+        break Mã khoản thu đã tồn tại
+            S--xGEH: throw FeeCategoryDuplicateException
+            GEH-->>FE: 409 DUPLICATE
+        end
+        S->>S: Kiểm tra theo feeKind (MANDATORY: PER_AREA/FIXED, đơn giá, chu kỳ, hạn nộp 1–28. VOLUNTARY: MANUAL)
+        break Có lỗi trong map errors
+            S--xGEH: throw FeeCategoryValidationException(errors)
+            GEH-->>FE: 400 VALIDATION_ERROR (errors theo từng trường)
+        end
+        S->>FR: save(FeeCategory: active = true)
+        FR-->>S: FeeCategory đã có id
+        S-->>-C: FeeCategoryResponse(inUse = false)
+        C-->>-FE: 201 ApiResponse (Tạo danh mục khoản thu thành công)
+    else Cập nhật
+        FE->>+C: PUT /fee-categories/{id}
+        C->>+S: update(id, request)
+        S->>FR: findById(id)
+        FR-->>S: Optional FeeCategory
+        break Không tìm thấy khoản thu
+            S--xGEH: throw ResourceNotFoundException
+            GEH-->>FE: 404 NOT_FOUND
+        end
+        S->>S: Chuẩn hóa và kiểm tra như khi tạo
+        break Có lỗi trong map errors
+            S--xGEH: throw FeeCategoryValidationException(errors)
+            GEH-->>FE: 400 VALIDATION_ERROR
+        end
+        S->>FR: existsByCodeIgnoreCaseAndIdNot(code, id)
+        FR-->>S: boolean
+        break Mã trùng với khoản thu khác
+            S--xGEH: throw FeeCategoryDuplicateException
+            GEH-->>FE: 409 DUPLICATE
+        end
+        S->>VR: existsByFeeCategory_Id(id)
+        VR-->>S: inUse
+        break inUse và có đổi code, feeKind, calculationMethod hoặc billingCycle
+            S--xGEH: throw HasTransactionsException(errors)
+            GEH-->>FE: 409 HAS_TRANSACTIONS (suggestedAction = CREATE_NEW)
+        end
+        S->>FR: save(category với các trường mới)
+        FR-->>S: FeeCategory
+        S-->>-C: FeeCategoryResponse(inUse)
+        C-->>-FE: 200 ApiResponse (Cập nhật khoản thu thành công)
+    end
+    FE-->>U: Đóng form, tải lại danh mục khoản thu
 ```
 
-Giải thích các endpoint quản lý tài khoản:
+### 10.16 Tính thử phí cho một hộ
 
-* `/api/auth/register`: cư dân tự đăng ký tài khoản (PUBLIC), bắt buộc đã xác thực OTP email trước. Tài khoản tạo ra có `role = RESIDENT`, `active = FALSE`, `household\\\_id = NULL`, `email\\\_verified = TRUE`, kèm `requested\\\_apartment\\\_code` để chờ Admin duyệt.
-* `/api/auth/login`: đăng nhập (PUBLIC). Tài khoản `active = FALSE` không đăng nhập được.
-* `/api/auth/send-otp`, `/api/auth/verify-otp`: gửi và kiểm OTP cho mục đích `REGISTER`; luồng quên mật khẩu dùng cặp endpoint riêng `/api/auth/forgot-password/send-otp` và `/api/auth/reset-password`.
-* `/api/auth/forgot-password/send-otp`, `/api/auth/reset-password`: gửi OTP và đặt lại mật khẩu khi quên (PUBLIC, có rate limit chặt).
-* `/api/users`: Admin tạo tài khoản nội bộ.
-* `/api/users/{id}`: Admin sửa thông tin tài khoản.
-* `/api/users/{id}/lock`: Admin khoá tài khoản.
-* `/api/users/{id}/unlock`: Admin mở khoá tài khoản.
-* `/api/users/pending`: Admin lấy danh sách tài khoản cư dân vừa đăng ký, đang chờ duyệt.
-* `/api/users/{id}/approve`: Admin duyệt tài khoản cư dân — đối chiếu `requested\\\_apartment\\\_code` với danh sách căn hộ, gán `household\\\_id` của Household ACTIVE thuộc căn hộ tương ứng và bật `active = TRUE`.
+*Mã nguồn:* FeePreview.jsx · FeeCalculationController.preview() · FeeCalculationService.preview() — vai trò ACCOUNTANT, BQT
 
-Giải thích các endpoint quản lý căn hộ và hộ dân trong căn hộ:
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Kế toán / BQT
+    box rgb(231,246,238) Frontend · React
+        participant FE as FeePreview<br/>(FeesPage)
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as FeeCalculation<br/>Controller
+        participant S as FeeCalculation<br/>Service
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant HR as HouseholdRepository
+        participant FR as FeeCategory<br/>Repository
+    end
 
-* `GET /api/apartments`: Admin lấy danh sách căn hộ (gồm cả căn hộ trống – chưa có Household ACTIVE).
-* `GET /api/apartments/{id}`: Admin lấy chi tiết một căn hộ.
-* `GET /api/apartments/search`: Admin tìm kiếm căn hộ theo số căn hộ, tầng, trạng thái (kể cả `AVAILABLE`), tên chủ hộ.
-* `PUT /api/apartments/{id}`: Admin chỉnh sửa thông tin căn hộ (diện tích, trạng thái, ghi chú).
-* `GET /api/apartments/{id}/household`: Admin xem Household ACTIVE đang ở trong căn hộ; trả 404/null nếu căn hộ trống.
-* `POST /api/apartments/{id}/household`: Admin tạo Household mới cho căn hộ đang trống (gán hộ mới chuyển vào, `status = ACTIVE`).
-* `PUT /api/apartments/{id}/household`: Admin cập nhật Household của căn hộ; khi chuyển hộ ra ⇒ đặt `Household.status = MOVED\\\_OUT` (không xoá vật lý).
-* **Không có** `POST /api/apartments` và **không có** `DELETE /api/apartments/{id}`: vì số căn hộ trong chung cư BlueMoon là cố định, dữ liệu căn hộ được nạp sẵn ban đầu.
-
-Giải thích các endpoint nhân khẩu:
-
-* `GET /api/residents`: Admin tra cứu nhân khẩu theo họ tên, CCCD, căn hộ, hộ dân, trạng thái cư trú.
-* `POST /api/residents`: Admin thêm nhân khẩu vào Household ACTIVE của một căn hộ.
-* `PUT /api/residents/{id}`: Admin chỉnh sửa thông tin cá nhân và quan hệ với chủ hộ.
-* `PUT /api/residents/{id}/move-out`: chuyển nhân khẩu khỏi hộ bằng cách cập nhật `status = MOVED\\\_OUT`; không xoá vật lý.
-* `PUT /api/residents/{id}/temporary-residence` và `/permanent-residence`: cập nhật `residency\\\_status` (TEMPORARY ↔ PERMANENT), phục vụ quản lý tạm trú/thường trú; giá trị `ABSENT` (tạm vắng) cập nhật qua endpoint sửa nhân khẩu.
-
-Giải thích các endpoint thanh toán online:
-
-* `POST /api/payments/vnpay/create-url`: cư dân khởi tạo một giao dịch VNPay cho khoản phí/hoá đơn của hộ mình (hỗ trợ thanh toán gộp nhiều khoản). Backend kiểm tra `target.household\\\_id == JWT.household\\\_id`; vi phạm → 403. Endpoint này chỉ cho role `RESIDENT`, không cho Admin thanh toán hộ cư dân. Khi cần kiểm thử/hỗ trợ, Admin dùng tài khoản Resident test đã gán Household test hoặc tra cứu giao dịch qua endpoint Admin.
-* `GET /api/payments/vnpay/return`: Return URL là đường VNPay redirect trình duyệt quay về backend sau thanh toán. Return URL thường không có JWT trong header nên để PUBLIC, nhưng backend vẫn phải kiểm tra `vnp\\\_SecureHash`. Đây không phải nguồn cập nhật chính (IPN mới là chính), nhưng đóng vai trò dự phòng: nếu giao dịch còn `PENDING` vì IPN chưa tới, backend chốt trạng thái ngay tại Return URL sau khi verify chữ ký + khớp số tiền; nếu đã ở trạng thái cuối thì chỉ đọc. Sau đó backend redirect cư dân về trang kết quả của frontend.
-* `GET /api/payments/vnpay/ipn`: VNPay gọi server-to-server. Đây là **nguồn xác nhận chính** cho trạng thái thanh toán. Backend xác thực `vnp\\\_SecureHash`, kiểm tra idempotency, rồi cập nhật `payment\\\_transactions` cùng với `payments` hoặc `utility\\\_bills` tương ứng.
-* `GET /api/payments/vnpay/my-history`: cư dân xem lịch sử giao dịch online của hộ mình.
-* `GET /api/admin/payment-transactions`: Admin tra cứu mọi giao dịch online, lọc theo mã giao dịch, hộ, trạng thái, thời gian.
-
-### 11.6 Bảo vệ dữ liệu cá nhân (cư dân)
-
-Ở tầng Service, mỗi khi cư dân (role RESIDENT) gọi API đọc dữ liệu, code phải:
-
-1. Lấy `householdId` từ JWT (đã được Spring Security gắn vào SecurityContext).
-2. Thêm điều kiện `WHERE household\\\_id = ?` vào truy vấn.
-
-Ví dụ:
-
-```java
-// PaymentService.java
-public List<PaymentDTO> getPaymentsForCurrentResident(User currentUser) {
-    return paymentRepository
-            .findByHouseholdId(currentUser.getHousehold().getId())
-            .stream().map(this::toDto).toList();
-}
+    U->>FE: Mở Tính thử trên một khoản thu, chọn hộ
+    FE->>+C: POST /fee-calculation/preview (householdId, feeCategoryId)
+    Note over FE,C: Bearer JWT, hasAnyRole(ACCOUNTANT, BQT) — xem SD-02. @Valid: hai id bắt buộc và lớn hơn 0
+    C->>+S: preview(request)
+    S->>HR: findByIdAndDeletedAtIsNull(householdId)
+    HR-->>S: Optional Household
+    break Không tìm thấy hộ
+        S--xGEH: throw ResourceNotFoundException
+        GEH-->>FE: 404 NOT_FOUND
+    end
+    break Hộ không ACTIVE
+        S--xGEH: throw HouseholdInactiveException
+        GEH-->>FE: 422 HOUSEHOLD_INACTIVE
+    end
+    S->>FR: findById(feeCategoryId)
+    FR-->>S: Optional FeeCategory
+    break Không tìm thấy khoản thu
+        S--xGEH: throw ResourceNotFoundException
+        GEH-->>FE: 404 NOT_FOUND
+    end
+    break Khoản thu đã ngừng sử dụng
+        S--xGEH: throw FeeInactiveException
+        GEH-->>FE: 422 FEE_INACTIVE
+    end
+    break Khoản VOLUNTARY hoặc cách tính MANUAL
+        S--xGEH: throw FeeNotBillableException
+        GEH-->>FE: 422 FEE_NOT_BILLABLE
+    end
+    alt calculationMethod = PER_AREA
+        break Hộ chưa có diện tích
+            S--xGEH: throw MissingAreaException(householdId)
+            GEH-->>FE: 422 MISSING_AREA
+        end
+        S->>S: amount = round(area × unitPrice, 0, HALF_UP)
+    else calculationMethod = FIXED
+        S->>S: amount = round(unitPrice, 0, HALF_UP)
+    end
+    S-->>-C: FeeCalculationPreviewResponse(area, unitPrice, amount, formula)
+    C-->>-FE: 200 ApiResponse(data = preview)
+    Note over S,FR: Transaction readOnly, không ghi dữ liệu
+    FE-->>U: Hiển thị công thức và số tiền
 ```
 
-Tương tự, `UtilityBillService.getMyHouseholdBills(currentUser)` và `ComplaintService.getById(id, currentUser)` đều kiểm tra `household\\\_id` (với hoá đơn) hoặc `sender\\\_user\\\_id` (với khiếu nại) khớp với cư dân hiện tại; nếu không khớp và cư dân không phải Admin → 403 Forbidden.
+### 10.17 Quản lý kỳ thu: tạo, sửa, xóa
 
-### 11.7 Các biện pháp khác
+*Mã nguồn:* PeriodForm.jsx · PeriodDetailPage.jsx · BillingPeriodController · BillingPeriodService.create() / update() / delete() — vai trò ACCOUNTANT, BQT
 
-* **CORS:** chỉ cho phép frontend chạy ở domain đã đăng ký (cấu hình trong `CorsConfig`).
-* **HTTPS:** khi triển khai thực tế dùng HTTPS để mã hoá đường truyền.
-* **Bean Validation:** kiểm tra dữ liệu DTO ở tầng Controller (`@Valid`, `@NotBlank`, `@Email`…).
-* **Audit log nghiệp vụ:** ghi vào bảng `audit\\\_logs` các thao tác nhạy cảm: đăng nhập (thành công/thất bại), tạo/sửa/xoá/ngừng sử dụng khoản thu, thu phí, khởi tạo và cập nhật giao dịch VNPay, cập nhật trạng thái hoá đơn/khoản phí. File log Spring Boot chỉ dùng bổ trợ cho debug kỹ thuật, không thay thế audit log trong CSDL.
-* **Không log dữ liệu nhạy cảm:** không bao giờ ghi OTP nguyên bản, mật khẩu, `vnp\\\_HashSecret`, nội dung chữ ký `vnp\\\_SecureHash`, thông tin thẻ ngân hàng hoặc dữ liệu nhạy cảm không cần thiết vào file log hay `audit\\\_logs`.
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Kế toán / BQT
+    box rgb(231,246,238) Frontend · React
+        participant FE as PeriodForm /<br/>PeriodDetailPage
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as BillingPeriod<br/>Controller
+        participant S as BillingPeriod<br/>Service
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant PR as BillingPeriod<br/>Repository
+    end
 
-### 11.8 Bảo mật OTP email
+    Note over FE,C: Bearer JWT, hasAnyRole(ACCOUNTANT, BQT) — xem SD-02
+    alt Tạo kỳ thu
+        U->>FE: Nhập mã, tên, ngày bắt đầu, ngày kết thúc
+        FE->>FE: validatePeriod(form)
+        FE->>+C: POST /billing-periods
+        C->>+S: create(request)
+        break endDate trước startDate
+            S--xGEH: throw InvalidBillingPeriodDateRangeException
+            GEH-->>FE: 400 VALIDATION_ERROR
+        end
+        S->>PR: existsByCode(code)
+        PR-->>S: boolean
+        break Mã kỳ thu đã tồn tại
+            S--xGEH: throw DuplicateException(code)
+            GEH-->>FE: 409 DUPLICATE
+        end
+        S->>PR: findFirstByStartDateLessThanEqualAndEndDateGreaterThanEqual(endDate, startDate)
+        PR-->>S: Optional BillingPeriod (kỳ bị chồng lấn)
+        break Khoảng ngày chồng lấn kỳ khác
+            S--xGEH: throw BillingPeriodOverlapException(id, code)
+            GEH-->>FE: 422 PERIOD_OVERLAP
+        end
+        S->>PR: save(BillingPeriod: status = OPEN, generatedAt = null)
+        PR-->>S: BillingPeriod đã có id
+        S-->>-C: BillingPeriodResponse
+        C-->>-FE: 201 ApiResponse (Tạo kỳ thu thành công)
+        FE-->>U: Chuyển tới /ky-thu/{id}
+    else Sửa kỳ thu
+        U->>FE: Sửa mã, tên hoặc khoảng ngày
+        FE->>+C: PUT /billing-periods/{id}
+        C->>+S: update(id, request)
+        S->>PR: findByIdForUpdate(id) — SELECT ... FOR UPDATE
+        PR-->>S: Optional BillingPeriod
+        break Không tìm thấy kỳ thu
+            S--xGEH: throw ResourceNotFoundException
+            GEH-->>FE: 404 NOT_FOUND
+        end
+        break Kỳ đã lập danh sách (generatedAt khác null)
+            S--xGEH: throw BillingPeriodAlreadyGeneratedException
+            GEH-->>FE: 409 ALREADY_GENERATED
+        end
+        break endDate trước startDate
+            S--xGEH: throw InvalidBillingPeriodDateRangeException
+            GEH-->>FE: 400 VALIDATION_ERROR
+        end
+        S->>PR: existsByCodeAndIdNot(code, id)
+        PR-->>S: boolean
+        break Mã trùng với kỳ thu khác
+            S--xGEH: throw DuplicateException(code)
+            GEH-->>FE: 409 DUPLICATE
+        end
+        S->>PR: findOverlappingPeriod(id, startDate, endDate)
+        PR-->>S: Optional BillingPeriod
+        break Khoảng ngày chồng lấn kỳ khác
+            S--xGEH: throw BillingPeriodOverlapException(id, code)
+            GEH-->>FE: 422 PERIOD_OVERLAP
+        end
+        S->>S: Gán code, name, startDate, endDate (entity managed, tự UPDATE khi commit)
+        S-->>-C: BillingPeriodResponse
+        C-->>-FE: 200 ApiResponse (Cập nhật kỳ thu thành công)
+    else Xóa kỳ thu
+        U->>FE: Bấm Xóa và xác nhận
+        FE->>+C: DELETE /billing-periods/{id}
+        C->>+S: delete(id)
+        S->>PR: findByIdForUpdate(id) — SELECT ... FOR UPDATE
+        PR-->>S: Optional BillingPeriod
+        break Không tìm thấy kỳ thu
+            S--xGEH: throw ResourceNotFoundException
+            GEH-->>FE: 404 NOT_FOUND
+        end
+        break Kỳ đã lập danh sách
+            S--xGEH: throw BillingPeriodAlreadyGeneratedException
+            GEH-->>FE: 409 ALREADY_GENERATED
+        end
+        S->>PR: delete(period)
+        S-->>-C: void
+        C-->>-FE: 204 No Content
+        FE-->>U: Chuyển về /ky-thu
+    end
+```
 
-* **Lưu băm OTP:** mã OTP 6 số không lưu nguyên bản trong CSDL. Bảng `email\\\_otps` chỉ lưu `otp\\\_hash = BCrypt(otp)`. Khi xác thực, backend dùng `BCrypt.matches(inputOtp, otpHashFromDB)` để kiểm tra OTP người dùng nhập.
-* **Thời gian sống:** mỗi OTP có `expired\\\_at = created\\\_at + 5 phút`. OTP quá hạn không được chấp nhận.
-* **Một lần dùng:** OTP đã xác thực thành công được đánh dấu `used = TRUE`; không dùng lại được.
-* **Giới hạn số lần thử:** mỗi OTP có cột `failed\\\_attempts`; khi `failed\\\_attempts >= 5` → OTP bị vô hiệu hoá, người dùng phải gửi lại OTP mới.
-* **Rate limit gửi OTP:** tối đa **5 yêu cầu gửi OTP** cho cùng một email trong **15 phút**. Vượt ngưỡng trả `429 Too Many Requests`.
-* **Chống dò email:** API quên mật khẩu luôn trả response trung lập kiểu "OTP đã được gửi nếu email tồn tại", dù email có trong CSDL hay không.
-* **Tách bạch theo `purpose`:** OTP gắn với `purpose` (`REGISTER` hoặc `FORGOT\\\_PASSWORD`); OTP đăng ký không được dùng cho đặt lại mật khẩu và ngược lại.
-* **Kênh gửi:** dùng Spring Mail (`JavaMailSender`) qua tài khoản SMTP cấu hình trong `application.properties` (host, port, username, mật khẩu app); không commit credential lên Git.
-* **Không log OTP:** OTP nguyên bản không xuất hiện trong bất kỳ log nào của backend.
+### 10.18 Lập danh sách khoản phải thu cho kỳ thu
 
-### 11.9 Bảo mật cổng thanh toán VNPay Sandbox
+*Mã nguồn:* PeriodDetailPage.jsx perform() · BillingGenerationController.generate() · BillingGenerationService.generate() · ReceivableRepository — vai trò ACCOUNTANT, BQT
 
-* **Không lưu thẻ:** hệ thống không nhận, không lưu, không hiển thị thông tin thẻ ngân hàng hoặc thông tin xác thực ngân hàng của cư dân. Toàn bộ thao tác thanh toán diễn ra trên trang VNPay; backend chỉ lưu metadata giao dịch trong `payment\\\_transactions`.
-* **Ký yêu cầu (vnp\_SecureHash):** mọi URL gửi sang VNPay được ký HMAC-SHA512 bằng `vnp\\\_HashSecret` cấu hình trong `application.properties`. `vnp\\\_HashSecret` không bao giờ commit lên Git, không gửi cho frontend, không ghi vào log.
-* **Xác thực chữ ký callback:** mọi tham số nhận về tại Return URL và IPN URL đều được tính lại HMAC-SHA512 và so sánh với `vnp\\\_SecureHash` gửi kèm. Sai chữ ký → IPN trả `vnp\\\_ResponseCode = 97 (Invalid signature)` và **không cập nhật CSDL**. Sau khi verify, hệ thống không lưu `vnp\\\_SecureHash`/`vnpay\\\_secure\\\_hash` vào CSDL vì giá trị này không phục vụ đối soát về sau.
-* **`transaction\\\_code` duy nhất:** mỗi lần khởi tạo giao dịch sinh một `transaction\\\_code` duy nhất (UUID rút gọn hoặc timestamp + random) và lưu vào `payment\\\_transactions.transaction\\\_code` (UNIQUE). Đây cũng là `vnp\\\_TxnRef` gửi cho VNPay.
-* **Idempotency:** khi nhận IPN, nếu `payment\\\_transactions.status` đã ở trạng thái cuối (SUCCESS/FAILED/CANCELLED) → backend trả ack `vnp\\\_ResponseCode = 00` nhưng không cập nhật lại CSDL, tránh ghi đè trạng thái và không tạo Payment trùng.
-* **Nguồn xác nhận chính là IPN URL:** trạng thái cuối cùng của giao dịch được cập nhật chủ yếu qua IPN URL (server-to-server). Return URL đóng vai trò dự phòng: nếu redirect trình duyệt về trước khi IPN tới và giao dịch còn `PENDING`, Return URL (sau khi verify chữ ký và khớp số tiền) sẽ chốt trạng thái để cư dân thấy kết quả ngay; nếu giao dịch đã ở trạng thái cuối thì Return URL chỉ đọc trạng thái, không ghi đè. Nhờ cơ chế idempotency, hai luồng IPN và Return không cập nhật trùng.
-* **Kiểm tra quyền sở hữu:** khi cư dân khởi tạo `POST /api/payments/vnpay/create-url`, backend luôn kiểm tra `target.household\\\_id == JWT.household\\\_id`. Vi phạm → 403 Forbidden, không tạo giao dịch.
-* **Khớp số tiền:** số tiền trong `payment\\\_transactions` lấy từ khoản phí/hoá đơn ở backend, không tin số tiền do client gửi lên. Khi xử lý IPN, backend so sánh `vnp\\\_Amount` (chia 100) với `payment\\\_transactions.amount`; lệch → cập nhật `status = FAILED` và ghi log cảnh báo.
-* **Không hoàn tiền tự động:** hệ thống chỉ ghi nhận trạng thái thanh toán; mọi việc đối soát, hoàn tiền hoặc xử lý lỗi tài chính được thực hiện thủ công ngoài hệ thống dựa trên dữ liệu trong `payment\\\_transactions`.
+Hai lần gọi (xem trước và lập thật) đi qua cùng một phương thức generate. Khóa trên kỳ thu và trên các khoản thu MANDATORY bảo đảm hai người bấm cùng lúc không sinh trùng khoản phải thu và khoản ONE_TIME chỉ được tính một lần.
 
-\---
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Kế toán / BQT
+    box rgb(231,246,238) Frontend · React
+        participant FE as PeriodDetailPage
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as BillingGeneration<br/>Controller
+        participant S as BillingGeneration<br/>Service
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant PR as BillingPeriod<br/>Repository
+        participant VR as ReceivableRepository
+    end
 
-## 12\. KẾT LUẬN
+    Note over FE,C: Bearer JWT, hasAnyRole(ACCOUNTANT, BQT) — xem SD-02
+    U->>FE: Bấm Xem trước
+    FE->>+C: POST /billing-periods/{id}/generate?dryRun=true
+    C->>+S: generate(id, dryRun = true, currentUser)
+    Note over S,VR: Chạy các bước kiểm tra và tính toán như lần lập thật bên dưới, không INSERT
+    S-->>-C: BillingGenerationResponse(dryRun = true)
+    C-->>-FE: 200 generatedCount, householdCount, totalAmount, byFee, skipped, inactiveHouseholdCount
+    FE-->>U: Hiển thị bản xem trước và nút Xác nhận lập
+    U->>FE: Xác nhận lập danh sách
+    FE->>+C: POST /billing-periods/{id}/generate
+    C->>+S: generate(id, dryRun = false, currentUser)
+    S->>PR: findByIdForUpdate(id) — SELECT ... FOR UPDATE
+    PR-->>S: Optional BillingPeriod (đã khóa dòng)
+    break Không tìm thấy kỳ thu
+        S--xGEH: throw ResourceNotFoundException
+        GEH-->>FE: 404 NOT_FOUND
+    end
+    break Kỳ đã CLOSED
+        S--xGEH: throw BillingPeriodClosedException
+        GEH-->>FE: 422 PERIOD_CLOSED
+    end
+    break Kỳ đã lập danh sách
+        S--xGEH: throw BillingPeriodAlreadyGeneratedException
+        GEH-->>FE: 409 ALREADY_GENERATED
+        FE->>C: GET /billing-periods/{id} để đồng bộ trạng thái
+    end
+    S->>VR: lockActiveMandatoryFeeCategories() — SELECT ... FOR UPDATE
+    VR-->>S: Danh sách id khoản thu đã khóa
+    S->>VR: countEligibleFees()
+    VR-->>S: Số khoản thu đủ điều kiện
+    break Không có khoản thu đủ điều kiện
+        S--xGEH: throw NoActiveFeeException
+        GEH-->>FE: 422 NO_ACTIVE_FEE
+    end
+    S->>VR: getGenerationAggregates()
+    VR-->>S: Theo từng khoản thu: receivableCount, totalAmount
+    S->>VR: getSkippedReceivables()
+    VR-->>S: Các cặp hộ – khoản thu PER_AREA thiếu diện tích
+    break Tổng receivableCount = 0
+        S--xGEH: throw NothingToGenerateException(skipped)
+        GEH-->>FE: 422 NOTHING_TO_GENERATE (details.skipped)
+    end
+    S->>VR: countHouseholdsToGenerate(), countInactiveHouseholds()
+    VR-->>S: householdCount, inactiveHouseholdCount
+    S->>VR: generateReceivables(periodId, userId) — INSERT ... SELECT hộ ACTIVE × khoản thu đủ điều kiện
+    VR-->>S: insertedCount
+    break insertedCount khác generatedCount
+        S--xC: throw IllegalStateException (không có handler riêng)
+        C-->>FE: 500 Internal Server Error, rollback toàn bộ
+    end
+    S->>PR: save(period.generatedAt = now, generatedBy = currentUser)
+    S-->>-C: BillingGenerationResponse(dryRun = false)
+    C-->>-FE: 200 ApiResponse (Lập danh sách khoản thu thành công)
+    FE->>C: GET /billing-periods/{id}
+    C-->>FE: BillingPeriodDetailResponse (kèm summary)
+    FE-->>U: Đã lập danh sách khoản phải thu
+    opt Lỗi TIMEOUT, NETWORK_ERROR hoặc 5xx ở lần lập thật
+        FE->>C: GET /billing-periods/{id} (reconcile)
+        C-->>FE: generated = true / false
+        FE-->>U: Báo đúng tình trạng kỳ trước khi cho lập lại
+    end
+```
 
-### 12.1 Tóm tắt
+### 10.19 Đóng sổ và mở lại kỳ thu
 
-Tài liệu SDD trên mô tả thiết kế của phần mềm quản lý thu phí chung cư BlueMoon ở mức đủ để chuyển sang giai đoạn lập trình, gồm:
+*Mã nguồn:* PeriodDetailPage.jsx · BillingPeriodController.updateStatus() · BillingPeriodService.updateStatus() — chỉ vai trò BQT
 
-* **2 actor:** Admin và Cư dân. Một số endpoint **công khai (không cần đăng nhập)** như đăng ký, đăng nhập, gửi/xác thực OTP, quên mật khẩu được mở cho người dùng chưa có phiên đăng nhập, nhưng không tạo thêm actor riêng.
-* **11 module chức năng:** quản lý tài khoản, căn hộ và hộ dân/hộ khẩu trong căn hộ, nhân khẩu, khoản thu, thu phí + thanh toán online qua VNPay, phí gửi xe, phí điện/nước/internet, khiếu nại, thông báo, thống kê + xuất file, và quản trị hệ thống (audit log + xoá mềm + cấu hình đơn giá).
-* **24 use case chính** được phân rã chi tiết (UC1–UC24), bao gồm 5 use case mới: xác thực OTP, quên mật khẩu, thanh toán VNPay, xem lịch sử thanh toán của cư dân, tra cứu giao dịch của Admin.
-* **Kiến trúc 3 tầng** web client-server: React + Spring Boot + REST API + MySQL, có tích hợp **SMTP** (Spring Mail) cho OTP email và **VNPay Sandbox** cho thanh toán online.
-* **19 lớp Entity chính** với sơ đồ lớp Mermaid (đã tách logic nghiệp vụ khỏi Entity sang Service).
-* **19 bảng CSDL** với ERD đầy đủ, trong đó:
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Ban quản trị
+    box rgb(231,246,238) Frontend · React
+        participant FE as PeriodDetailPage
+    end
+    box rgb(255,246,221) Backend · Spring Boot
+        participant C as BillingPeriod<br/>Controller
+        participant S as BillingPeriod<br/>Service
+        participant GEH as Global<br/>ExceptionHandler
+    end
+    box rgb(241,245,249) Spring Data JPA / PostgreSQL
+        participant PR as BillingPeriod<br/>Repository
+    end
 
-  * Quan hệ `APARTMENTS ||--o{ HOUSEHOLDS` (1 căn hộ — nhiều Household theo thời gian, tối đa 1 ACTIVE/căn hộ).
-  * Bảng `residents` có `status` ACTIVE/MOVED\_OUT, không xoá vật lý khi chuyển hộ.
-  * Mọi trường tiền dùng `DECIMAL(15,2)` ở CSDL và `BigDecimal` ở Java.
-  * Bảng `email\\\_otps` lưu OTP đã băm BCrypt.
-  * Bảng `payment\\\_transactions` theo dõi giao dịch VNPay Sandbox với 4 loại `target\\\_type`: `FEE\\\_PAYMENT`, `UTILITY\\\_BILL`, `FEE\\\_PAYMENT\\\_BATCH`, `MIXED\\\_PAYMENT\\\_BATCH` (hai loại sau dùng cho thanh toán gộp nhiều khoản); không chứa `payment\\\_method = CASH` và không lưu `vnpay\\\_secure\\\_hash`.
-  * Bảng `audit\\\_logs` (`admin\\\_username`, `action`, `target\\\_entity`, `details`, `timestamp`) lưu nhật ký thao tác quản trị, ghi tự động qua AOP (`@LogAdminAction` + `AuditAspect`).
-  * Bảng `system\\\_configs` lưu các đơn giá cấu hình (điện/nước/internet, phí gửi xe).
-* **21 màn hình giao diện** (SC-01 đến SC-21) với đặc tả người dùng / chức năng / dữ liệu nhập / kết quả; gồm các màn hình cho OTP, quên mật khẩu, thanh toán VNPay, lịch sử thanh toán, tra cứu giao dịch Admin và nhật ký hệ thống.
-* **8 activity diagram** và **8 sequence diagram** cho các luồng quan trọng, bao gồm luồng gửi/xác thực OTP và luồng VNPay (Return + IPN).
-* **Thiết kế bảo mật:** BCrypt + JWT + RBAC + giới hạn dữ liệu cho cư dân (kiểm tra `household\\\_id`); OTP băm BCrypt, hạn 5 phút, rate limit 5/15ph/email; VNPay ký HMAC-SHA512, xác thực chữ ký callback, idempotency, không lưu thẻ.
+    U->>FE: Bấm Đóng sổ hoặc Mở lại và xác nhận
+    FE->>+C: PATCH /billing-periods/{id}/status (status)
+    Note over FE,C: Bearer JWT, hasRole(BQT) — xem SD-02
+    C->>+S: updateStatus(id, request, currentUser)
+    S->>PR: findByIdForUpdate(id) — SELECT ... FOR UPDATE
+    PR-->>S: Optional BillingPeriod (đã khóa dòng)
+    break Không tìm thấy kỳ thu
+        S--xGEH: throw ResourceNotFoundException
+        GEH-->>FE: 404 NOT_FOUND
+    end
+    alt Trạng thái yêu cầu trùng trạng thái hiện tại
+        S->>S: Không thay đổi gì
+    else Yêu cầu CLOSED
+        break Kỳ chưa lập danh sách (generatedAt = null)
+            S--xGEH: throw PeriodNotGeneratedException
+            GEH-->>FE: 422 PERIOD_NOT_GENERATED
+        end
+        S->>S: status = CLOSED, closedAt = now, closedBy = currentUser
+    else Yêu cầu OPEN
+        S->>S: status = OPEN, closedAt = null, closedBy = null
+    end
+    Note over S,PR: Entity đang managed nên UPDATE billing_period tự chạy khi commit
+    S-->>-C: BillingPeriodResponse
+    C-->>-FE: 200 ApiResponse (Cập nhật trạng thái kỳ thu thành công)
+    FE->>C: GET /billing-periods/{id}
+    C-->>FE: BillingPeriodDetailResponse
+    FE-->>U: Hiển thị trạng thái mới của kỳ thu
+```
 
-### 12.2 Đối chiếu với yêu cầu đề bài
 
-|Yêu cầu trong đề bài (chương 1)|Phần đáp ứng trong SDD|
-|-|-|
-|Đăng ký, đăng nhập|M1 – SC-01, SC-03, SC-15 (đăng ký có OTP email)|
-|Xác thực OTP email khi đăng ký, quên mật khẩu|M1 – SC-15, SC-16, UC-VERIFY-OTP, UC-FORGOT-PASSWORD|
-|Quản lý thông tin cá nhân + đổi mật khẩu|M1 – SC-13|
-|Quản lý khoản thu|M4 – SC-06|
-|Tạo khoản thu|UC-CREATE-FEE|
-|Xác nhận đã nộp tiền mặt|M5 – SC-07, UC-COLLECT-FEE (xác nhận đã nộp đủ tiền mặt)|
-|Thanh toán online qua VNPay Sandbox|M5 – SC-17, SC-18, UC-VNPAY-PAYMENT|
-|Lịch sử thanh toán của cư dân và tra cứu của Admin|SC-19, SC-20, UC-VIEW-MY-PAYMENT-HISTORY, UC-ADMIN-PAYMENT-LOOKUP|
-|Tra cứu, thống kê|M10 – SC-10|
-|Quản lý căn hộ và hộ dân/hộ khẩu trong căn hộ|M2 – SC-04 (quan hệ 1 — n theo thời gian, max 1 ACTIVE)|
-|Quản lý nhân khẩu và cập nhật trạng thái cư trú|M3 – SC-05 (`status` ACTIVE/MOVED\_OUT, không xoá vật lý; `residency\\\_status` quản lý thường trú/tạm trú/tạm vắng)|
-|Tạm trú/tạm vắng|Trường `residency\\\_status` trong bảng `residents`|
-|Phí xe (v2.0)|M6 – SC-08. Phí gửi xe hiện do Admin ghi nhận hoặc được tổng hợp vào khoản thu/hoá đơn riêng trong phiên bản sau; chưa đưa vào luồng VNPay ở phiên bản hiện tại|
-|Phí điện, nước, internet (v2.0)|M7 – SC-09 (có thể thanh toán online qua VNPay)|
-|Đóng góp tự nguyện|Loại `DONATION` trong bảng `fees`|
+---
 
-Các chức năng mở rộng theo yêu cầu Ban quản trị: **khiếu nại, thông báo, cho thuê chỗ gửi xe thừa, xuất báo cáo Excel/PDF, thanh toán online qua VNPay Sandbox, xác thực OTP email**.
+## 11. THIẾT KẾ BẢO MẬT
 
-### 12.3 Hạn chế của thiết kế
+### 11.1 Tổng quan kiến trúc bảo mật
 
-* Chỉ tích hợp VNPay Sandbox; chưa tích hợp các cổng thanh toán khác (Momo, ZaloPay, thẻ quốc tế).
-* Không xử lý hoàn tiền tự động qua API VNPay — mọi việc đối soát, hoàn tiền được làm thủ công dựa trên `payment\\\_transactions`.
-* Không lưu trữ thông tin thẻ ngân hàng của cư dân; mỗi lần thanh toán cư dân phải nhập lại trên trang VNPay.
-* Thông báo hệ thống chưa gửi qua email/SMS; email chỉ dùng cho OTP (đăng ký, quên mật khẩu) và thông báo từ chối duyệt đăng ký tài khoản. Chưa có email xác nhận thanh toán.
-* Báo cáo Excel/PDF dùng mẫu cố định, chưa cho phép tuỳ chỉnh mẫu báo cáo.
-* Khiếu nại chưa hỗ trợ đính kèm hình ảnh.
-* Chưa hỗ trợ chuyển đổi đa ngôn ngữ – chỉ tiếng Việt.
+Hệ thống BlueMoon được bảo mật toàn diện theo mô hình nhiều lớp (Defense in Depth), dựa trên nền tảng **Spring Security 6** và thư viện **JJWT 0.12.6**:
 
-### 12.4 Hướng phát triển
+* **Mã hóa một chiều mật khẩu:** Toàn bộ mật khẩu người dùng được băm bằng thuật toán **BCrypt** với hệ số chi phí (strength) là 10 thông qua `BCryptPasswordEncoder`. Hệ thống tuyệt đối không lưu trữ hoặc ghi log mật khẩu dưới dạng văn bản rõ (plain-text).
+* **Kiến trúc xác thực không trạng thái (Stateless Session):** Backend hoàn toàn không lưu trữ phiên (session) trong bộ nhớ server (`SessionCreationPolicy.STATELESS`). Trạng thái xác thực được duy trì thông qua **JSON Web Token (JWT)** được cấp phát sau khi đăng nhập thành công.
+* **Thời hạn token & Thu hồi:** Token có thời hạn hiệu lực mặc định là **8 giờ** (28.800 giây). Bộ lọc bảo mật `JwtAuthenticationFilter` kiểm tra chữ ký HMAC-SHA256, thời hạn sống, và truy vấn nhanh CSDL để kiểm tra trạng thái kích hoạt tài khoản (`active = true`) cũng như so khớp thời điểm cấp token với thời điểm đổi mật khẩu lần cuối (`passwordChangedAt`) để lập tức vô hiệu hóa token khi mật khẩu bị thay đổi.
+* **Phân quyền vai trò (Role-Based Access Control - RBAC):** Kiểm soát quyền truy cập chặt chẽ ở cấp độ endpoint URL trong `SecurityConfig` và kiểm soát phương thức bằng `@PreAuthorize("hasRole(...)")`.
+* **Cô lập dữ liệu cư dân (Data Isolation):** Cư dân (`RESIDENT`) chỉ được phép truy vấn và nộp yêu cầu cho đúng hộ gia đình của mình. Tầng Service luôn đối chiếu `residentId` và `householdId` lấy từ thông tin xác thực đáng tin cậy của token với tài nguyên được yêu cầu.
 
-* Nâng cấp cấu hình từ VNPay Sandbox sang môi trường VNPay thật khi triển khai thực tế.
-* Gửi thông báo nghiệp vụ (đợt thu mới, sắp đến hạn, đã thanh toán thành công) qua email song song với thông báo trong hệ thống.
-* Cho phép cư dân đính kèm ảnh vào khiếu nại.
-* Bổ sung thống kê biểu đồ trên dashboard, gồm cả tỉ lệ thanh toán online / tiền mặt.
-* Bổ sung tính năng nhắc nộp phí tự động (định kỳ) qua email và thông báo trong hệ thống.
-* Bổ sung đối soát tự động giữa `payment\\\_transactions` và sao kê từ VNPay.
+---
 
-\---
+### 11.2 Sơ đồ luồng xác thực và phân quyền JWT
+
+Mỗi yêu cầu từ trình duyệt được chặn và thẩm định qua `JwtAuthenticationFilter` trước khi chuyển tiếp tới Controller:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client as Trình duyệt (React SPA)
+    participant Filter as JwtAuthenticationFilter
+    participant JwtSvc as JwtService
+    participant UserRepo as AppUserRepository
+    participant SecCtx as SecurityContextHolder
+    participant Ctrl as REST Controller
+
+    Client->>Filter: HTTP Request + Header Authorization: Bearer <token>
+    alt Endpoint công khai (/auth/login)
+        Filter->>Ctrl: Cho phép đi qua (permitAll)
+    else Endpoint yêu cầu xác thực
+        Filter->>Filter: Trích xuất Bearer token từ header
+        alt Không có token hoặc sai định dạng
+            Filter->>Client: 401 UNAUTHORIZED (Thiếu Bearer token)
+        else Có token
+            Filter->>JwtSvc: validateToken(token)
+            alt Token hết hạn hoặc sai chữ ký HMAC-SHA256
+                Filter->>Client: 401 UNAUTHORIZED (Token không hợp lệ / hết hạn)
+            else Token hợp lệ
+                Filter->>JwtSvc: extractUsername(token)
+                JwtSvc-->>Filter: username
+                Filter->>UserRepo: findByUsernameIgnoreCase(username)
+                UserRepo-->>Filter: Optional<AppUser>
+                alt User không tồn tại hoặc is_active = false
+                    Filter->>Client: 401 UNAUTHORIZED (Tài khoản đã bị khóa)
+                else Token cấp trước thời điểm đổi mật khẩu (iat < passwordChangedAt)
+                    Filter->>Client: 401 UNAUTHORIZED (Mật khẩu đã thay đổi, vui lòng đăng nhập lại)
+                else Thông tin hợp lệ
+                    Filter->>SecCtx: Đặt Authentication (UsernamePasswordAuthenticationToken + Roles)
+                    Filter->>Ctrl: Chuyển tiếp request tới Controller xử lý
+                    Ctrl-->>Client: 200 OK + Dữ liệu JSON
+                end
+            end
+        end
+    end
+```
+
+---
+
+### 11.3 Chính sách mật khẩu & Đổi mật khẩu lần đầu
+
+* **Độ phức tạp mật khẩu:** Mật khẩu bắt buộc có độ dài tối thiểu 6 ký tự.
+* **Cờ `mustChangePassword`:** Khi Ban quản trị tạo mới tài khoản hoặc thực hiện đặt lại mật khẩu (`POST /users/{id}/reset-password`), hệ thống tự động gán mật khẩu tạm thời và bật cờ `mustChangePassword = true`. Khi người dùng đăng nhập, giao diện người dùng hiển thị cảnh báo yêu cầu đổi mật khẩu ngay lập tức tại màn hình Hồ sơ cá nhân (`/ho-so`).
+* **Đổi mật khẩu an toàn:** Endpoint `PUT /me/password` yêu cầu cung cấp mật khẩu cũ (`currentPassword`) để so khớp qua `passwordEncoder.matches()`. Khi đổi mật khẩu thành công, trường `passwordChangedAt` được cập nhật thời điểm hiện tại và `mustChangePassword` chuyển về `false`.
+
+---
+
+### 11.4 Ma trận bảo vệ Endpoint theo vai trò (RBAC)
+
+| Nhóm Endpoint | Endpoint Pattern | HTTP Method | BQT | ACCOUNTANT | RESIDENT | AUTHORITY | Ghi chú bảo mật |
+| --- | --- | --- | :---: | :---: | :---: | :---: | --- |
+| Xác thực | `/auth/login` | POST | ✓ | ✓ | ✓ | ✓ | Endpoint PUBLIC duy nhất |
+| Cá nhân | `/me`, `/me/password` | GET, PUT | ✓ | ✓ | ✓ | ✓ | Yêu cầu đăng nhập hợp lệ |
+| Tài khoản | `/users/**` | GET, POST, PUT, PATCH | ✓ | ✗ | ✗ | Xem (GET) | Chỉ BQT có quyền tạo/khóa/reset |
+| Vai trò | `/roles` | GET | ✓ | ✗ | ✗ | ✓ | Danh mục vai trò |
+| Hộ gia đình | `/households` | GET, POST, PUT | ✓ | Xem (GET) | ✗ | Xem (GET) | Chỉ BQT được thêm/sửa/đổi chủ hộ |
+| | `/households/my` | GET | ✗ | ✗ | ✓ | ✗ | Cư dân xem thông tin hộ của mình |
+| Nhân khẩu | `/residents/**` | GET, POST, PUT | ✓ | ✗ | ✗ | Xem (GET) | BQT quản lý nhân khẩu & biến động |
+| Yêu cầu cư dân | `/resident-requests` | GET, POST | ✓ | ✗ | ✓ | ✗ | Cư dân gửi/hủy, BQT duyệt/từ chối |
+| | `/resident-requests/{id}/approve` | POST | ✓ | ✗ | ✗ | ✗ | Chỉ BQT có quyền phê duyệt |
+| | `/resident-requests/{id}/reject` | POST | ✓ | ✗ | ✗ | ✗ | Chỉ BQT có quyền từ chối |
+| Khoản thu | `/fee-categories/**` | GET, POST, PUT, PATCH | ✓ | ✓ | ✗ | ✗ | BQT và Kế toán quản trị danh mục thu |
+| Kỳ thu phí | `/billing-periods/**` | GET, POST | ✓ | ✓ | ✗ | ✗ | BQT và Kế toán quản lý kỳ thu |
+| | `/billing-periods/{id}/status` | PATCH | ✓ | ✗ | ✗ | ✗ | Chỉ BQT có quyền đóng sổ kỳ thu |
+| Lập công nợ | `/billing-periods/{id}/generate` | POST | ✓ | ✓ | ✗ | ✗ | Hỗ trợ tính thử nghiệm và chốt chính thức |
+| Tra cứu | `/search` | GET | ✓ | ✓ | ✗ | ✓ | Tìm kiếm nhanh toàn hệ thống |
+
+
+---
+
+## 12. KẾT LUẬN
+
+### 12.1 Tóm tắt kết quả thiết kế (Sprint 1)
+
+Tài liệu Mô tả Thiết kế Phần mềm (Software Design Description - SDD) phiên bản Sprint 1 đã đặc tả đầy đủ, chi tiết và đồng bộ tuyệt đối với mã nguồn thực tế của dự án BlueMoon:
+
+1. **4 Tác nhân (Actors) chuẩn mực:** Ban quản trị (`BQT`), Kế toán (`ACCOUNTANT`), Cư dân (`RESIDENT`), và Cơ quan chức năng (`AUTHORITY`).
+2. **7 Phân hệ chức năng chính (Modules M1 - M7):**
+   * M1: Quản lý Tài khoản, Xác thực & Hồ sơ cá nhân.
+   * M2: Quản lý Hộ gia đình & Căn hộ.
+   * M3: Quản lý Nhân khẩu & Biến động cư trú (Append-only).
+   * M4: Cổng Cư dân & Đề nghị cư trú trực tuyến (Diff & Approval).
+   * M5: Quản lý Danh mục Khoản thu (Bắt buộc & Đóng góp tự nguyện).
+   * M6: Quản lý Kỳ thu phí, Tính thử nghiệm & Lập danh sách công nợ tự động.
+   * M7: Tra cứu nhanh toàn hệ thống.
+3. **Kiến trúc công nghệ 3 tầng hiện đại:**
+   * Frontend: React 18.3.1 SPA, Vite 6.0.5, Lucide React, Design Tokens CSS thuần.
+   * Backend: Java 21/25, Spring Boot 4.x, Spring Data JPA, Spring Security, JJWT 0.12.6.
+   * Database: PostgreSQL 14+, tiện ích `pg_trgm`, `unaccent`, trigger append-only.
+4. **10 Bảng cơ sở dữ liệu quan hệ** được chuẩn hóa 3NF, kiểm soát toàn vẹn khóa ngoại, chỉ mục tìm kiếm và khóa dòng chống xung đột ghi (`SELECT ... FOR UPDATE`).
+5. **15 Màn hình giao diện React** đồng bộ hoàn chỉnh với luồng điều hướng theo vai trò người dùng.
+6. **19 Sơ đồ hoạt động (Activity Diagrams)** và **19 Sơ đồ tuần tự (Sequence Diagrams)** được kiểm chứng thực tế và tích hợp trực tiếp từ thư mục tài liệu `docs/UML/`.
+
+---
+
+### 12.2 Mức độ đáp ứng yêu cầu (Compliance Matrix)
+
+Hệ thống đáp ứng 100% các yêu cầu chức năng (từ FR-01 đến FR-42) và yêu cầu phi chức năng (từ NFR-01 đến NFR-10) đã cam kết trong phạm vi Sprint 1:
+
+| Nhóm yêu cầu | Mã yêu cầu | Trạng thái thiết kế & Triển khai | Minh chứng kỹ thuật trong SDD |
+| --- | --- | :---: | --- |
+| Xác thực & Tài khoản | FR-01 đến FR-07 | Hoàn thành | Mục 3.2 (M1), Mục 5.6, Sơ đồ 9.1, 9.2, 10.1, 10.2 |
+| Hộ gia đình & Căn hộ | FR-08 đến FR-13 | Hoàn thành | Mục 3.2 (M2), Bảng `household`, Sơ đồ 9.4, 9.5, 10.4, 10.5 |
+| Nhân khẩu & Cư trú | FR-14 đến FR-20 | Hoàn thành | Mục 3.2 (M3), Bảng `resident`, `resident_movement`, Sơ đồ 9.6-9.9 |
+| Cổng cư dân & Yêu cầu | FR-21 đến FR-28 | Hoàn thành | Mục 3.2 (M4), Bảng `resident_request`, Sơ đồ 9.10-9.14 |
+| Danh mục khoản thu | FR-29 đến FR-34 | Hoàn thành | Mục 3.2 (M5), Bảng `fee_category`, Sơ đồ 9.15, 9.16, 10.15, 10.16 |
+| Kỳ thu & Lập công nợ | FR-35 đến FR-40 | Hoàn thành | Mục 3.2 (M6), Bảng `billing_period`, `receivable`, Sơ đồ 9.17-9.19 |
+| Tra cứu tổng hợp | FR-41 đến FR-42 | Hoàn thành | Mục 3.2 (M7), Endpoint `/search`, Sơ đồ 9.3, 10.3 |
+| Phi chức năng | NFR-01 đến NFR-10 | Hoàn thành | Kiến trúc 3-tier, stateless JWT, bảo mật BCrypt, PostgreSQL indexes |
+
+---
+
+### 12.3 Phạm vi ranh giới Sprint 1 & Định hướng phát triển Sprint 2
+
+Để đảm bảo chất lượng kiểm thử và sự ổn định cao nhất cho hệ thống lõi trong giai đoạn đầu, các tính năng mở rộng sau được phân định rõ ràng làm cơ sở phát triển cho **Sprint 2**:
+
+1. **Thu tiền mặt tại quầy & Biên lai thu tiền:** Quản lý giao dịch thu nợ thực tế (`payment_receipt`), đối soát công nợ đã nộp và nợ đọng theo hộ gia đình.
+2. **Tích hợp Cổng thanh toán trực tuyến (VNPay / VietQR):** Sinh mã QR động cho từng khoản công nợ của hộ gia đình, tự động gạch nợ qua IPN webhook khi cư dân chuyển khoản thành công.
+3. **Trung tâm thông báo & Nhắc nợ:** Gửi thông báo tự động (qua email, SMS hoặc thông báo đẩy trong ứng dụng) khi phát động kỳ thu phí mới, khi đề nghị cư trú được duyệt, hoặc khi khoản thu sắp đến hạn.
+4. **Xuất báo cáo thống kê chuyên sâu:** Xuất sổ bộ cư dân, báo cáo thu chi, danh sách nợ đọng ra định dạng Excel và PDF có chữ ký số.
+
+---
 
 **HẾT TÀI LIỆU**
 

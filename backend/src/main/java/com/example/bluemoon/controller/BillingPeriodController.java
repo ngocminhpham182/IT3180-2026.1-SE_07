@@ -107,4 +107,33 @@ public class BillingPeriodController {
                 ApiResponse.success("Cập nhật trạng thái kỳ thu thành công", response)
         );
     }
+
+    @GetMapping("/{id}/receivables")
+    public ResponseEntity<ApiResponse<ReceivablePageResponse>> getReceivables(
+            @PathVariable @Positive Long id,
+
+            @RequestParam(required = false) String keyword,
+
+            @RequestParam(required = false) Long householdId,
+
+            @RequestParam(required = false) Long feeCategoryId,
+
+            @RequestParam(defaultValue = "1")
+            @Min(value = 1, message = "page phải lớn hơn hoặc bằng 1")
+            int page,
+
+            @RequestParam(defaultValue = "20")
+            @Min(value = 1, message = "size phải lớn hơn 0")
+            @Max(value = 100, message = "size không được vượt quá 100")
+            int size
+    ) {
+        ReceivablePageResponse response =
+                billingPeriodService.getReceivables(
+                        id, keyword, householdId, feeCategoryId, page, size
+                );
+
+        return ResponseEntity.ok(
+                ApiResponse.success("Lấy danh sách khoản thu thành công", response)
+        );
+    }
 }

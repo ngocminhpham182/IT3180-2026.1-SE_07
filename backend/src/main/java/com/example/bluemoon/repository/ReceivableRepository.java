@@ -4,11 +4,14 @@ import com.example.bluemoon.dto.BillingPeriodSummaryResponse;
 import com.example.bluemoon.dto.FeeGenerationAggregate;
 import com.example.bluemoon.dto.SkippedReceivableProjection;
 import com.example.bluemoon.model.Receivable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -243,5 +246,65 @@ public interface ReceivableRepository extends JpaRepository<Receivable, Long> {
     int generateReceivables(
             @Param("billingPeriodId") Long billingPeriodId,
             @Param("createdBy") Long createdBy
+    );
+
+    @Query(
+            value = """
+            SELECT r
+            FROM Receivable r
+            JOIN FETCH r.household h
+            JOIN FETCH r.feeCategory f
+            WHERE r.billingPeriod.id = :billingPeriodId
+              AND (:householdId IS NULL OR h.id = :householdId)
+              AND (:feeCategoryId IS NULL OR f.id = :feeCategoryId)
+              AND (
+                  :keyword = ''
+                  OR LOWER(h.householdCode) LIKE CONCAT('%', LOWER(:keyword), '%')
+                  OR LOWER(h.apartmentNo) LIKE CONCAT('%', LOWER(:keyword), '%')
+              )
+            ORDER BY h.householdCode ASC, f.code ASC, r.id ASC
+            """,
+            countQuery = """
+            SELECT COUNT(r)
+            FROM Receivable r
+            JOIN r.household h
+            JOIN r.feeCategory f
+            WHERE r.billingPeriod.id = :billingPeriodId
+              AND (:householdId IS NULL OR h.id = :householdId)
+              AND (:feeCategoryId IS NULL OR f.id = :feeCategoryId)
+              AND (
+                  :keyword = ''
+                  OR LOWER(h.householdCode) LIKE CONCAT('%', LOWER(:keyword), '%')
+                  OR LOWER(h.apartmentNo) LIKE CONCAT('%', LOWER(:keyword), '%')
+              )
+            """
+    )
+    Page<Receivable> searchReceivables(
+            @Param("billingPeriodId") Long billingPeriodId,
+            @Param("householdId") Long householdId,
+            @Param("feeCategoryId") Long feeCategoryId,
+            @Param("keyword") String keyword,
+            Pageable pageable
+    );
+
+    @Query("""
+            SELECT COALESCE(SUM(r.amountDue), 0)
+            FROM Receivable r
+            JOIN r.household h
+            JOIN r.feeCategory f
+            WHERE r.billingPeriod.id = :billingPeriodId
+              AND (:householdId IS NULL OR h.id = :householdId)
+              AND (:feeCategoryId IS NULL OR f.id = :feeCategoryId)
+              AND (
+                  :keyword = ''
+                  OR LOWER(h.householdCode) LIKE CONCAT('%', LOWER(:keyword), '%')
+                  OR LOWER(h.apartmentNo) LIKE CONCAT('%', LOWER(:keyword), '%')
+              )
+            """)
+    BigDecimal sumAmountDue(
+            @Param("billingPeriodId") Long billingPeriodId,
+            @Param("householdId") Long householdId,
+            @Param("feeCategoryId") Long feeCategoryId,
+            @Param("keyword") String keyword
     );
 }

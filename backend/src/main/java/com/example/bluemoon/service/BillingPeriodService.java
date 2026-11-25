@@ -4,16 +4,20 @@ import com.example.bluemoon.dto.*;
 import com.example.bluemoon.exception.*;
 import com.example.bluemoon.model.AppUser;
 import com.example.bluemoon.model.BillingPeriod;
+import com.example.bluemoon.model.Receivable;
 import com.example.bluemoon.model.enums.BillingPeriodStatus;
 import com.example.bluemoon.repository.BillingPeriodRepository;
 import com.example.bluemoon.repository.ReceivableRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -290,5 +294,60 @@ public class BillingPeriodService {
         }
 
         return BillingPeriodResponse.from(period);
+    }
+
+    @Transactional(readOnly = true)
+    public ReceivablePageResponse getReceivables(
+            Long billingPeriodId,
+            String keyword,
+            Long householdId,
+            Long feeCategoryId,
+            int page,
+            int size
+    ) {
+        if (!billingPeriodRepository.existsById(billingPeriodId)) {
+            throw new ResourceNotFoundException("Không tìm thấy kỳ thu");
+        }
+
+        if (page < 1) {
+            throw new IllegalArgumentException("page phải lớn hơn hoặc bằng 1");
+        }
+
+        if (size < 1 || size > 100) {
+            throw new IllegalArgumentException("size phải nằm trong khoảng 1 đến 100");
+        }
+
+        String kw = (keyword == null) ? "" : keyword.trim();
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        Page<Receivable> result = receivableRepository.searchReceivables(
+                billingPeriodId,
+                householdId,
+                feeCategoryId,
+                kw,
+                pageable
+        );
+
+        BigDecimal totalDue = receivableRepository.sumAmountDue(
+                billingPeriodId,
+                householdId,
+                feeCategoryId,
+                kw
+        );
+
+        List<ReceivableResponse> content = result.getContent()
+                .stream()
+                .map(ReceivableResponse::from)
+                .toList();
+
+        return new ReceivablePageResponse(
+                content,
+                new ReceivableSummaryResponse(totalDue),
+                result.getNumber() + 1,
+                result.getSize(),
+                result.getTotalElements(),
+                result.getTotalPages()
+        );
     }
 }
