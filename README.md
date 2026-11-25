@@ -201,6 +201,16 @@ npm run build
 npm test
 ```
 
+## Prototype và Wireframe — Sprint 1
+
+Bản thiết kế Figma đã hoàn thiện cho 5 luồng đã thống nhất, sử dụng dữ liệu giả và đang chờ duyệt. Repository lưu tài liệu bàn giao; prototype chưa kết nối backend và chưa được chuyển thành mã nguồn frontend.
+
+- [Báo cáo thiết kế chi tiết](docs/PROTOTYPE_WIREFRAME_REPORT.md)
+- [Hướng dẫn xem và duyệt 5 luồng](docs/PROTOTYPE_REVIEW_GUIDE.md)
+- [Mở file thiết kế Figma](https://www.figma.com/design/Om3u1MbUXlSfRC6l8iN4px?node-id=3-2)
+- [Chạy prototype desktop](https://www.figma.com/proto/Om3u1MbUXlSfRC6l8iN4px?node-id=3-2&starting-point-node-id=3%3A2)
+- [Chạy prototype mobile](https://www.figma.com/proto/Om3u1MbUXlSfRC6l8iN4px?node-id=11-1992&starting-point-node-id=11%3A1992)
+
 ## 8. Một số lưu ý
 
 - Đảm bảo PostgreSQL đang hoạt động trước khi khởi chạy Backend.
