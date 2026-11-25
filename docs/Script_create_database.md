@@ -110,8 +110,6 @@ CREATE TABLE app_user (
     phone                VARCHAR(20),
     resident_id          BIGINT UNIQUE REFERENCES resident (id) ON DELETE RESTRICT,
     is_active            BOOLEAN      NOT NULL DEFAULT TRUE,
-    failed_login_count   INT          NOT NULL DEFAULT 0 CHECK (failed_login_count >= 0),
-    locked_until         TIMESTAMPTZ,
     last_login_at        TIMESTAMPTZ,
     password_changed_at  TIMESTAMPTZ,
     must_change_password BOOLEAN      NOT NULL DEFAULT FALSE,
